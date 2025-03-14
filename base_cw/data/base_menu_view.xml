@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <menuitem name="财务管理"
+                  id="account_menu_finance_main"
+                  web_icon="base_cw,static/description/icon.png"
+                  sequence="95"/>
+        <menuitem id="menu_basic_config" name="基本资料" sequence="100" parent="account_menu_finance_main"/>
+        <menuitem id="base_cw_menu_monthly"
+                  name="成本"
+                  sequence="30"
+                  parent="account_menu_finance_main"/>
+
+        <menuitem id="base_cw_menu_account_settings"
+                  name="财务资料"
+                  sequence="100"
+                  parent="account_menu_finance_main"/>
+
+        <menuitem id="menu_account_query"
+                  name="报表查询"
+                  sequence="90"
+                  parent="account_menu_finance_main"/>
+        <menuitem id="menu_account_config" name="财务设置" action="action_cncw_account_config" groups="base.group_system" sequence="100" parent="account_menu_finance_main"/>
+    </data>
+
+    <data>
+        <menuitem id="base.menu_master_menu" name="隐藏菜单" sequence="500" groups="base_group_hidden_menu"/>
+
+        <menuitem id="menu_currency" name="币别"
+                  parent="menu_basic_config"
+                  action="action_res_currency"
+                  sequence="2"/>
+        <menuitem id="menu_payment_mode"
+                  name="付款方式"
+                  parent="menu_basic_config"
+                  action="action_payment_mode"
+                  sequence="20"/>
+        <menuitem id="menu_account_payment_term"
+                  name="付款条件"
+                  parent="menu_basic_config"
+                  action="action_account_payment_term"
+                  sequence="30"/>
+        <menuitem id="menu_account_tax"
+                  name="税别"
+                  parent="menu_basic_config"
+                  action="action_account_tax"
+                  sequence="1"/>
+        <menuitem id="menu_stock_incoterms"
+                  name="价格条款"
+                  parent="menu_basic_config"
+                  action="action_stock_incoterms"
+                  sequence="50"/>
+        <menuitem id="menu_transport_mode"
+                  name="货运方式"
+                  parent="menu_basic_config"
+                  action="action_transport_mode"
+                  sequence="60"/>
+        <menuitem id="menu_res_bank"
+                  name="银行"
+                  parent="menu_basic_config"
+                  action="action_res_bank"
+                  sequence="3"/>
+        <menuitem id="menu_res_partner_bank"
+                  name="银行账户"
+                  parent="menu_basic_config"
+                  action="action_res_partner_bank"
+                  sequence="6"/>
+    </data>
+
+    <data>
+        <menuitem parent="account_menu_finance_main"
+                  name="期间控制"
+                  id="menu_base_period_control_manger" groups="base.group_system,account_group_account_manager"/>
+        <menuitem id="menu_account_cncw_org"
+                  name="核算机构"
+                  parent="menu_base_period_control_manger"
+                  sequence="100"
+                  action="cncw_org_action_window"/>
+
+        <menuitem id="menu_account_fiscalyear"
+                  name="会计年度"
+                  parent="menu_base_period_control_manger"
+                  sequence="10"
+                  action="action_account_fiscalyear"/>
+        <menuitem id="menu_account_period"
+                  name="会计期间"
+                  parent="menu_base_period_control_manger"
+                  sequence="20"
+                  action="action_account_period"/>
+        <menuitem parent="menu_base_period_control_manger"
+                  name="结转控制" sequence="100"
+                  id="menu_base_period_control_manger_account"
+                  groups="base.group_system,account_group_account_manager"/>
+
+        <menuitem parent="menu_base_period_control_manger"
+                  name="期间控制表"
+                  action="action_base_period_control_objects"
+                  id="menu_action_base_period_control_objects"
+                  groups="base.group_system,account_group_account_manager"/>
+
+        <menuitem parent="menu_base_period_control_manger"
+                  name="结转控制表"
+                  action="action_base_period_control_objects"
+                  id="menu_action_base_period_control_objects_account"
+                  groups="base.group_system,account_group_account_manager"/>
+
+        <menuitem id="menue_account_general_ledger" name="总帐" sequence="50" parent="base_cw.account_menu_finance_main"/>
+        <menuitem id="menu_account_account_cash" name="出纳" sequence="40" parent="base_cw.account_menu_finance_main"/>
+    </data>
+
+</odoo>

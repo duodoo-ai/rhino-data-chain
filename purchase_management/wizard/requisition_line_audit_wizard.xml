@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_requisition_line_audit_wizard_form" model="ir.ui.view">
+         <field name="name">requisition.line.audit.wizard.form</field>
+         <field name="model">requisition.line.audit.wizard</field>
+         <field name="arch" type="xml">
+             <form>
+               	<group string="确定将以下单据审核通过？">
+               		<field name="line_ids" widget="many2many_tags" readonly="1" force_save="1"/>
+                 </group>
+             	<footer>
+                    <button string="确定" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="取消" class="oe_link" special="cancel"/>
+                </footer>
+             </form>
+         </field>
+     </record>
+     <record id="action_requisition_line_audit_wizard" model="ir.actions.act_window">
+           <field name="name">审核申请单明细</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">requisition.line.audit.wizard</field>
+           <field name="view_mode">form</field>
+           <field name="target">new</field>
+      </record>
+
+<!--    <record id="requisition_line_wizard" model="ir.actions.server">-->
+<!--          <field name="name">批量审核</field>-->
+<!--          <field name="type">ir.actions.act_window</field>-->
+<!--          <field name="res_model">requisition.line.audit.wizard</field>-->
+<!--          <field name="view_mode">form</field>-->
+<!--          <field name="target">new</field>-->
+<!--          <field name="binding_model_id" ref="purchase_management.model_purchase_requisition_line" />-->
+<!--          <field name="binding_view_types">list</field>-->
+<!--          <field name="groups" >mrp.group_mrp_manager</field>-->
+<!--        <field name="context">{'default_line_ids':active_ids}</field>-->
+
+<!--    </record>-->
+     <act_window name="批量审核"
+	      res_model="requisition.line.audit.wizard"
+	      binding_model="purchase.requisition.line"
+	      view_mode="form"
+	      target="new"
+	      groups="purchase_management.group_purchase_requisition_manager"
+	      context="{'default_line_ids':active_ids}"
+	      id="requisition_line_wizard"
+	      />
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="inherit_view_move_picking_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_tree"/>
+            <field name="arch" type="xml">
+                <list position="inside">
+                    <field name="price_unit" invisible="1"/>
+                    <field name="local_price" invisible="1"/>
+                    <field name="purchase_line_id" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="exchange_rate" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="inherit_view_stock_picking_tree" model="ir.ui.view">
+            <field name="name">stock.picking.tree.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="priority">120</field>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="action_res_update_price" string="刷新移动价格"
+                            confirm="确定更新?"
+                            type="object"/>
+                </header>
+            </field>
+        </record>
+    </data>
+</odoo>
+

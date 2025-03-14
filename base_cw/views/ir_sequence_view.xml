@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_ir_sequence_tree_inherit">
+            <field name="name">ir.sequence.tree.inherit</field>
+            <field name="model">ir.sequence</field>
+            <field name="type">list</field>
+            <field name="inherit_id" ref="base.sequence_view_tree"/>
+            <field name="arch" type="xml">
+                <field name="implementation" position="after">
+                    <field name="is_renumber"/>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_ir_sequence_form_inherit">
+            <field name="name">view.ir.sequence.form.inherit</field>
+            <field name="model">ir.sequence</field>
+            <field name="inherit_id" ref="base.sequence_view"/>
+            <field name="arch" type="xml">
+                <field name="use_date_range" position="after">
+                    <field name="use_system_date"/>
+                    <field name="is_renumber"/>
+                    <field name="current_prefix" readonly="1" invisible="not is_renumber"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

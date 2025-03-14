@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_return,sale.return,model_sale_return,sales_team.group_sale_salesman,1,1,1,1
+access_sale_return_line,sale.return.line,model_sale_return_line,sales_team.group_sale_salesman,1,1,1,1
+
+access_return_sale_select,return.sale.return,model_return_sale_select,sales_team.group_sale_salesman,1,1,1,1
+access_sale_return_download,sale.return.download,model_sale_return_download,sales_team.group_sale_salesman,1,1,1,1
+
+access_sale_return_report,sale.return.report,model_sale_return_report,sales_team.group_sale_salesman,1,1,1,1

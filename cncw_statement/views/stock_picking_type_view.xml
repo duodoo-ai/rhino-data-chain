@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 库存作业类型 -->
+        <record id="view_stock_picking_type_ly_tree" model="ir.ui.view">
+            <field name="name">stock.picking.type.tree</field>
+            <field name="model">stock.picking.type</field>
+            <field name="arch" type="xml">
+                <list string="库存作业类型">
+                    <field name="id"/>
+                    <field name="table_name"/>
+                    <field name="name"/>
+                    <field name="default_location_src_id"/>
+                    <field name="default_location_dest_id"/>
+                    <field name="sequence_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="effect_qty"/>
+                    <field name="effect_statement"/>
+                    <field name="active"/>
+                    <field name="id"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_stock_picking_type_ly_form" model="ir.ui.view">
+            <field name="name">stock.picking.type.form</field>
+            <field name="model">stock.picking.type</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="库存作业类型">
+                    <sheet>
+                        <group colspan="2" col="2">
+                            <group>
+                                <field name="sequence"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="table_name" class="oe_inline"/>
+                                <field name="default_location_src_id" class="oe_inline"/>
+                                <field name="default_location_dest_id" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="return_picking_type_id" class="oe_inline"/>
+                                <field name="sequence_id" class="oe_inline"/>
+                                <field name="show_entire_packs" class="oe_inline"/>
+                                <field name="use_create_lots" class="oe_inline"/>
+                                <field name="use_existing_lots" class="oe_inline"/>
+                                <field name="warehouse_id" class="oe_inline"/>
+                                <field name="effect_qty" class="oe_inline"/>
+                                <field name="effect_statement" class="oe_inline"/>
+                                 <field name="id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="note" string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_picking_type_ly_search" model="ir.ui.view">
+            <field name="name">stock.picking.type.search</field>
+            <field name="model">stock.picking.type</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="Open" name="open" domain="[('state','!=','cancel')]"
+                            help="Open"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="名称" domain="[]" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_stock_picking_type_ly">
+            <field name="name">库存作业类型</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking.type</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_stock_picking_type_ly_search"/>
+            <field name="context">{}</field>
+        </record>
+        <record id="action_view_picking_typ_ly_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_stock_picking_type_ly_tree"/>
+            <field name="act_window_id" ref="action_stock_picking_type_ly"/>
+        </record>
+
+        <record id="action_view_picking_type_ly_form" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_stock_picking_type_ly_form"/>
+            <field name="act_window_id" ref="action_stock_picking_type_ly"/>
+        </record>
+        <menuitem id="menu_stock_picking_type_ly"
+                  name="库存作业类型"
+                  sequence="160"
+                  groups="base.group_system"
+                   parent="base_cw.base_cw_menu_account_settings"
+                  action="action_stock_picking_type_ly"/>
+    </data>
+</odoo>

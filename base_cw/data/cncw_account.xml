@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hailun>
+    <data noupdate="1">
+        <record id="action_move_line_select" model="ir.actions.act_window">
+            <field name="name">凭证列表</field>
+            <field name="res_model">cncw.invoice.move.line</field>
+            <field name="context">{'search_default_account_id': [active_id]}</field>
+        </record>
+    </data>
+</hailun>

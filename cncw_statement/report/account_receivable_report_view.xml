@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!--应收款查询功能-->
+        <record model="ir.ui.view" id="view_account_receivable_report_tree">
+            <field name="name">account.receivable.report.tree</field>
+            <field name="model">account.receivable.report</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="应收款查询" create="false" delete="false">
+                    <field name="partner_code" optional="show"/>
+                    <field name="partner_name" optional="show"/>
+                    <field name="categ_id" optional="show"/>
+                    <field name="overdue_amount" sum="overdue_amount" optional="show"/>
+                    <field name="overdue_days" optional="show"/>
+                    <field name="payment_term_id" optional="show"/>
+                    <field name="overdue_time_range" optional="show"/>
+                    <field name="amount_total" sum="amount_total" optional="show"/>
+                    <field name="invalid_amount" sum="invalid_amount" optional="show"/>
+                    <field name="date_invoice" optional="show"/>
+                    <field name="name" optional="show"/>
+                    <field name="invoice_no" optional="show"/>
+                    <field name="invoice_count" optional="show"/>
+                    <field name="currency_id" optional="show"/>
+                    <field name="date_due" optional="show"/>
+                    <field name="payment_amount" sum="payment_amount" optional="show"/>
+                    <field name="remaining_amount" sum="remaining_amount" optional="show"/>
+                    <field name="payment_rate" optional="show"/>
+                    <field name="no_overdue_amount" sum="no_overdue_amount" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_receivable_report_pivot" model="ir.ui.view">
+            <field name="name">account.receivable.report.pivot</field>
+            <field name="model">account.receivable.report</field>
+            <field name="arch" type="xml">
+                <pivot string="应收款查询" stacked="True">
+                    <field name="partner_name" type="row"/>
+                    <field name="invoice_count" type="measure"/>
+                    <field name="payment_amount" type="measure"/>
+                    <field name="amount_total" type="measure"/>
+                    <field name="remaining_amount" type="measure"/>
+                    <field name="exchange_rate" type="measure"/>
+                    <field name="no_overdue_amount" type="measure"/>
+                    <field name="overdue_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_account_receivable_report_graph" model="ir.ui.view">
+            <field name="name">account.receivable.report.graph</field>
+            <field name="model">account.receivable.report</field>
+            <field name="arch" type="xml">
+                <graph string="应收款查询" stacked="True">
+                    <field name="partner_name" type="row"/>
+                    <field name="invoice_count" type="measure"/>
+                    <field name="payment_amount" type="measure"/>
+                    <field name="amount_total" type="measure"/>
+                    <field name="remaining_amount" type="measure"/>
+                    <field name="exchange_rate" type="measure"/>
+                    <field name="no_overdue_amount" type="measure"/>
+                    <field name="overdue_amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_account_receivable_report_search" model="ir.ui.view">
+            <field name="name">account.receivable.report.search</field>
+            <field name="model">account.receivable.report</field>
+            <field name="arch" type="xml">
+                <search string="应收款查询">
+                    <field name="partner_id"/>
+                    <field name="categ_id"/>
+                    <field name="date_due" string="货款到期日期"/>
+                    <field name="overdue_time_range"/>
+                    <filter string="实际应收款" name="remaining_amount" domain="[('remaining_amount','&gt;', 0)]"/>
+                    <separator/>
+                    <filter string="有作废的发票" name="invalid_amount" domain="[('invalid_amount','&gt;', 0)]"/>
+                    <filter string="没作废的发票" name="no_invalid_amount" domain="[('invalid_amount','=', 0)]"/>
+                    <separator/>
+                    <filter string="账期内" name="overdue_days_a" domain="[('overdue_days','&lt;', '1')]"/>
+                    <filter string="超期1-30天" name="overdue_days_b"
+                            domain="[('overdue_days','&gt;', '0'),('overdue_days','&lt;', '31')]"/>
+                    <filter string="超期31-60天" name="overdue_days_c"
+                            domain="[('overdue_days','&gt;', '30'),('overdue_days','&lt;', '61')]"/>
+                    <filter string="超期61-90天" name="overdue_days_d"
+                            domain="[('overdue_days','&gt;', '60'),('overdue_days','&lt;', '91')]"/>
+                    <filter string="超期91-180天" name="overdue_days_e"
+                            domain="[('overdue_days','&gt;', '90'),('overdue_days','&lt;', '181')]"/>
+                    <filter string="超期180天以上" name="overdue_days_f"
+                            domain="[('overdue_days','&gt;', '180')]"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('date_invoice','&lt;=',context_today().strftime('%Y-%m-%d')),('date_invoice','&gt;=',context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('date_invoice','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(32-context_today().day)),datetime.time(23,59,59)).strftime('%Y-%m-01')),('date_invoice','&gt;=',time.strftime('%Y-%m-01'))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('date_invoice','&lt;=',time.strftime('%Y-12-31')),('date_invoice','&gt;=',time.strftime('%Y-01-01'))]"/>
+                    <filter icon="terp-personal" name="last_month" string="上月数据"
+                            domain="[('date_invoice', '&gt;=', (context_today() - datetime.timedelta(context_today().day)).strftime('%Y-%m-01')), ('date_invoice', '&lt;', context_today().strftime('%Y-%m-1'))]"/>
+                    <filter icon="terp-go-today" string="去年数据" name="old_year"
+                            domain="[('date_invoice','&lt;=',datetime.datetime(context_today().year-1,12,31).strftime('%Y-12-31')),('date_invoice','&gt;=',datetime.datetime(context_today().year-1,1,1).strftime('%Y-01-01'))]"/>
+                    <separator/>
+
+                    <filter string="已超期" name="Maturity_type_a" domain="[('overdue_days','!=', '0')]"/>
+                    <filter string="本周到期" name="overdue_time_range_b"
+                            domain="[('overdue_days','&gt;', '1'),('overdue_days','&lt;', '7')]"/>
+                    <filter string="下周到期" name="overdue_time_range_c"
+                            domain="[('overdue_days','&gt;', '7'),('overdue_days','&lt;', '14')]"/>
+                    <filter string="本月到期" name="overdue_time_range_d"
+                            domain="[('overdue_days','&gt;', '14'),('overdue_days','&lt;', '30')]"/>
+                    <filter string="下月到期" name="overdue_time_range_e"
+                            domain="[('overdue_days','&gt;', '30'),('overdue_days','&lt;', '60')]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="客户编码" name="Partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="货品分类" name="categ_id" context="{'group_by':'categ_id'}"/>
+                        <separator/>
+
+                        <separator/>
+                        <filter string="超期天数" name="Overdue_days" context="{'group_by':'overdue_days'}"/>
+                        <filter string="付款条件" name="Payment_term_id" context="{'group_by':'payment_term_id'}"/>
+                        <filter string="发票号码" name="Invoice_no" context="{'group_by':'invoice_no'}"/>
+                        <filter string="开票币别" name="Currency_id" context="{'group_by':'currency_id'}"/>
+                        <separator/>
+                        <filter string="收款日期" name="Date" context="{'group_by':'payment_date'}"/>
+                        <filter string="开票日期" name="Date_invoice" context="{'group_by':'date_invoice'}"/>
+                        <filter string="应收款日期" name="Date_due" context="{'group_by':'date_due'}"/>
+                        <separator/>
+                        <filter string="超期类型" name="Overdue_time_range" context="{'group_by':'overdue_time_range'}"/>
+                        <filter string="到期期限类型" name="Overdue_type" context="{'group_by':'overdue_type'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_receivable_report" model="ir.actions.act_window">
+            <field name="name">应收款查询</field>
+            <field name="res_model">account.receivable.report</field>
+            <field name="view_mode">list,pivot,graph</field>
+            <field name="search_view_id" ref="view_account_receivable_report_search"/>
+            <field name="view_id" ref="view_account_receivable_report_tree"/>
+            <field name="context">
+                {'search_default_currency_month':1,}
+            </field>
+        </record>
+
+        <menuitem id="menu_account_receivable_report22"
+                  name="应收款查询"
+                  sequence="70"
+                  groups="base_cw.account_group_account_user_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_receivable_report"/>
+    </data>
+</odoo>

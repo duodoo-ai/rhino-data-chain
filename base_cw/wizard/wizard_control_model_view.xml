@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="wizard_control_model_view" model="ir.ui.view">
+            <field name="name">wizard.control.model.form</field>
+            <field name="model">wizard.control.model</field>
+            <field name="arch" type="xml">
+                <form string="Data Recording">
+                    <sheet>
+                        <field name="master_id" invisible="1"/>
+                        <field name="ir_model_ids"/>
+                        <footer>
+                            <button name="action_done" string="确认"
+                                    type="object" class="oe_highlight"/>
+                            or
+                            <button string="取消" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

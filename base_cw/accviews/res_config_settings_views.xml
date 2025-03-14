@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_cncw_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.cncw.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="2"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <div class="app_settings_block" data-string="cncwInvoicing" string="中国会计" data-key="base_cw"
+                         groups="base.group_system">
+                        <field name="country_code" invisible="1"/>
+<!--                        <field name="has_cncw_chart_of_accounts" invisible="1"/>-->
+                        <field name="has_cncw_accounting_entries" invisible="1"/>
+                        <h2>会计机构</h2>
+                        <div class="row mt16 o_settings_container" name="cncw_org_id_container">
+                            <div class="col-12 col-lg-6 o_setting_box"/>
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="org_id" string="核算机构"/>
+                                <field name="org_id"/>
+                                <div class="text-muted">
+                                    <!--文字说明-->
+                                </div>
+                                <button name="action_add_org" type="object" string="新增机构" class="btn-primary"/>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container" name="cncw_chart_template_id_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+<!--                                    <label for="cncw_chart_template_id" string="会计科目模板"/>-->
+<!--                                    <field name="cncw_chart_template_id"/>-->
+                                    <div class="text-muted">
+                                        <!--文字说明-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="org_period_id" string="会计年度"/>
+                                    <field name="org_period_id"/>
+                                    <div class="text-muted">
+                                        <!--文字说明-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_cncw_account_config" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'base_cw', 'bin_size': False}</field>
+        </record>
+    </data>
+</odoo>

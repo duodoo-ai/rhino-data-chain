@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_advance_receive_payment_order_tree" model="ir.ui.view">
+            <field name="name">advance.receive.payment.order.tree</field>
+            <field name="model">advance.receive.payment.order</field>
+            <field name="arch" type="xml">
+                <list string="申请单">
+                    <field name="name"/>
+                    <field name="department_id"/>
+                    <field name="company_id"/>
+                    <field name="employee_id"/>
+                    <field name="department_manager_user_id"/>
+                    <field name="partner_id"/>
+                    <field name="amount"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_advance_receive_payment_order_form" model="ir.ui.view">
+            <field name="name">advance.receive.payment.order.form</field>
+            <field name="model">advance.receive.payment.order</field>
+            <field name="arch" type="xml">
+                <form string="申请单">
+                    <header>
+                        <!-- 申请人 -->
+                        <button name="action_confirm_emp" invisible="state != 'draft'" string="提交申请" type="object"
+                                class="oe_highlight"/>
+
+                        <button name="action_confirm_emp_cancel" invisible="state != 'draft'" string="取消申请" type="object"/>
+                        <!-- 部门主管 -->
+                        <button name="action_confirm_dep" invisible="state != 'confirmed'" string="部门主管确认" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_confirm_dep_cancel" invisible="state != 'confirmed'" string="部门主管驳回" type="object"/>
+                        <!-- 财务 -->
+                        <button name="action_confirm_fin" invisible="state != 'manager'" string="财务确认" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_confirm_fin_cancel" invisible="state != 'manager'" string="财务驳回" type="object"/>
+                        <button type="action"
+                                name="%(cncw_statement.action_account_receive_form)d"
+                                class="btn-primary"
+                                string="创建收款单"
+                                attrs="{'invisible': [('state', 'not in',['end'])]}"
+                                context="{'default_advance_receive_id':id, 'receive_type': order_type, 'default_department_id': department_id,'default_partner_id': partner_id,'default_advance_amount':amount}"
+                        />
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,manager,account,cancel,end"
+                               statusbar_colors="{&quot;cancel&quot;:&quot;red&quot;}"/>
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="name" readonly="state != 'draft'"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
+                                <field name="partner_id" readonly="state != 'draft'"/>
+                                <field name="order_type" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="department_id" readonly="state != 'draft'"/>
+                                <field name="employee_id" readonly="state != 'draft'"/>
+                                <field name="department_manager_user_id" readonly="state != 'draft'"/>
+                                <field name="amount" readonly="state != 'draft'"/>
+                            </group>
+                        </group>
+                        <notebook position="inside" colspan="4">
+                            <page string="审批时间">
+                                <group>
+                                    <group>
+                                        <field name="check_date" readonly="1"/>
+                                        <field name="manager_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="account_date" readonly="1"/>
+                                        <field name="account_manager_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="销售订单" invisible="order_type not in ['advance_receive','advance']">
+                                <field name="sale_order_ids" options="{'no_create_edit': True}" readonly="state != 'draft'"/>
+                            </page>
+                            <page string="采购订单" invisible="order_type not in ['advance_payment','payment']">
+                                <field name="purchase_order_ids" options="{'no_create_edit': True}" readonly="state != 'draft'"/>
+                            </page>
+                            <page string="销售发票" invisible="order_type not in ['advance_receive','advance']">
+                                <field name="account_move_sale_ids" options="{'no_create_edit': True}" readonly="state != 'draft'"/>
+                            </page>
+                            <page string="采购发票" invisible="order_type not in ['advance_receive','advance']">
+                                <field name="account_move_purchase_ids" options="{'no_create_edit': True}" readonly="state != 'draft'"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_advance_receive_payment_order">
+            <field name="name">申请单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">advance.receive.payment.order</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_advance_receive_payment_order_form">
+            <field name="name">申请单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">advance.receive.payment.order</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem id="menu_advance_receive_payment_order" name="付款申请单"
+                  sequence="90"
+                  parent="cncw_account_menu_ap"
+                  action="action_advance_receive_payment_order"/>
+        
+        <menuitem id="menu_advance_receive_payment_order" name="收款申请单"
+                  sequence="990"
+                  parent="cncw_account_menu_ar"
+                  action="action_advance_receive_payment_order"
+        />
+    </data>
+</odoo>

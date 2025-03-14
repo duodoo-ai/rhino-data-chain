@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 供应商发票查询 -->
+        <record id="view_account_invoice_supplier_query_tree" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.query.tree</field>
+            <field name="model">cncw.invoice.move</field>
+            <field name="arch" type="xml">
+                <list string="供应商发票">
+                    <field name="partner_id" string="供应商"/>
+                    <field name="invoice_no" string="发票号码"/>
+                    <field name="date_invoice" string="开票日期"/>
+                    <field name="invoice_date_due" string="付款日期"/>
+                    <field name="user_id" string="采购员"/>
+                    <field name="currency_id"/>
+                    <field name="amount_untaxed" string="未税金额" sum="amount_untaxed"/>
+                    <field name="amount_tax" string="税额" sum="amount_tax"/>
+                    <field name="amount_total" string="合计" sum="amount_total"/>
+                    <field name="adjust_amount" string="调整金额" sum="adjust_amount"/>
+                    <field name="total_invoice_amount" string="总计" sum="total_invoice_amount"/>
+                    <field name="payment_amount" sum="payment_amount"/>
+                    <field name="remaining_amount" sum="remaining_amount"/>
+                    <field name="offset_state"/>
+                    <field name="name" string="单据编号"/>
+                    <field name="move_type" string="发票类型"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_account_invoice_supplier_query_form" model="ir.ui.view">
+            <field name="name">account.invoice.purchase.form</field>
+            <field name="model">cncw.invoice.move</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="采购发票">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,posted,paid,cancel"/>
+                    </header>
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="move_type" invisible="1"/>
+                                <field name="invoice_no" required="True"
+                                       readonly="state != 'draft'"
+                                       string="发票号码" class="oe_inline"/>
+                                <field name="company_id" class="oe_inline" string="公司"/>
+                                <field name="partner_id" class="oe_inline" string="供应商"
+                                       readonly="state != 'draft'"
+                                       domain="[('supplier_rank','>',0)]"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="date_invoice" class="oe_inline" string="开票日期"
+                                       readonly="state != 'draft'"/>
+                                <field name="invoice_date_due" class="oe_inline" string="付款日期"
+                                       readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" class="oe_inline"
+                                       readonly="state != 'draft'"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="exchange_rate" readonly="state != 'draft'"
+                                       class="oe_inline"/>
+                                <field name="tax_id" class="oe_inline" readonly="1"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="tax_rate" class="oe_inline" readonly="state != 'draft'"/>
+                                <field name="amount_residual"/>
+                            </group>
+                            <group>
+                                <field name="amount_untaxed" class="oe_inline" string="未税金额"/>
+                                <field name="amount_tax" class="oe_inline" string="税额"/>
+                                <field name="amount_total" class="oe_inline" string="合计"/>
+                                <field name="adjust_amount" class="oe_inline" string="调整金额"/>
+                                <field name="total_invoice_amount" class="oe_inline" string="总计"/>
+                                <field name="purchase_vendor_bill_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="invoice_line_ids_page" string="发票明细">
+                                <field name="invoice_line_ids" readonly="state != 'draft'" options="{'reload_on_button': true}" >
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="product_id"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="product_uom_id" string="单位"/>
+                                        <field name="account_statement_line_id"/>
+                                        <field name="freight_amount" invisible="1"/>
+                                        <field name="statement_amount" sum="statement_amount"/>
+                                        <field name="remaining_invoiced_qty"/>
+                                        <field name="remaining_invoiced_amount" sum="remaining_invoiced_amount"/>
+                                        <field name="quantity" string="数量"/>
+                                        <field name="price_unit" string="单价"/>
+                                        <field name="price_subtotal" string="金额" sum="price_subtotal"/>
+                                        <field name="tax_amount" string="税额" sum="price_subtotal"/>
+                                        <field name="total_amount" string="合计" sum="price_subtotal"/>
+                                        <field name="statement_source"/>
+                                        <field name="picking_type_id"/>
+                                    </list>
+                                    <form>
+                                        <group col="2">
+                                            <group>
+                                                <field name="product_uom_category_id" invisible="1"/>
+                                                <field name="sequence"/>
+                                                <field name="product_id"/>
+                                                <field name="product_uom_id"/>
+                                                <field name="account_statement_line_id"/>
+                                                <field name="freight_amount"/>
+                                                <field name="statement_amount"/>
+                                                <field name="remaining_invoiced_qty"/>
+                                                <field name="remaining_invoiced_amount"/>
+                                            </group>
+                                            <group>
+                                                <field name="remaining_invoiced_qty"/>
+                                                <field name="remaining_invoiced_amount"/>
+                                                <field name="quantity" string="数量"/>
+                                                <field name="price_unit" string="单价"/>
+                                                <field name="price_subtotal" string="金额"/>
+                                                <field name="tax_amount" string="税额"/>
+                                                <field name="total_amount" string="合计"/>
+                                                <field name="picking_type_id"/>
+                                                <field name="statement_source"/>
+                                            </group>ƒ
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="tax_line_ids" string="税明细">
+                                <field name="tax_line_ids" readonly="state != 'draft'" options="{'reload_on_button': true}">
+                                    <list editable="bottom">
+                                        <field name="sequence" string="项次"/>
+                                        <field name="account_id" string="科目"/>
+                                        <field name="amount" string="税额"/>
+                                        <field name="name" string="说明"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page name="pay_page" string="付款信息">
+                                <group col="2">
+                                    <group>
+                                        <field name="invoice_partner_bank_id" class="oe_inline"
+                                               readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="payment_term_id" class="oe_inline"
+                                               readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="payment_mode_id" class="oe_inline"
+                                               readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="ref" class="oe_inline"
+                                               readonly="state != 'draft'" string="供应商备注"/>
+                                        <field name="user_id" class="oe_inline"
+                                               readonly="state != 'draft'" string="采购员"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="payment_amount" readonly="state != 'draft'" class="oe_inline"/>
+                                        <field name="remaining_amount" readonly="state != 'draft'" class="oe_inline"/>
+                                        <field name="company_id" class="oe_inline" readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="account_id" class="oe_inline" readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="附件" name="attachment_ids">
+                                <field name="attachment_ids" widget="many2many_binary" class="oe_inline"
+                                       readonly="state != 'draft'"/>
+                            </page>
+                            <page name="comment" string="备注">
+                                <field name="comment" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_invoice_supplier_query">
+            <field name="name">供应商发票查询</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cncw.invoice.move</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_invoice_purchase_search"/>
+            <field name="domain">[('move_type','in',('in_invoice','in_refund')),('state','in',('open','paid'))]</field>
+            <field name="context">{'search_default_currency_month':1}</field>
+        </record>
+        <record id="action_view_account_invoice_purchase_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_invoice_supplier_query_tree"/>
+            <field name="act_window_id" ref="action_account_invoice_supplier_query"/>
+        </record>
+
+        <record id="action_view_account_invoice_supplier_query_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_invoice_supplier_query_form"/>
+            <field name="act_window_id" ref="action_account_invoice_supplier_query"/>
+        </record>
+
+        <menuitem id="menu_account_invoice_supplier_query2"
+                  name="供应商发票查询"
+                  sequence="40"
+                  groups="base_cw.account_group_account_invoice_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_invoice_supplier_query"/>
+    </data>
+</odoo>

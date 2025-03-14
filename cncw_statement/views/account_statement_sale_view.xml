@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 销售对帐单 -->
+        <record id="view_account_statement_sale_tree" model="ir.ui.view">
+            <field name="name">account.statement.sale.tree</field>
+            <field name="model">account.statement</field>
+            <field name="arch" type="xml">
+                <list string="销售对帐单">
+                    <field name="name" string="对帐单号"/>
+                    <field name="date" string="对帐日期"/>
+                    <field name="partner_id"/>
+                    <field name="currency_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="user_id"/>
+                    <field name="total_amount" sum="total"/>
+                    <field name="freight_amount" sum="total"/>
+                    <field name="amount" sum="total"/>
+                    <field name="adjust_amount" sum="total"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_statement_sale_form" model="ir.ui.view">
+            <field name="name">account.statement.sale.form</field>
+            <field name="model">account.statement</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="销售对帐单">
+                    <header>
+                        <button name="action_confirm" invisible="state != 'draft'" string="申请确认" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_confirm" invisible="state != 'confirmed'" string="取消确认" type="object" class="oe_highlight"/>
+                        <button name="action_done" invisible="state != 'confirmed'" string="产生发票" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_done" invisible="state != 'done'" string="取消发票" type="object" class="oe_highlight"/>
+                        <button name="open_lines" string="打开明细导出" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                    </header>
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="name" class="oe_inline" readonly="1" string="对帐单号"/>
+                                <field name="date" readonly="state != 'draft'" string="对帐日期" class="oe_inline"/>
+
+                                <field name="partner_id" class="oe_inline" string="客户编号"
+                                       domain="[('customer_rank','>',0)]"
+                                       readonly="state != 'draft' or line_count > 0"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="currency_id" class="oe_inline"
+                                       readonly="state != 'draft' or line_count > 0"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="exchange_rate" class="oe_inline"
+                                       readonly="state != 'draft' or line_count > 0"/>
+                                <field name="tax_id" class="oe_inline"
+                                       domain="[('type_tax_use','!=','purchase')]"
+                                       readonly="state!='draft'"
+                                       required="True"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="start_date" readonly="state != 'draft'" class="oe_inline"/>
+                                <field name="end_date" readonly="state != 'draft'" class="oe_inline"/>
+                                <field name="user_id" class="oe_inline"
+                                       readonly="state != 'draft'"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="department_id" class="oe_inline"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="line_count" invisible="0"/>
+                            </group>
+                            <group>
+                                <field name="freight_amount"/>
+                                <field name="amount"/>
+                                <field name="adjust_amount"/>
+                                <field name="total_amount"/>
+                                <field name="total_chinese_amount"/>
+                                <field name="statement_type" invisible="1"/>
+                                <field name="invoice_id" options="{'no_create': True, 'no_open': True}" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line_ids_page" string="对帐明细">
+                                <button name="action_open_account_statement_delivery_wizard" type="object"
+                                        string="货款对账"
+                                        class="oe_highlight" invisible="state != 'draft'" icon="fa-plus-circle"  title="货款对账"/>
+                                <field name="line_ids" options="{'reload_on_button': true}" readonly="state != 'draft'">
+                                    <list editable="bottom" create="false">
+                                        <field name="sequence" readonly="1"/>
+                                        <field name="sale_line_id" readonly="1"/>
+                                        <field name="name" readonly="1"/>
+                                        <field name="product_id" string="货品编码" readonly="1"/>
+                                        <field name="unchecked_qty" sum="unchecked_qty" readonly="1"/>
+                                        <field name="product_uom" readonly="1" string="单位"/>
+                                        <field name="unchecked_amount" sum="unchecked_amount" readonly="1"/>
+                                        <field name="price_unit" readonly="statement_source == 'A'" required="1"/>
+                                        <field name="qty" sum="amount" readonly="statement_source != 'A'" required="1"/>
+                                        <field name="amount" sum="amount" required="1"/>
+                                        <field name="exchange_diff_amount" sum="exchange_diff_amount" readonly="1"/>
+                                        <field name="adjust_qty" sum="adjust_qty" readonly="statement_source in ['B','G']"/>
+                                        <field name="adjust_amount" sum="adjust_amount"
+                                               readonly="statement_source in ['B','G']"/>
+                                        <field name="adjust_reason" string="调整原因"
+                                               readonly="statement_source in ['B','G']"
+                                               required="adjust_qty != 0 or adjust_amount != 0"/>
+                                        <field name="is_done" string="尾差调整"/>
+                                        <field name="statement_source" readonly="1"/>
+                                        <field name="picking_type_id" readonly="1"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="exchange_rate" invisible="1"/>
+                                    </list>
+                                    <form>
+                                        <group col="2">
+                                            <group>
+                                                <field name="sequence" readonly="1"/>
+                                                <field name="sale_line_id" readonly="1"/>
+                                                <field name="name" readonly="1"/>
+                                                <field name="product_id" readonly="1"/>
+                                                <field name="unchecked_qty" readonly="1"/>
+                                                <field name="product_uos" readonly="1"/>
+                                                <field name="unchecked_amount" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="freight_price" invisible="1"/>
+                                                <field name="freight_amount" invisible="1"/>
+                                                <field name="price_unit" readonly="1"/>
+                                                <field name="qty" readonly="statement_source == 'B'"/>
+                                                <field name="amount" readonly="statement_source == 'B'"/>
+                                                <field name="total_amount" readonly="1"/>
+                                                <field name="adjust_qty" readonly="statement_source in ['B','G']"/>
+                                                <field name="adjust_amount" readonly="statement_source in ['B','G']"/>
+                                                <field name="adjust_reason" string="调整原因"
+                                                       readonly="statement_source in ['B','G']"
+                                                       required="adjust_qty != 0 or adjust_amount != 0"/>
+                                                <field name="is_done" string="尾差调整"/>
+                                                <field name="statement_source" readonly="1"/>
+                                                <field name="state" readonly="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="note" string="备注">
+                                <field name="note" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="4">
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_statement_sale_search" model="ir.ui.view">
+            <field name="name">account.statement.sale.search</field>
+            <field name="model">account.statement</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="单据编号" filter_domain="[('name','ilike',self)]"/>
+                    <field name="date" string="单据日期" filter_domain="[('date','ilike',self)]"/>
+                    <field name="partner_id" string="客户" filter_domain="[('partner_id','ilike',self)]"/>
+                    <field name="currency_id" string="对帐币别" filter_domain="[('currency_id','ilike',self)]"/>
+                    <field name="start_date" string="对帐开始时间" filter_domain="[('start_date','ilike',self)]"/>
+                    <field name="end_date" string="对帐结束时间" filter_domain="[('end_date','ilike',self)]"/>
+                    <field name="user_id" string="申请人" filter_domain="[('user_id','ilike',self)]"/>
+                    <field name="department_id" string="申请部门" filter_domain="[('department_id','ilike',self)]"/>
+                    <field name="state" string="单据状态" filter_domain="[('state','ilike',self)]"/>
+                    <separator/>
+                    <filter name="completed" string="已完成" domain="[('state','=','done')]"/>
+                    <filter name="not_done" string="未完成" domain="[('state','not in',('done','cancel'))]"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day-1)), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(datetime.date(context_today().year,12,1), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-personal" string="上月数据" name="last_month"
+                            domain="[('create_date', '&lt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day)),datetime.time(23,59,59))),('create_date', '&gt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day))-datetime.timedelta((context_today() - datetime.timedelta(context_today().day)).day),datetime.time(23,59,59)))]"/>
+                    <filter string="本周单据" name="current_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="上周单据" name="first_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+1)),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(7+context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="两周内单据" name="two_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+7)),datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="去年数据" name="old_year"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(datetime.datetime(context_today().year-1,12,31),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(datetime.datetime(context_today().year-1,1,1),datetime.time(0,0,0)))]"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_partner_id" string="供应商" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_date" string="单据日期" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_department_id" string="申请部门" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter name="group_state" string="单据状态" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_statement_sale">
+            <field name="name">销售对帐单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.statement</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_statement_sale_search"/>
+            <field name="domain">[('statement_type','=','S')]</field>
+            <field name="context">{'default_statement_type':'S','search_default_not_done':1}</field>
+        </record>
+
+        <record id="action_view_account_statement_sale_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_statement_sale_tree"/>
+            <field name="act_window_id" ref="action_account_statement_sale"/>
+        </record>
+
+        <record id="action_view_account_statement_sale_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_statement_sale_form"/>
+            <field name="act_window_id" ref="action_account_statement_sale"/>
+        </record>
+
+        <menuitem id="menu_account_statement_sale"
+                  name="销售对帐单" sequence="20"
+                  groups="base_cw.account_group_account_invoice,sales_team.group_sale_salesman"
+                  parent="cncw_account_menu_ar"
+                  action="action_account_statement_sale"/>
+
+        <menuitem id="menu_account_statement_sale_to_sale_manage"
+                  name="销售对帐单" sequence="95"
+                  groups="base_cw.account_group_account_invoice,sales_team.group_sale_salesman"
+                  parent="sale.sale_menu_root"
+                  action="action_account_statement_sale"/>
+
+        <!-- 销售对帐单明细 -->
+        <record id="view_account_statement_line_sale_tree" model="ir.ui.view">
+            <field name="name">account.statement.line.tree</field>
+            <field name="model">account.statement.line</field>
+            <field name="arch" type="xml">
+                <list string="销售对帐单明细">
+                    <field name="master_id" readonly="1"/>
+                    <field name="sequence" readonly="1"/>
+                    <field name="sale_line_id" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="product_id" string="货品编码" readonly="1"/>
+                    <field name="unchecked_qty" sum="unchecked_qty" readonly="1"/>
+                    <field name="product_uom" readonly="1" string="单位"/>
+                    <field name="unchecked_amount" sum="unchecked_amount" readonly="1"/>
+                    <field name="price_unit" readonly="statement_source == 'A'" required="1"/>
+                    <field name="qty" sum="amount" readonly="statement_source != 'A'" required="1"/>
+                    <field name="amount" sum="amount" required="1"/>
+                    <field name="exchange_diff_amount" sum="exchange_diff_amount" readonly="1"/>
+                    <field name="adjust_qty" sum="adjust_qty" readonly="statement_source in ['B','G']"/>
+                    <field name="adjust_amount" sum="adjust_amount" readonly="statement_source in ['B','G']"/>
+                    <field name="adjust_reason" string="调整原因"
+                           readonly="statement_source in ['B','G']"
+                           required="adjust_qty != 0 or adjust_amount != 0"/>
+                    <field name="is_done" string="尾差调整"/>
+                    <field name="statement_source" readonly="1"/>
+                    <field name="picking_type_id" readonly="1"/>
+                    <field name="state" readonly="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="exchange_rate" invisible="1"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

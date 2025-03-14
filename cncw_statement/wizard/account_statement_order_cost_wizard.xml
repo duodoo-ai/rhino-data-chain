@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="form_account_statement_order_cost_wizard" model="ir.ui.view">
+            <field name="name">account.statement.order.cost.wizard.form</field>
+            <field name="model">account.statement.order.cost.wizard</field>
+            <field name="arch" type="xml">
+                <form string="" version="7.0">
+                    <group col="4">
+                        <field name="partner_id"/>
+                        <field name="statement_source"/>
+                    </group>
+                    <div>
+                        <button name="action_confirm" style="margin-left: 20px;"
+                                string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                    </div>
+                    <field name="wizard_ids">
+                        <list name="wizard_ids" editable="bottom" delete="0" create="0">
+                            <field name="is_check"/>
+                            <field name="sale_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="product_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="mold_cost" readonly="1"/>
+                            <field name="ppap_cost" readonly="1"/>
+                            <field name="third_inspection_cost" readonly="1"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                        <button string="取消" style="margin-left: 20px;" class="oe_highlight" icon="fa-close"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_statement_order_cost_wizard" model="ir.actions.act_window">
+            <field name="name">open.account.statement.order.cost.wizard</field>
+            <field name="res_model">account.statement.order.cost.wizard</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="form_account_statement_order_cost_wizard"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

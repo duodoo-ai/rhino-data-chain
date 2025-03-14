@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="base_period_control_line_19" model="base.period.control.line">
+            <field name="master_id" ref="base_cw.base_period_control_01"/>
+            <field name="ir_model_id" ref="model_cncw_invoice_move"/>
+            <field name="field_name" ref="field_cncw_invoice_move__date"/>
+        </record>
+        <record id="base_period_control_line_20" model="base.period.control.line">
+            <field name="master_id" ref="base_cw.base_period_control_01"/>
+            <field name="ir_model_id" ref="model_cncw_invoice_move_line"/>
+            <field name="field_name" ref="cncw_statement.field_cncw_invoice_move_line__date"/>
+        </record>
+        <record id="base_period_control_line_03" model="base.period.control.line">
+            <field name="master_id" ref="base_cw.base_period_control_01"/>
+            <field name="ir_model_id" ref="cncw_statement.model_account_statement"/>
+            <field name="field_name" ref="cncw_statement.field_account_statement__date"/>
+        </record>
+        <record id="base_period_control_line_04" model="base.period.control.line">
+            <field name="master_id" ref="base_cw.base_period_control_01"/>
+            <field name="ir_model_id" ref="cncw_statement.model_account_statement_line"/>
+            <field name="field_name" ref="cncw_statement.field_account_statement_line__create_date"/>
+        </record>
+    </data>
+</odoo>

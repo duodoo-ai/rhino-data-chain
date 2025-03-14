@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_yl_purchase_order_line" model="ir.actions.act_window">
+            <field name="name">采购订单明细</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="domain">[('state', '=', 'done')]</field>
+        </record>
+        <menuitem action="action_yl_purchase_order_line"
+                  id="menu_purchase_order_line"
+                  name="采购订单明细"
+                  parent="purchase.menu_procurement_management"
+                  groups="purchase.group_purchase_manager,purchase.group_purchase_user"
+                  sequence="110"/>
+    </data>
+</odoo>

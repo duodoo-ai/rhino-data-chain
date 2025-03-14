@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_return,purchase.return,model_purchase_return,purchase.group_purchase_user,1,1,1,1
+access_purchase_return_line,purchase.return.line,model_purchase_return_line,purchase.group_purchase_user,1,1,1,1
+access_purchase_return_download,purchase.return.download,model_purchase_return_download,purchase.group_purchase_user,1,1,1,1
+access_return_select,return.select,model_return_select,purchase.group_purchase_user,1,1,1,1
+access_purchase_return_report,purchase.return.report,model_purchase_return_report,purchase.group_purchase_user,1,1,1,1

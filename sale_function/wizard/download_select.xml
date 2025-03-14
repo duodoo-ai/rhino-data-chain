@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_sale_download_select_form" model="ir.ui.view">
+         <field name="name">sale.download.select.form</field>
+         <field name="model">sale.download.select</field>
+         <field name="arch" type="xml">
+             <form string="销售合同下载">
+               	<group>
+                   <group>
+                   		<field name="type"/>
+                   </group>
+                   <group>  
+                   		<field name="order_ids" widget="many2many_tags" readonly="1" force_save="1"/>
+                   </group>
+                 </group>
+             	<footer>
+                    <button string="下载" name="action_download" type="object" class="btn-primary"/>
+                    <button string="取消" class="oe_link" special="cancel"/>
+                </footer>
+             </form>
+         </field>
+     </record>
+     <record id="action_sale_download" model="ir.actions.act_window">
+           <field name="name">销售合同下载</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">sale.download.select</field>
+           <field name="view_mode">form</field>
+           <field name="target">new</field>
+      </record>
+       
+<!--     <act_window name="下载合同"-->
+<!--      res_model="sale.download.select"-->
+<!--      binding_model="sale.order"-->
+<!--      view_mode="form"-->
+<!--      target="new"-->
+<!--      view_id="view_sale_download_select_form"-->
+<!--      context="{'default_order_ids':active_ids}"-->
+<!--      id="sale_download_wizard"-->
+<!--      />-->
+</odoo>

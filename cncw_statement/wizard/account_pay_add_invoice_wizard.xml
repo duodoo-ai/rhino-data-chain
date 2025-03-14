@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!--发票选择向导-->
+        <record id="form_account_pay_add_invoice_wizard" model="ir.ui.view">
+            <field name="name">account_pay_add_invoice_wizard.form</field>
+            <field name="model">account.pay.add.invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <group col="2">
+                        <field name="name" class="oe_inline" readonly="1"/>
+                        <field name="partner_id" class="oe_inline" />
+                        <field name="is_all_check" class="oe_inline"/>
+                    </group>
+                    <div>
+                        <button name="action_query" string="查询" type="object" class="oe_highlight"
+                                icon="fa-search-plus"/>
+                        <button name="action_confirm" style="margin-left: 20px;"
+                                string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                    </div>
+                   <field name="wizard_ids">
+                        <list name="wizard_ids_tree" editable="bottom" delete="0" create="0">
+                            <field name="is_check"/>
+                            <field name="invoice_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="date_invoice"/>
+                            <field name="date_due"/>
+                            <field name="overdue_days"/>
+                            <field name="invoice_amount"/>
+                            <field name="payment_amount"/>
+                            <field name="remaining_amount"/>
+                        </list>
+                       <form>
+                           <field name="invoice_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="date_invoice" readonly="1"/>
+                            <field name="date_due" readonly="1"/>
+                            <field name="overdue_days" readonly="1"/>
+                            <field name="invoice_amount" readonly="1"/>
+                            <field name="payment_amount" readonly="1"/>
+                            <field name="remaining_amount" readonly="1"/>
+                       </form>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                        <button string="取消" style="margin-left: 20px;" class="oe_highlight" icon="fa-close"
+                                special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+    </data>
+</odoo>

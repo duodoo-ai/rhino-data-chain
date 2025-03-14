@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+    	<record id="view_purchase_requisition_form_inherit" model="ir.ui.view">
+		    <field name="name">purchase.requisition.form.inherit.management</field>
+		    <field name="model">purchase.requisition</field>
+		    <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+		    <field name="arch" type="xml">
+		    	<xpath expr="//field[@name='user_id']" position="after">
+		    		<field name="department_id" readonly="1" force_save="1"/>
+	            </xpath>
+				<xpath expr="//field[@name='reference']" position="before">
+		    		<field name="schedule_date"/>
+	            </xpath>
+	            <xpath expr="//field[@name='user_id']" position="attributes">
+	            	<attribute name="string">申请人</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='line_ids']//field[@name='product_qty']" position="after">
+	            	<field name="actual_qty" invisible="1"/>
+	            </xpath>
+	            <xpath expr="//field[@name='line_ids']//field[@name='product_uom_id']" position="attributes">
+	            	<attribute name="readonly">1</attribute>
+	            	<attribute name="required">1</attribute>
+	            	<attribute name="force_save">1</attribute>
+	            </xpath>
+		    </field>
+		  </record>
+		  <record id="purchase_order_tree_view_inherit" model="ir.ui.view">
+	            <field name="name">purchase.order.tree.inherit</field>
+	            <field name="model">purchase.order</field>
+	            <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+	            <field name="arch" type="xml">
+	            	<xpath expr="//field[@name='amount_untaxed']" position="replace">
+		            	<field name="amount_untaxed" sum="Total Untaxed amount" string="不含税" optional="hide"/>
+		            </xpath>
+		            <xpath expr="//field[@name='amount_total']" position="replace">
+                    	<field name="amount_total" sum="合计" optional="show"/>
+		            </xpath>
+		            <xpath expr="//list" position="attributes">
+						<attribute name="decoration-danger">state=='draft'</attribute>
+		            </xpath>
+	           	</field>
+           </record>
+		  <record id="product_category_form_view_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='partner_id']" position="attributes">
+		    		<attribute name="domain">[('is_company','=',True),('supplier_rank','>',0)]</attribute>
+		    		<attribute name="options">{'no_create': True}</attribute>
+		    	</xpath>
+	            <field name="currency_id" position="after">
+	            	<field name="print_note_id" readonly="state not in ('draft', 'sent')"/>
+	            </field>
+				<field name="company_id" position="after">
+					<field name="user_id"/>
+				</field>
+				 <field name="date_planned" position="attributes">
+					 <attribute name="readonly">"state not in ['draft', 'sent']"</attribute>
+				 </field>
+				<xpath expr="//field[@name='order_line']//field[@name='product_uom']" position="attributes">
+	            	<attribute name="readonly">1</attribute>
+	            	<attribute name="required">1</attribute>
+	            	<attribute name="force_save">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='order_line']//field[@name='taxes_id']" position="after">
+	            	<field name="price_tax"/>
+	            </xpath>
+	            <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
+	            	<page string='条款'>
+	            		<field name="print_note" readonly="state not in ['draft', 'sent']"/>
+	            	</page>
+            		<page string="附件">
+                    	<field name="file" filename="file_name" readonly="state not in ['draft', 'sent']"/>
+	                 	<field name="file_name" invisible="1" class="oe_inline oe_right"/>
+                     </page>
+	            </xpath>
+            </field>
+        </record>
+        <menuitem action="purchase.purchase_form_action" id="purchase.menu_purchase_form_action" 
+	        parent="purchase.menu_procurement_management" 
+	        groups="purchase.group_purchase_user" sequence="6"/>
+        <menuitem action="purchase.purchase_rfq" id="purchase.menu_purchase_rfq"
+            parent="purchase.menu_procurement_management"
+            groups="purchase.group_purchase_user"
+            sequence="0"/>
+        <menuitem id="purchase.menu_purchase_products" name="产品" parent="purchase.menu_purchase_root" groups="purchase.group_purchase_user" sequence="5"/>
+    	<menuitem id="purchase.menu_procurement_management_supplier_name" name="供应商"
+            parent="purchase.menu_procurement_management"
+            action="account.res_partner_action_supplier" groups="purchase.group_purchase_user" sequence="15"/>
+    </data>
+</odoo>

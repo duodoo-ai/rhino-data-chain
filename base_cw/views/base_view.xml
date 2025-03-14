@@ -1,0 +1,666 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 币别 -->
+        <record id="view_res_currency_tree" model="ir.ui.view">
+            <field name="name">res.currency.tree</field>
+            <field name="model">res.currency</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="币别">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="rate"/>
+                    <field name="active" string="启用"/>
+                    <field name="rounding"/>
+                    <field name="decimal_places" string="小数位数"/>
+                    <field name="symbol"/>
+                    <field name="position"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_res_currency_form" model="ir.ui.view">
+            <field name="name">res.currency.form</field>
+            <field name="model">res.currency</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="币别">
+                    <sheet>
+                        <group colspan="6" col="6">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="rate" class="oe_inline"/>
+                                <field name="rounding" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="decimal_places" string="小数位数" class="oe_inline"/>
+                                <field name="symbol" class="oe_inline"/>
+                                <field name="position" class="oe_inline"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="汇率">
+                                <field name="rate_ids">
+                                    <list editable="bottom">
+                                        <field name="name" widget="Date"/>
+                                        <field name="rate" string="汇率"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_res_currency_search" model="ir.ui.view">
+            <field name="name">res.currency.search</field>
+            <field name="model">res.currency</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_currency">
+            <field name="name">币别</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.currency</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_res_currency_search"/>
+            <field name="context" eval="{'search_default_active':1}"/>
+        </record>
+
+        <!-- 付款方式 -->
+        <record id="view_payment_mode_tree" model="ir.ui.view">
+            <field name="name">payment.mode.tree</field>
+            <field name="model">payment.mode</field>
+            <field name="arch" type="xml">
+                <list string="付款方式">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="note"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_payment_mode_form" model="ir.ui.view">
+            <field name="name">payment.mode.form</field>
+            <field name="model">payment.mode</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="付款方式">
+                    <sheet>
+                        <group colspan="6">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                            </group>
+                            <group>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_payment_mode_search" model="ir.ui.view">
+            <field name="name">payment.mode.search</field>
+            <field name="model">payment.mode</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_payment_mode">
+            <field name="name">付款方式</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">payment.mode</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_payment_mode_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- 付款条件 -->
+        <record id="view_account_payment_term_tree" model="ir.ui.view">
+            <field name="name">account.payment.term.tree</field>
+            <field name="model">account.payment.term</field>
+            <field name="arch" type="xml">
+                <list string="付款条件">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="note"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+         <record id="view_account_payment_term_form" model="ir.ui.view">
+            <field name="name">account.payment.term.form</field>
+            <field name="model">account.payment.term</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="付款条件">
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="明细">
+                                <field name="line_ids" >
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="value"/>
+                                        <field name="value_amount"/>
+<!--                                        <field name="days"/>-->
+                                        <field name="option"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="备注">
+                                <field name="note" />
+                            </page>
+                            <page string="系统信息">
+                                <group col="2">
+                                    <field name="active" string="启用" />
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_payment_term_search" model="ir.ui.view">
+            <field name="name">account.payment.term.search</field>
+            <field name="model">account.payment.term</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_payment_term">
+            <field name="name">付款条件</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.payment.term</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_payment_term_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- 税别资料 -->
+        <record id="view_account_tax_tree" model="ir.ui.view">
+            <field name="name">account.tax.tree</field>
+            <field name="model">account.tax</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="税别资料">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="type_tax_use" string="适用于"/>
+                    <field name="amount_type" string="税类型"/>
+                    <field name="amount" string="税率"/>
+                    <field name="price_include" string="内含税"/>
+                    <field name="note"/>
+                    <field name="active" string="启用"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_tax_form" model="ir.ui.view">
+            <field name="name">account.tax.form</field>
+            <field name="model">account.tax</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="税别资料">
+                    <sheet>
+                        <group colspan="6" col="6">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="type_tax_use" string="适用于" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="amount_type" string="税类型" readonly="1"/>
+                                <field name="amount" string="税率"/>
+                                <field name="price_include" string="内含税"/>
+                            </group>
+                            <group/>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_tax_search" model="ir.ui.view">
+            <field name="name">account.tax.search</field>
+            <field name="model">account.tax</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <field name="type_tax_use" string="适用于" filter_domain="[('type_tax_use','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <filter string="采购" name="purchase" domain="[('type_tax_use','=','purchase')]" help="显示采购使用的税别"/>
+                    <filter string="销售" name="sale" domain="[('type_tax_use','=','sale')]" help="显示销售使用的税别"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="适用于" name="group_type_tax_use" domain="[]" context="{'group_by':'type_tax_use'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_tax">
+            <field name="name">税别资料</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.tax</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_tax_search"/>
+            <field name="context" eval="{'default_amount_type':'percent'}"/>
+        </record>
+
+        <!-- 价格条款 -->
+        <record id="view_stock_incoterms_tree" model="ir.ui.view">
+            <field name="name">stock.incoterms.tree</field>
+            <field name="model">stock.incoterms</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="价格条款">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="name_cn"/>
+                    <field name="note"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_stock_incoterms_form" model="ir.ui.view">
+            <field name="name">stock.incoterms.form</field>
+            <field name="model">stock.incoterms</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="价格条款">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="name_cn" class="oe_inline"/>
+                            </group>
+                            <group/>
+                            <group/>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_incoterms_search" model="ir.ui.view">
+            <field name="name">stock.incoterms.search</field>
+            <field name="model">stock.incoterms</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_stock_incoterms">
+            <field name="name">价格条款</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.incoterms</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_stock_incoterms_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- 货运方式 -->
+        <record id="view_transport_mode_tree" model="ir.ui.view">
+            <field name="name">transport.mode.tree</field>
+            <field name="model">transport.mode</field>
+            <field name="arch" type="xml">
+                <list string="货运方式">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="note"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_transport_mode_form" model="ir.ui.view">
+            <field name="name">transport.mode.form</field>
+            <field name="model">transport.mode</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="货运方式">
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <group>
+                                <field name="code" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                            </group>
+                            <group/>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_transport_mode_search" model="ir.ui.view">
+            <field name="name">transport.mode.search</field>
+            <field name="model">transport.mode</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="code" string="编号" filter_domain="[('code','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_transport_mode">
+            <field name="name">货运方式</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">transport.mode</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_transport_mode_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- 银行 -->
+        <record id="view_res_bank_tree" model="ir.ui.view">
+            <field name="name">res.bank.tree</field>
+            <field name="model">res.bank</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="银行">
+                    <field name="bic" string="编号"/>
+                    <field name="name"/>
+                    <field name="street" string="地址"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="note"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_res_bank_form" model="ir.ui.view">
+            <field name="name">res.bank.form</field>
+            <field name="model">res.bank</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="银行">
+                    <sheet>
+                        <group colspan="1" col="2">
+                            <group>
+                                <field name="bic" string="编号" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="street" string="地址" class="oe_inline"/>
+                                <field name="phone" class="oe_inline"/>
+                                <field name="email" class="oe_inline"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_res_bank_search" model="ir.ui.view">
+            <field name="name">res.bank.search</field>
+            <field name="model">res.bank</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="bic" string="编号" filter_domain="[('bic','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_bank">
+            <field name="name">银行</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.bank</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_res_bank_search"/>
+            <field name="context">{}</field>
+        </record>
+
+        <!-- 银行账户 -->
+        <record id="view_res_partner_bank_tree" model="ir.ui.view">
+            <field name="name">res.partner.bank.tree</field>
+            <field name="model">res.partner.bank</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="银行账户">
+                    <field name="acc_number"/>
+                    <field name="bank_bic" string="银行代码"/>
+                    <field name="name"/>
+                    <field name="partner_id" string="账号所有者"/>
+                    <field name="currency_id"/>
+                    <field name="account_id"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_res_partner_bank_form" model="ir.ui.view">
+            <field name="name">res.partner.bank.form</field>
+            <field name="model">res.partner.bank</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="银行账户">
+                    <sheet>
+                        <group colspan="1" col="2">
+                            <group>
+                                <field name="acc_number" class="oe_inline"/>
+                                <field name="bank_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
+                                <field name="bank_bic" string="银行代码" readonly="1" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                                <field name="partner_id"
+                                       options="{'no_create': True, 'no_open': True}" string="账号所有者"
+                                       class="oe_inline"/>
+                                <field name="currency_id"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       class="oe_inline"/>
+                                 <field name="account_id"  options="{'no_create': True, 'no_open': True}"
+                                       class="oe_inline"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page string="系统信息">
+                                <group colspan="4">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_res_partner_bank_search" model="ir.ui.view">
+            <field name="name">res.partner.bank.search</field>
+            <field name="model">res.partner.bank</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="acc_number" string="账户" filter_domain="[('acc_number','ilike',self)]"/>
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <field name="partner_id" string="账号所有者" filter_domain="[('partner_id','ilike',self)]"/>
+                    <separator/>
+                    <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料"/>
+                    <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="生效" name="group_active" domain="[]" context="{'group_by':'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_res_partner_bank">
+            <field name="name">银行账户</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.bank</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_res_partner_bank_search"/>
+            <field name="context">{}</field>
+        </record>
+    </data>
+</odoo>

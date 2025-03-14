@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_form_inherit_res">
+            <field name="name">view.sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="partner_currency_id"/>
+                    <field name="tax_id"/>
+                </field>
+                <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="replace">
+                    <field name="tax_id" widget="many2many_tags"
+                           domain="[('type_tax_use','in',['sale','all']), ('company_id', '=', parent.company_id)]"
+                           readonly="qty_invoiced &gt; 0"
+                           options="{'no_create': True}"
+                           optional="show"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

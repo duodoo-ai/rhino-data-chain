@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record model="ir.module.category" id="module_base">
+            <field name="name">基本资料</field>
+            <field name="description">定义所有基础资料用户组的类别</field>
+            <field name="sequence">2</field>
+        </record>
+
+        <record id="base_group_hidden_menu" model="res.groups">
+            <field name="name">隐藏菜单组</field>
+            <field name="users" eval="[(4, ref('base.group_user'))]"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>

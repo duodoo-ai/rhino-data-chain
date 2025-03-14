@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_account_config_settings_inherit">
+            <field name="name">view.account.config.settings.form.inherit</field>
+            <field name="model">account.config.settings</field>
+            <field name="inherit_id" ref="account.view_account_config_settings"/>
+            <field name="arch" type="xml">
+                <separator name="analytic_account" position="before">
+                    <group string="科目设定">
+                        <field name="payable_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="receivable_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="payable_bill_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="receivable_bill_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="sale_tax_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="purchase_tax_account_id" class="oe_inline" options="{'no_create': True}"/>
+                        <field name="current_year_profit_account_id" class="oe_inline" options="{'no_create': True}"/>
+                    </group>
+                </separator>
+            </field>
+        </record>
+
+    </data>
+</odoo>

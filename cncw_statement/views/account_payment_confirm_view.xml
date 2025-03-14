@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 实际付款确认单 -->
+        <record id="view_account_payment_confirm_tree" model="ir.ui.view">
+            <field name="name">account.payment.confirm.tree</field>
+            <field name="model">account.payment.confirm</field>
+            <field name="arch" type="xml">
+                <list string="实际付款确认单">
+                    <field name="name"/>
+                    <field name="pay_id"/>
+                    <field name="company_id"/>
+                    <field name="partner_id"/>
+                    <field name="supplier_name"/>
+                    <field name="payment_mode_id"/>
+                    <field name="amount"/>
+                    <field name="confirm_user_id"/>
+                    <field name="confirm_date"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_payment_confirm_form" model="ir.ui.view">
+            <field name="name">account.payment.confirm.form</field>
+            <field name="model">account.payment.confirm</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="实际付款确认单">
+                    <header>
+                        <button name="action_confirm" invisible="state != 'draft'" icon="fa-check"
+                                string="申请确认" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_confirm" invisible="state != 'confirmed'" icon="fa-close"
+                                string="取消确认" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,cancel"
+                               statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="payment_date" readonly="state != 'draft'"/>
+                                <field name="pay_id" class="oe_inline"  options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="company_id"/>
+                                <field name="partner_id"  class="oe_inline"/>
+                                <field name="supplier_name"/>
+                                <field name="payment_mode_id"  class="oe_inline" options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="paid_amount"/>
+                                <field name="remaining_amount"/>
+                            </group>
+                            <group>
+                                <field name="bill_no"  class="oe_inline" readonly="state != 'draft'"/>
+                                <field name="bill_date" readonly="state != 'draft'"/>
+                                <field name="bill_due_date" readonly="state != 'draft'"/>
+                                <field name="bill_amount" readonly="state != 'draft'"/>
+                                <field name="for_this_amount" readonly="state != 'draft'"/>
+                                <field name="amount" readonly="state != 'draft'"/>
+                                <field name="late_fee" readonly="state != 'draft'"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page name="attachment_ids" string="附件">
+                                <field name="attachment_ids" widget="many2many_binary" class="oe_inline"
+                                       readonly="state != 'draft'"/>
+                            </page>
+                            <page name="note" string="备注">
+                                <field name="note" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <group>
+                                        <field name="create_uid" readonly="1" string="建立人"/>
+                                        <field name="create_date" readonly="1" string="建立日"/>
+                                        <field name="write_uid" readonly="1" string="修改人"/>
+                                        <field name="write_date" readonly="1" string="修改日"/>
+                                    </group>
+                                    <group>
+                                        <field name="confirm_user_id" readonly="1"/>
+                                        <field name="confirm_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_payment_confirm_search" model="ir.ui.view">
+            <field name="name">account.payment.confirm.search</field>
+            <field name="model">account.payment.confirm</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <filter string="Open" name="open" domain="[('state','!=','cancel')]"
+                            help="Open"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="名称" domain="[]" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_payment_confirm">
+            <field name="name">实际付款确认单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.payment.confirm</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_payment_confirm_search"/>
+            <field name="context">{}</field>
+        </record>
+    </data>
+</odoo>

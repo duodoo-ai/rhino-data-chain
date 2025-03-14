@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="account_move_control_ir_cron" model="ir.cron">
+            <field name="name">付款逾期规则</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="priority">5</field>
+            <field name="active">True</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="model_cncw_invoice_move"/>
+            <field name="code">model.payment_overdue()</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

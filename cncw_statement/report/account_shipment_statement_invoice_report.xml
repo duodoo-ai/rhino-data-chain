@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!--出货对帐开票查询-->
+        <record model="ir.ui.view" id="view_account_shipment_statement_invoice_tree">
+            <field name="name">account.shipment.statement.invoice.tree</field>
+            <field name="model">account.shipment.statement.invoice</field>
+            <field name="arch" type="xml">
+                <list string="出货对账开票查询" create="0" delete="0">
+                    <field name="partner_id"/>
+                    <field name="partner_name"/>
+                    <field name="user_id"/>
+                    <field name="due_invoice_date"/>
+                    <field name="invoiced_amount" sum="invoiced_amount"/>
+                    <field name="uninvoiced_amount" sum="uninvoiced_amount"/>
+                    <field name="product_qty" sum="product_qty"/>
+                    <field name="price_unit"/>
+                    <field name="delivery_amount" sum="delivery_amount"/>
+                    <field name="checked_amount" sum="checked_amount"/>
+                    <field name="adjust_amount" sum="adjust_amount"/>
+                    <field name="overdue_invoice_days"/>
+                    <field name="unchecked_amount" sum="unchecked_amount"/>
+                    <field name="order_id"/>
+                    <field name="product_id"/>
+                    <field name="product_tmpl_id" invisible="1"/>
+                    <field name="product_name"/>
+                    <field name="delivery_no"/>
+                    <field name="delivery_date"/>
+                    <field name="last_invoice_date"/>
+                    <field name="product_uom"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_shipment_statement_invoice_graph" model="ir.ui.view">
+            <field name="name">account.shipment.statement.invoice.graph</field>
+            <field name="model">account.shipment.statement.invoice</field>
+            <field name="arch" type="xml">
+                <graph string="出货对账开票查询" type="bar" stacked="True">
+                    <field name="partner_id" type="row"/>
+                    <field name="product_qty" type="measure"/>
+                    <field name="delivery_amount" type="measure"/>
+                    <field name="checked_amount" type="measure"/>
+                    <field name="adjust_amount" type="measure"/>
+                    <field name="unchecked_amount" type="measure"/>
+                    <field name="invoiced_amount" type="measure"/>
+                    <field name="uninvoiced_amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_account_shipment_statement_invoice_pivot" model="ir.ui.view">
+            <field name="name">account.shipment.statement.invoice.pivot</field>
+            <field name="model">account.shipment.statement.invoice</field>
+            <field name="arch" type="xml">
+                <pivot string="出货对账开票查询" stacked="True">
+                    <field name="partner_id" type="row"/>
+                    <field name="product_qty" type="measure"/>
+                    <field name="delivery_amount" type="measure"/>
+                    <field name="checked_amount" type="measure"/>
+                    <field name="adjust_amount" type="measure"/>
+                    <field name="unchecked_amount" type="measure"/>
+                    <field name="invoiced_amount" type="measure"/>
+                    <field name="uninvoiced_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_account_shipment_statement_invoice_search" model="ir.ui.view">
+            <field name="name">account.shipment.statement.invoice.search</field>
+            <field name="model">account.shipment.statement.invoice</field>
+            <field name="arch" type="xml">
+                <search string="出货对账开票查询">
+                    <field name="delivery_no"/>
+                    <field name="delivery_date" string="出货开始日期" widget="date"
+                           filter_domain="[('delivery_date','&gt;=',self)]"/>
+                    <field name="delivery_date" string="出货结束日期" widget="date"
+                           filter_domain="[('delivery_date','&lt;=',self)]"/>
+                    <field name="partner_code"/>
+                    <field name="order_id"/>
+                    <field name="product_id"/>
+                    <separator/>
+                    <filter string="未完成对账" name="unchecked_amount"
+                            domain="['|',('unchecked_amount','!=',0.00),('checked_amount','=',0.00)]"
+                            context="{}"/>
+                    <filter string="完成对账" name="amount"
+                            domain="['&amp;',('unchecked_amount','=',0.00),('checked_amount','&gt;',0.00)]"
+                            context="{}"/>
+                    <separator/>
+                    <filter string="未完成开票" name="uninvoiced_amount"
+                            domain="[('uninvoiced_amount','!=',0.00)]" context="{}"/>
+                    <filter string="完成开票" name="invoiced_amount"
+                            domain="['&amp;',('uninvoiced_amount','=',0.00),('delivery_amount','&gt;',0.00)]"
+                            context="{}"/>
+                    <separator/>
+
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day-1)), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine(datetime.date(context_today().year,12,31), datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-personal" string="上月数据" name="last_month"
+                            domain="[('delivery_date', '&lt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day)),datetime.time(23,59,59))),('delivery_date', '&gt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day))-datetime.timedelta((context_today() - datetime.timedelta(context_today().day)).day),datetime.time(23,59,59)))]"/>
+                    <filter string="本周单据" name="current_week"
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="上周单据" name="first_week"
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+1)),datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(7+context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="两周内单据" name="two_week"
+                            domain="[('delivery_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('delivery_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+7)),datetime.time(0,0,0)))]"/>
+
+                    <group expand="1" string="Group By">
+
+                        <filter string="订单编号" name="Order_id" context="{'group_by':'order_id'}"/>
+                        <separator/>
+                        <filter string="客户编码" name="partner_id" context="{'group_by':'partner_code'}"/>
+                        <separator/>
+                        <filter string="应开票日期" name="due_invoice_date" context="{'group_by':'due_invoice_date'}"/>
+                        <filter string="单价" name="price_unit" context="{'group_by':'price_unit'}"/>
+                        <separator/>
+                        <filter string="末次开票日期" name="last_invoice_date" context="{'group_by':'last_invoice_date'}"/>
+                        <filter string="逾开天数" name="overdue_invoice_days"
+                                context="{'group_by':'overdue_invoice_days'}"/>
+                        <separator/>
+
+                        <filter string="产品" name="Product" context="{'group_by':'product_id'}"/>
+                        <filter string="品名" name="Product_tmpl_id" context="{'group_by':'product_tmpl_id'}"/>
+                        <separator/>
+                        <filter string="单位" name="Product_uom" context="{'group_by':'product_uom'}"/>
+
+                        <separator/>
+                        <filter string="出货明细单号" name="delivery_no" context="{'group_by':'delivery_no'}"/>
+                        <filter string="出货日期" name="Delivery_date" context="{'group_by':'delivery_date'}"/>
+                        <separator/>
+                        <filter string="开完票否" name="Is_invoice" context="{'group_by':'is_invoiced_done'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_shipment_statement_invoice" model="ir.actions.act_window">
+            <field name="name">出货对账开票查询</field>
+            <field name="res_model">account.shipment.statement.invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_shipment_statement_invoice_tree"/>
+            <field name="context">{'search_default_currency_month':1,'search_default_partner_id':1}</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_account_shipment_statement_invoice_tree">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_shipment_statement_invoice_tree"/>
+            <field name="act_window_id" ref="action_account_shipment_statement_invoice"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_account_shipment_statement_invoice_pivot">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_account_shipment_statement_invoice_pivot"/>
+            <field name="act_window_id" ref="action_account_shipment_statement_invoice"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_account_shipment_statement_invoice_graph">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_account_shipment_statement_invoice_graph"/>
+            <field name="act_window_id" ref="action_account_shipment_statement_invoice"/>
+        </record>
+
+        <menuitem id="menu_account_shipment_statement_invoice2"
+                  name="出货对账开票查询"
+                  sequence="68"
+                  groups="base_cw.account_group_account_invoice_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_shipment_statement_invoice"/>
+    </data>
+</odoo>

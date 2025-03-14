@@ -1,0 +1,417 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+
+        <!--销售退货入库单 序列号-->
+        <record id="seq_sale_return_storage" model="ir.sequence">
+            <field name="name">销售退货入库单</field>
+            <field name="code">sale.return.storage</field>
+            <field name="prefix">SRS%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+            <!-- 客户 序列号 -->
+        <record id="seq_customer_code" model="ir.sequence">
+            <field name="name">客户编号</field>
+            <field name="code">partner.customer.code</field>
+            <field name="prefix">K</field>
+            <field name="padding">6</field>
+        </record>
+        <!-- 供应商 序列号 -->
+        <record id="seq_purchase_code" model="ir.sequence">
+            <field name="name">供应商编号</field>
+            <field name="code">partner.supplier.code</field>
+            <field name="prefix">G</field>
+            <field name="padding">6</field>
+        </record>
+         <!--  for 税组定义  -->
+        <record id="account_tax_group" model="account.tax.group">
+            <field name="name">通用税组</field>
+        </record>
+
+        <!--  for 税别定义  -->
+        <record id="account_tax_a" model="account.tax">
+            <field name="code">A</field>
+            <field name="name">增值税 3%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">3</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_b" model="account.tax">
+            <field name="code">B</field>
+            <field name="name">增值税 5%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">5</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_c" model="account.tax">
+            <field name="code">C</field>
+            <field name="name">增值税 9%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">9</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_d" model="account.tax">
+            <field name="code">D</field>
+            <field name="name">增值税 10%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">10</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_e" model="account.tax">
+            <field name="code">E</field>
+            <field name="name">增值税 13%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">13</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_f" model="account.tax">
+            <field name="code">F</field>
+            <field name="name">小规模纳税增值税 4%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">4</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_g" model="account.tax">
+            <field name="code">G</field>
+            <field name="name">普票 6%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">6</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_h" model="account.tax">
+            <field name="code">H</field>
+            <field name="name">免税 0%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">0.0000</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_i" model="account.tax">
+            <field name="code">I</field>
+            <field name="name">营业税 3%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">3</field>
+            <field name="type_tax_use">all</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <record id="account_tax_j" model="account.tax">
+            <field name="code">J</field>
+            <field name="name">出口进项税率 6%</field>
+            <field name="amount_type">percent</field>
+            <field name="amount">6</field>
+            <field name="type_tax_use">purchase</field>
+            <field name="active">True</field>
+            <field name="price_include">True</field>
+            <field name="tax_group_id" ref="account_tax_group"/>
+        </record>
+        <!-- for 付款方式-->
+        <record id="payment_mode_a" model="payment.mode">
+            <field name="code">1</field>
+            <field name="name">现金</field>
+            <field name="active">True</field>
+        </record>
+        <record id="payment_mode_b" model="payment.mode">
+            <field name="code">2</field>
+            <field name="name">电汇</field>
+            <field name="active">True</field>
+        </record>
+        <record id="payment_mode_c" model="payment.mode">
+            <field name="code">3</field>
+            <field name="name">支票</field>
+            <field name="active">True</field>
+        </record>
+        <record id="payment_mode_d" model="payment.mode">
+            <field name="code">4</field>
+            <field name="name">同城转帐支票</field>
+            <field name="active">True</field>
+        </record>
+        <record id="payment_mode_e" model="payment.mode">
+            <field name="code">5</field>
+            <field name="name">汇票</field>
+            <field name="active">True</field>
+        </record>
+        <!-- 支付条款-->
+        <record id="account_payment_term_a" model="account.payment.term">
+            <field name="code">30-14</field>
+            <field name="name">预付30%余款票到2周</field>
+
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_b" model="account.payment.term">
+            <field name="code">AP01</field>
+            <field name="name">100% Deposit,Production Against Deposit</field>
+
+            <field name="note">全额预收货款后开始购料、生产</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_c" model="account.payment.term">
+            <field name="code">AP02</field>
+            <field name="name">100% Payment Before Shipment</field>
+
+            <field name="note">我公司自筹资金购料、生产并在出运、订舱前通知客户全额付款,款到出运;(款未到则取消定船)</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_d" model="account.payment.term">
+            <field name="code">AP03</field>
+            <field name="name">Part Deposit,Rest Before Shipment</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并在订舱前通知客户全额付款,款到出运;(款未到则取消定船)</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_e" model="account.payment.term">
+            <field name="code">AP15</field>
+            <field name="name">Part Deposit,Rest 15 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟15日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_f" model="account.payment.term">
+            <field name="code">AP30</field>
+            <field name="name">Part Deposit,Rest 30 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟30日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_g" model="account.payment.term">
+            <field name="code">AP45</field>
+            <field name="name">Part Deposit,Rest 45 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟45日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_h" model="account.payment.term">
+            <field name="code">AP60</field>
+            <field name="name">Part Deposit,Rest 60 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟60日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_ap75" model="account.payment.term">
+            <field name="code">AP75</field>
+            <field name="name">Part Deposit,Rest 75 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟75日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_ap90" model="account.payment.term">
+            <field name="code">AP90</field>
+            <field name="name">Part Deposit,Rest 90 days TT Against B/L date</field>
+
+            <field name="note">客户支付部分预付款,我公司安排购料、生产并发运,客户在提单日后最迟90日内付款；</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bl30" model="account.payment.term">
+            <field name="code">BL30</field>
+            <field name="name">LC 30 Days</field>
+
+            <field name="note">见信用证以及信用证下规定的全套单据在提单日后30天付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bl45" model="account.payment.term">
+            <field name="code">BL45</field>
+            <field name="name">LC 45 Days</field>
+
+            <field name="note">见信用证以及信用证下规定的全套单据在提单日后45天付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bl60" model="account.payment.term">
+            <field name="code">BL60</field>
+            <field name="name">LC 60 Days</field>
+
+            <field name="note">见信用证以及信用证下规定的全套单据在提单日后60天付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bl75" model="account.payment.term">
+            <field name="code">BL75</field>
+            <field name="name">LC 75 Days</field>
+
+            <field name="note">见信用证以及信用证下规定的全套单据在提单日后75天付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bl90" model="account.payment.term">
+            <field name="code">BL90</field>
+            <field name="name">LC 90 Days</field>
+
+            <field name="note">见信用证以及信用证下规定的全套单据在提单日后90天付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_blst" model="account.payment.term">
+            <field name="code">BLST</field>
+            <field name="name">LC At Sight</field>
+
+            <field name="note">见信用证以及信用证下规定的单据付款;</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bp15" model="account.payment.term">
+            <field name="code">BP15</field>
+            <field name="name">TT Payment 15 days Against B/L date</field>
+
+            <field name="note">以电汇的方式在提单日后15天内付款</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bp30" model="account.payment.term">
+            <field name="code">BP30</field>
+            <field name="name">TT Payment 30 days Against B/L date</field>
+
+            <field name="note">以电汇的方式在提单日后30天内付款</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bp45" model="account.payment.term">
+            <field name="code">BP45</field>
+            <field name="name">TT Payment 45 days Against B/L date</field>
+
+            <field name="note">以电汇的方式在提单日后45天内付款</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bp60" model="account.payment.term">
+            <field name="code">BP60</field>
+            <field name="name">TT Payment 60 days Against B/L date</field>
+
+            <field name="note">以电汇的方式在提单日后60天内付款</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_bpst" model="account.payment.term">
+            <field name="code">BPST</field>
+            <field name="name">TT Payment At Sight Against B/L date</field>
+
+            <field name="note">以电汇的方式在提单日后60天内付款</field>
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_fkmd" model="account.payment.term">
+            <field name="code">FKMD</field>
+            <field name="name">付款买单</field>
+
+            <field name="active">True</field>
+        </record>
+        <record id="account_payment_term_m100" model="account.payment.term">
+            <field name="code">M100</field>
+            <field name="name">月结100天</field>
+
+            <field name="active">True</field>
+        </record>
+        <!-- 货运方式-->
+        <record id="transport_mode_a" model="transport.mode">
+            <field name="code">A</field>
+            <field name="name">汽运</field>
+            <field name="active">True</field>
+        </record>
+        <record id="transport_mode_b" model="transport.mode">
+            <field name="code">B</field>
+            <field name="name">海运</field>
+            <field name="active">True</field>
+        </record>
+        <record id="transport_mode_c" model="transport.mode">
+            <field name="code">C</field>
+            <field name="name">空运</field>
+            <field name="active">True</field>
+        </record>
+        <record id="transport_mode_d" model="transport.mode">
+            <field name="code">D</field>
+            <field name="name">快递</field>
+            <field name="active">True</field>
+        </record>
+
+        <!--价格条款-->
+        <record id="stock_incoterm_exw" model="stock.incoterms">
+            <field name="code">EXW</field>
+            <field name="name">EX WORKS</field>
+            <field name="name_cn">卖方工厂交货</field>
+        </record>
+        <record id="stock_incoterm_fac" model="stock.incoterms">
+            <field name="code">FCA</field>
+            <field name="name">FREE CARRIER</field>
+             <field name="name_cn">货交承运人</field>
+        </record>
+        <record id="stock_incoterm_fas" model="stock.incoterms">
+            <field name="code">FAS</field>
+            <field name="name">FREE ALONGSIDE SHIP</field>
+             <field name="name_cn">指定装运港船边交货</field>
+        </record>
+        <record id="stock_incoterm_fob" model="stock.incoterms">
+            <field name="code">FOB</field>
+            <field name="name">FREE ON BOARD</field>
+             <field name="name_cn">指定装运港船上交货</field>
+        </record>
+        <record id="stock_incoterm_cfr" model="stock.incoterms">
+            <field name="code">CFR</field>
+            <field name="name">COST AND FREIGHT</field>
+            <field name="name_cn">成本加运费</field>
+        </record>
+        <record id="stock_incoterm_cif" model="stock.incoterms">
+            <field name="code">CIF</field>
+            <field name="name">COST, INSURANCE AND FREIGHT</field>
+             <field name="name_cn">成本加运费 保险费</field>
+        </record>
+        <record id="stock_incoterm_cpt" model="stock.incoterms">
+            <field name="code">CPT</field>
+            <field name="name">CARRIAGE PAID TO</field>
+             <field name="name_cn">运费付至</field>
+        </record>
+        <record id="stock_incoterm_cip" model="stock.incoterms">
+            <field name="code">CIP</field>
+            <field name="name">CARRIAGE AND INSURANCE PAID TO</field>
+            <field name="name_cn">运费、保险费付至</field>
+        </record>
+        <record id="stock_incoterm_daf" model="stock.incoterms">
+            <field name="code">DAF</field>
+            <field name="name">DELIVERED AT FRONTIER</field>
+            <field name="name_cn">边境交货</field>
+        </record>
+        <record id="stock_incoterm_des" model="stock.incoterms">
+            <field name="code">DES</field>
+            <field name="name">DELIVERED EX SHIP</field>
+             <field name="name_cn">目的港船上交货</field>
+        </record>
+        <record id="stock_incoterm_deq" model="stock.incoterms">
+            <field name="code">DEQ</field>
+            <field name="name">DELIVERED EX QUAY</field>
+             <field name="name_cn">目的港码头交货</field>
+        </record>
+        <record id="stock_incoterm_ddu" model="stock.incoterms">
+            <field name="code">DDU</field>
+            <field name="name">DELIVERED DUTY UNPAID</field>
+             <field name="name_cn">未完税交货</field>
+        </record>
+        <record id="stock_incoterm_dat" model="stock.incoterms">
+            <field name="code">DAT</field>
+            <field name="name">DELIVERED AT TERMINAL</field>
+              <field name="name_cn">目的地或目的港的集散站交货</field>
+        </record>
+        <record id="stock_incoterm_dap" model="stock.incoterms">
+            <field name="code">DAP</field>
+            <field name="name">DELIVERED AT PLACE</field>
+            <field name="name_cn">目的地交货</field>
+        </record>
+        <record id="stock_incoterm_ddp" model="stock.incoterms">
+            <field name="code">DDP</field>
+            <field name="name">DELIVERED DUTY PAID</field>
+             <field name="name_cn">完税后交货</field>
+        </record>
+    </data>
+</odoo>

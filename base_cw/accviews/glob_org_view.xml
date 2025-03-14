@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="cncw_glob_tag_class_form" model="ir.ui.view">
+            <field name="name">全局标签类别</field>
+            <field name="model">cncw.glob_tag_class</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <h1>新增编辑=>全局标签类别</h1>
+                        <hr></hr>
+                        <group>
+                            <field name='number'/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- list-核算机构 -->
+        <record model='ir.ui.view' id='cncw_org_list'>
+            <field name='name'>核算机构</field>
+            <field name='model'>cncw.org</field>
+            <field name='arch' type='xml'>
+                <list js_class="orgListView">
+                    <field name='number'/>
+                    <field name="is_current"/>
+                    <field name='name'/>
+                    <button string='设为默认' type='object' class="btn-sm  btn-outline-light text-muted" name='toggle'
+                            context="{'default_default_org':id}"/>
+                    <field name="user_ids" groups="base.group_system"/>
+                    <field name='glob_tag' widget='many2many_tags'/>
+                </list>
+            </field>
+        </record>
+        <!--form-核算机构 -->
+        <record id="cncw_org_action_window_form" model="ir.ui.view">
+            <field name='name'>核算机构</field>
+            <field name="model">cncw.org</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <h1>编辑=>核算机构</h1>
+                        <hr></hr>
+                        <group>
+                            <field name="number" help='核算机构的编码，不能相同'/>
+                            <field name="name" help='一个核算机构就是一个会计主体，不能相同'/>
+                            <field name="user_ids" groups="base.group_system"/>
+                            <field name='glob_tag' widget='many2many_tags' help='对核算机构的一个分类标签，非必填'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <!-- 搜素视图-核算机构-->
+    <record id="cncw_org_search" model="ir.ui.view">
+      <field name="name">机构查询</field>
+      <field name="model">cncw.org</field>
+      <field name="arch" type="xml">
+        <search string="orgFilter">
+          <field name="name" string="核算机构名称包含" filter_domain="[('name','ilike', self)]" />
+          <field name="glob_tag" string="全局标签包含" filter_domain="[('glob_tag.name','ilike', self)]" />
+        </search>
+      </field>
+    </record>
+
+    <!-- 窗体动作-打开核算机构 -->
+    <record model='ir.actions.act_window' id='cncw_org_action_window'>
+        <field name='name'>核算机构</field>
+        <field name='res_model'>cncw.org</field>
+        <field name='view_mode'>list,form</field>
+        <field name="target">current</field>
+    </record>
+    </data>
+</odoo>

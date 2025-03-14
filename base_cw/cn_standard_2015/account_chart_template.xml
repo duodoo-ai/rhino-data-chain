@@ -1,0 +1,2816 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+    <!--
+        2015年新会计准则下的会计科目明细表
+    -->
+    <record id="l10n_chart_china_standard_2015" model="cncw.chart.template">
+            <field name="name">中国会计科目表 2015年新会计准则下的会计科目明细表</field>
+            <field name="code_digits" eval="4"/>
+            <field name="currency_id" ref="base.CNY"/>
+            <field name="cash_account_code_prefix">1001</field>
+            <field name="bank_account_code_prefix">1002</field>
+            <field name="transfer_account_code_prefix">4012</field>
+    </record>
+
+
+    <record id="chart1402" model="cncw.account">
+        <field name="code">1402</field>
+        <field name="name">在途物资</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="currency_id" ref="base.CNY"/>
+        <field name="reconcile" eval="False"/>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+    </record>
+
+    <!-- 会计科目 -->
+    <record id="chart1001" model="cncw.account">
+        <field name="code">1001</field>
+        <field name="name">库存现金</field>
+        <field name="sub_account_type">has</field>
+        <field name="subaccount_category_id" ref="account_subaccount_category_cash_flow"/>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="currency_id" ref="base.CNY"/>
+        <field name="reconcile" eval="False"/>
+        <field name="user_type_id" ref="cncw_account_type_1"/>
+    </record>
+
+    <record id="chart1002" model="cncw.account">
+        <field name="code">1002</field>
+        <field name="name">银行存款</field>
+        <field name="sub_account_type">has</field>
+        <field name="subaccount_category_id" ref="account_subaccount_category_cash_flow"/>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="currency_id" ref="base.CNY"/>
+        <field name="user_type_id" ref="cncw_account_type_2"/>
+        <field name="reconcile" eval="False"/>
+    </record>
+
+
+    <record id="chart1012" model="cncw.account">
+        <field name="code">1012</field>
+        <field name="name">其他货币资金</field>
+        <field name="sub_account_type">view</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+    </record>
+
+    <record id="chart101201" model="cncw.account">
+        <field name="code">101201</field>
+        <field name="name">外埠存款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="parent_id" ref="chart1012"/>
+        <field name="reconcile" eval="False"/>
+    </record>
+
+    <record id="chart101202" model="cncw.account">
+        <field name="code">101202</field>
+        <field name="name">银行本票存款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1012"/>
+    </record>
+
+    <record id="chart101203" model="cncw.account">
+        <field name="code">101203</field>
+        <field name="name">银行汇票存款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1012"/>
+    </record>
+
+    <record id="chart101204" model="cncw.account">
+        <field name="code">101204</field>
+        <field name="name">信用卡存款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1012"/>
+    </record>
+
+    <record id="chart101205" model="cncw.account">
+        <field name="code">101205</field>
+        <field name="name">信用保证金存款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1012"/>
+    </record>
+
+    <record id="chart101206" model="cncw.account">
+        <field name="code">101206</field>
+        <field name="name">存出投资款</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1012"/>
+    </record>
+
+    <record id="chart1101" model="cncw.account">
+        <field name="code">1101</field>
+        <field name="name">交易性金融资产</field>
+        <field name="sub_account_type">view</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+    </record>
+
+    <record id="chart110101" model="cncw.account">
+        <field name="code">110101</field>
+        <field name="name">本金</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1101"/>
+    </record>
+
+    <record id="chart11010101" model="cncw.account">
+        <field name="code">11010101</field>
+        <field name="name">股票</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110101"/>
+    </record>
+
+    <record id="chart11010102" model="cncw.account">
+        <field name="code">11010102</field>
+        <field name="name">债券</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110101"/>
+    </record>
+
+    <record id="chart11010103" model="cncw.account">
+        <field name="code">11010103</field>
+        <field name="name">基金</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110101"/>
+    </record>
+
+    <record id="chart11010104" model="cncw.account">
+        <field name="code">11010104</field>
+        <field name="name">权证</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110101"/>
+    </record>
+
+    <record id="chart11010199" model="cncw.account">
+        <field name="code">11010199</field>
+        <field name="name">其他</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110101"/>
+    </record>
+
+    <record id="chart110102" model="cncw.account">
+        <field name="code">110102</field>
+        <field name="name">公允价值变动</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart1101"/>
+    </record>
+
+    <record id="chart11010201" model="cncw.account">
+        <field name="code">11010201</field>
+        <field name="name">股票</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110102"/>
+    </record>
+
+    <record id="chart11010202" model="cncw.account">
+        <field name="code">11010202</field>
+        <field name="name">债券</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110102"/>
+    </record>
+
+    <record id="chart11010203" model="cncw.account">
+        <field name="code">11010203</field>
+        <field name="name">基金</field>
+        <field name="sub_account_type">none</field>
+        <field name="dc_type">D</field>
+        <field name="active">1</field>
+        <field name="account_category">1</field>
+        <field name="user_type_id" ref="cncw_account_type_3"/>
+        <field name="reconcile" eval="False"/>
+        <field name="parent_id" ref="chart110102"/>
+    </record>
+
+        <record id="chart11010204" model="cncw.account">
+            <field name="code">11010204</field>
+            <field name="name">权证</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart110102"/>
+        </record>
+        <record id="chart11010299" model="cncw.account">
+            <field name="code">11010299</field>
+            <field name="name">其他</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart110102"/>
+        </record>
+
+        <record id="chart1121" model="cncw.account">
+            <field name="code">1121</field>
+            <field name="name">应收票据</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">21</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1122" model="cncw.account">
+            <field name="code">1122</field>
+            <field name="name">应收账款</field>
+            <field name="sub_account_type">has</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_customer"/>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">21</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1123" model="cncw.account">
+            <field name="code">1123</field>
+            <field name="name">预付账款</field>
+            <field name="sub_account_type">has</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_supplier"/>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">10</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1131" model="cncw.account">
+            <field name="code">1131</field>
+            <field name="name">应收股利</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">10</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1132" model="cncw.account">
+            <field name="code">1132</field>
+            <field name="name">应收利息</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">21</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1221" model="cncw.account">
+            <field name="code">1221</field>
+            <field name="name">其他应收款</field>
+            <field name="sub_account_type">has</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_customer"/>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="ap_ar_type">21</field>
+            <field name="user_type_id" ref="cncw_account_type_3"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1231" model="cncw.account">
+            <field name="code">1231</field>
+            <field name="name">坏账准备</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_4"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart123101" model="cncw.account">
+            <field name="code">123101</field>
+            <field name="name">应收账款坏账准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="parent_id" ref="chart1231"/>
+            <field name="user_type_id" ref="cncw_account_type_4"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart123102" model="cncw.account">
+            <field name="code">123102</field>
+            <field name="name">其他应收账款坏账准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="parent_id" ref="chart1231"/>
+            <field name="user_type_id" ref="cncw_account_type_4"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1321" model="cncw.account">
+            <field name="code">1321</field>
+            <field name="name">受托代销商品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1401" model="cncw.account">
+            <field name="code">1401</field>
+            <field name="name">材料采购</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1402" model="cncw.account">
+            <field name="code">1402</field>
+            <field name="name">在途物资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1403" model="cncw.account">
+            <field name="code">1403</field>
+            <field name="name">原材料</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1404" model="cncw.account">
+            <field name="code">1404</field>
+            <field name="name">材料成本差异</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1405" model="cncw.account">
+            <field name="code">1405</field>
+            <field name="name">库存商品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1406" model="cncw.account">
+            <field name="code">1406</field>
+            <field name="name">发出商品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1407" model="cncw.account">
+            <field name="code">1407</field>
+            <field name="name">商品进销差价</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1408" model="cncw.account">
+            <field name="code">1408</field>
+            <field name="name">委托加工物资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1409" model="cncw.account">
+            <field name="code">1409</field>
+            <field name="name">半加工</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+         <record id="chart1409" model="cncw.account">
+            <field name="code">1410</field>
+            <field name="name">产成品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart1411" model="cncw.account">
+            <field name="code">1411</field>
+            <field name="name">半成品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+
+        <record id="chart1471" model="cncw.account">
+            <field name="code">1471</field>
+            <field name="name">存货跌价准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_5"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="chart1501" model="cncw.account">
+            <field name="code">1501</field>
+            <field name="name">持有至到期投资</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart150101" model="cncw.account">
+            <field name="code">150101</field>
+            <field name="name">投资成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1501"/>
+        </record>
+        <record id="chart150102" model="cncw.account">
+            <field name="code">150102</field>
+            <field name="name">溢折价</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1501"/>
+        </record>
+        <record id="chart150103" model="cncw.account">
+            <field name="code">150103</field>
+            <field name="name">应计利息</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1501"/>
+        </record>
+
+        <record id="chart1502" model="cncw.account">
+            <field name="code">1502</field>
+            <field name="name">持有至到期投资减值准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1503" model="cncw.account">
+            <field name="code">1503</field>
+            <field name="name">可供出售金融资产</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1503" model="cncw.account">
+            <field name="code">1503</field>
+            <field name="name">可供出售金融资产</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1511" model="cncw.account">
+            <field name="code">1511</field>
+            <field name="name">长期股权投资</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart151101" model="cncw.account">
+            <field name="code">151101</field>
+            <field name="name">投资成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1511"/>
+        </record>
+        <record id="chart151102" model="cncw.account">
+            <field name="code">151102</field>
+            <field name="name">损益调整</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1511"/>
+        </record>
+        <record id="chart151103" model="cncw.account">
+            <field name="code">151103</field>
+            <field name="name">所有者权益其他变动</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1511"/>
+        </record>
+        <record id="chart1512" model="cncw.account">
+            <field name="code">1512</field>
+            <field name="name">长期股权投资减值准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1521" model="cncw.account">
+            <field name="code">1521</field>
+            <field name="name">投资性房地产</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart152101" model="cncw.account">
+            <field name="code">152101</field>
+            <field name="name">成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1521"/>
+        </record>
+
+        <record id="chart152102" model="cncw.account">
+            <field name="code">152102</field>
+            <field name="name">公允价值变动</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1521"/>
+        </record>
+        <record id="chart1531" model="cncw.account">
+            <field name="code">1531</field>
+            <field name="name">长期应收款</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1532" model="cncw.account">
+            <field name="code">1532</field>
+            <field name="name">未实现融资收益</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1601" model="cncw.account">
+            <field name="code">1601</field>
+            <field name="name">固定资产</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1602" model="cncw.account">
+            <field name="code">1602</field>
+            <field name="name">累计折旧</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_8"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1604" model="cncw.account">
+            <field name="code">1604</field>
+            <field name="name">在建工程</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart160401" model="cncw.account">
+            <field name="code">160401</field>
+            <field name="name">建筑工程</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1604"/>
+        </record>
+
+        <record id="chart160402" model="cncw.account">
+            <field name="code">160402</field>
+            <field name="name">安装工程</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1604"/>
+        </record>
+
+        <record id="chart160403" model="cncw.account">
+            <field name="code">160403</field>
+            <field name="name">在安装设备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1604"/>
+        </record>
+        <record id="chart160404" model="cncw.account">
+            <field name="code">160404</field>
+            <field name="name">待摊支出</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1604"/>
+        </record>
+
+        <record id="chart1605" model="cncw.account">
+            <field name="code">1605</field>
+            <field name="name">工程物资</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart160501" model="cncw.account">
+            <field name="code">160501</field>
+            <field name="name">专用材料</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1605"/>
+        </record>
+
+        <record id="chart160502" model="cncw.account">
+            <field name="code">160502</field>
+            <field name="name">专用设备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1605"/>
+        </record>
+
+        <record id="chart160503" model="cncw.account">
+            <field name="code">160503</field>
+            <field name="name">预付大型设备款</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1605"/>
+        </record>
+        <record id="chart160504" model="cncw.account">
+            <field name="code">160504</field>
+            <field name="name">为生产准备的工具及器具</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+            <field name="parent_id" ref="chart1605"/>
+        </record>
+        <record id="chart1606" model="cncw.account">
+            <field name="code">1606</field>
+            <field name="name">固定资产清理</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_7"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1701" model="cncw.account">
+            <field name="code">1701</field>
+            <field name="name">无形资产</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1702" model="cncw.account">
+            <field name="code">1702</field>
+            <field name="name">累计摊销</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1703" model="cncw.account">
+            <field name="code">1703</field>
+            <field name="name">无形资产减值准备</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1711" model="cncw.account">
+            <field name="code">1711</field>
+            <field name="name">商誉</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart1801" model="cncw.account">
+            <field name="code">1801</field>
+            <field name="name">长期待摊费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1811" model="cncw.account">
+            <field name="code">1811</field>
+            <field name="name">递延所得税资产</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart1901" model="cncw.account">
+            <field name="code">1901</field>
+            <field name="name">待处理财产损益</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">1</field>
+            <field name="user_type_id" ref="cncw_account_type_6"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2001" model="cncw.account">
+            <field name="code">2001</field>
+            <field name="name">短期借款</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2101" model="cncw.account">
+            <field name="code">2101</field>
+            <field name="name">交易性金融负债</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart210101" model="cncw.account">
+            <field name="code">210101</field>
+            <field name="name">本金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart210102" model="cncw.account">
+            <field name="code">210102</field>
+            <field name="name">公允价值变动</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2201" model="cncw.account">
+            <field name="code">2201</field>
+            <field name="name">应付票据</field>
+            <field name="sub_account_type">has</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="ap_ar_type">11</field>
+             <field name="subaccount_category_id" ref="account_subaccount_category_supplier"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2202" model="cncw.account">
+            <field name="code">2202</field>
+            <field name="name">应付账款</field>
+            <field name="sub_account_type">has</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="ap_ar_type">11</field>
+            <field name="account_category">2</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_supplier"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2203" model="cncw.account">
+            <field name="code">2203</field>
+            <field name="name">预收账款</field>
+            <field name="sub_account_type">has</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="ap_ar_type">20</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_customer"/>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2211" model="cncw.account">
+            <field name="code">2211</field>
+            <field name="name">应付职工薪酬</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart221101" model="cncw.account">
+            <field name="code">221101</field>
+            <field name="name">工资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart221102" model="cncw.account">
+            <field name="code">221102</field>
+            <field name="name">职工福利</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart221103" model="cncw.account">
+            <field name="code">221103</field>
+            <field name="name">社会保险费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart221104" model="cncw.account">
+            <field name="code">221104</field>
+            <field name="name">住房公积金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart221105" model="cncw.account">
+            <field name="code">221105</field>
+            <field name="name">工会经费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart221106" model="cncw.account">
+            <field name="code">221106</field>
+            <field name="name">职工教育经费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart221107" model="cncw.account">
+            <field name="code">221107</field>
+            <field name="name">解除职工劳动关系补偿</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2211"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2221" model="cncw.account">
+            <field name="code">2221</field>
+            <field name="name">应缴税费</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222101" model="cncw.account">
+            <field name="code">222101</field>
+            <field name="name">应交增值税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210101" model="cncw.account">
+            <field name="code">22210101</field>
+            <field name="name">进项税额</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210102" model="cncw.account">
+            <field name="code">22210102</field>
+            <field name="name">已交税金</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210103" model="cncw.account">
+            <field name="code">22210103</field>
+            <field name="name">减免税款</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210104" model="cncw.account">
+            <field name="code">22210104</field>
+            <field name="name">出口抵减内销产品应纳税额</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210105" model="cncw.account">
+            <field name="code">22210105</field>
+            <field name="name">转出未交增值税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210106" model="cncw.account">
+            <field name="code">22210106</field>
+            <field name="name">销项税额</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210107" model="cncw.account">
+            <field name="code">22210107</field>
+            <field name="name">出口退税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210108" model="cncw.account">
+            <field name="code">22210108</field>
+            <field name="name">进项税额转出</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart22210109" model="cncw.account">
+            <field name="code">22210109</field>
+            <field name="name">转出多交增值税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart222101"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222102" model="cncw.account">
+            <field name="code">222102</field>
+            <field name="name">未交增值税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222103" model="cncw.account">
+            <field name="code">222103</field>
+            <field name="name">应交营业税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222104" model="cncw.account">
+            <field name="code">222104</field>
+            <field name="name">应交消费税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222105" model="cncw.account">
+            <field name="code">222105</field>
+            <field name="name">应交资源税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222106" model="cncw.account">
+            <field name="code">222106</field>
+            <field name="name">应交所得税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222107" model="cncw.account">
+            <field name="code">222107</field>
+            <field name="name">应交土地增值税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart222108" model="cncw.account">
+            <field name="code">222108</field>
+            <field name="name">应交城市建设维护税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222109" model="cncw.account">
+            <field name="code">222109</field>
+            <field name="name">应交教育附加费</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart222110" model="cncw.account">
+            <field name="code">222110</field>
+            <field name="name">应交房产税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222111" model="cncw.account">
+            <field name="code">222111</field>
+            <field name="name">应交土地使用税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart222112" model="cncw.account">
+            <field name="code">222112</field>
+            <field name="name">应交车船使用税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart222113" model="cncw.account">
+            <field name="code">222113</field>
+            <field name="name">应交个人所得税</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart222114" model="cncw.account">
+            <field name="code">222114</field>
+            <field name="name">应交矿产资源补偿费</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2221"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2231" model="cncw.account">
+            <field name="code">2231</field>
+            <field name="name">应付股利</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2232" model="cncw.account">
+            <field name="code">2232</field>
+            <field name="name">应付利息</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2241" model="cncw.account">
+            <field name="code">2241</field>
+            <field name="name">其他应付款</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="ap_ar_type">13</field>
+            <field name="subaccount_category_id" ref="account_subaccount_category_supplier"/>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="True"/>
+        </record>
+        <record id="chart2314" model="cncw.account">
+            <field name="code">2314</field>
+            <field name="name">受托代销商品款</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2401" model="cncw.account">
+            <field name="code">2401</field>
+            <field name="name">递延收益</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2501" model="cncw.account">
+            <field name="code">2501</field>
+            <field name="name">长期借款</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart250101" model="cncw.account">
+            <field name="code">250101</field>
+            <field name="name">本金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2501"/>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart250102" model="cncw.account">
+            <field name="code">250102</field>
+            <field name="name">利息调整</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2501"/>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2502" model="cncw.account">
+            <field name="code">2502</field>
+            <field name="name">应付债券</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart250201" model="cncw.account">
+            <field name="code">250201</field>
+            <field name="name">债券面值</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2502"/>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart250202" model="cncw.account">
+            <field name="code">250202</field>
+            <field name="name">利息调整</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2502"/>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart250203" model="cncw.account">
+            <field name="code">250203</field>
+            <field name="name">应计利息</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="parent_id" ref="chart2502"/>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2701" model="cncw.account">
+            <field name="code">2701</field>
+            <field name="name">长期应付款</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2702" model="cncw.account">
+            <field name="code">2702</field>
+            <field name="name">未确认融资费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2711" model="cncw.account">
+            <field name="code">2711</field>
+            <field name="name">专项应付款</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart2801" model="cncw.account">
+            <field name="code">2801</field>
+            <field name="name">预计负债</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_9"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart2901" model="cncw.account">
+            <field name="code">2901</field>
+            <field name="name">递延所得税负债</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">2</field>
+            <field name="user_type_id" ref="cncw_account_type_10"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart3101" model="cncw.account">
+            <field name="code">3101</field>
+            <field name="name">衍生工具</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">3</field>
+            <field name="user_type_id" ref="cncw_account_type_11"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart3201" model="cncw.account">
+            <field name="code">3201</field>
+            <field name="name">套期工具</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">3</field>
+            <field name="user_type_id" ref="cncw_account_type_11"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart3202" model="cncw.account">
+            <field name="code">3202</field>
+            <field name="name">被套期项目</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">3</field>
+            <field name="user_type_id" ref="cncw_account_type_11"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart4001" model="cncw.account">
+            <field name="code">4001</field>
+            <field name="name">实收资本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart4002" model="cncw.account">
+            <field name="code">4002</field>
+            <field name="name">资本公积</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart400201" model="cncw.account">
+            <field name="code">400201</field>
+            <field name="name">资本溢价</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4002"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart400202" model="cncw.account">
+            <field name="code">400202</field>
+            <field name="name">股本溢价</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4002"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart400203" model="cncw.account">
+            <field name="code">400203</field>
+            <field name="name">其他资本公积</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4002"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart4101" model="cncw.account">
+            <field name="code">4101</field>
+            <field name="name">资本公积</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart410101" model="cncw.account">
+            <field name="code">410101</field>
+            <field name="name">法定盈余公积</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410102" model="cncw.account">
+            <field name="code">410102</field>
+            <field name="name">任意盈余公积</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410103" model="cncw.account">
+            <field name="code">410103</field>
+            <field name="name">法定公益金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410104" model="cncw.account">
+            <field name="code">410104</field>
+            <field name="name">储备基金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410105" model="cncw.account">
+            <field name="code">410105</field>
+            <field name="name">企业发展基金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410106" model="cncw.account">
+            <field name="code">410106</field>
+            <field name="name">利润归还投资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4101"/>
+            <field name="user_type_id" ref="cncw_account_type_12"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart4102" model="cncw.account">
+            <field name="code">4102</field>
+            <field name="name">本年利润</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart4104" model="cncw.account">
+            <field name="code">4104</field>
+            <field name="name">利润分配</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410401" model="cncw.account">
+            <field name="code">410401</field>
+            <field name="name">提取法定盈余公积金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart410402" model="cncw.account">
+            <field name="code">410402</field>
+            <field name="name">提取任意盈余公积</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410403" model="cncw.account">
+            <field name="code">410403</field>
+            <field name="name">提取法定公益金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410404" model="cncw.account">
+            <field name="code">410404</field>
+            <field name="name">应付现金股利或利润</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410405" model="cncw.account">
+            <field name="code">410405</field>
+            <field name="name">转作股本的利润</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410406" model="cncw.account">
+            <field name="code">410406</field>
+            <field name="name">盈余公积补亏</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410407" model="cncw.account">
+            <field name="code">410407</field>
+            <field name="name">提取储备基金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410408" model="cncw.account">
+            <field name="code">410408</field>
+            <field name="name">提取企业发展基金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410409" model="cncw.account">
+            <field name="code">410409</field>
+            <field name="name">提取职工奖励及福利基金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410410" model="cncw.account">
+            <field name="code">410410</field>
+            <field name="name">利润归还投资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart410411" model="cncw.account">
+            <field name="code">410411</field>
+            <field name="name">未分配利润</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart4104"/>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart4201" model="cncw.account">
+            <field name="code">4201</field>
+            <field name="name">库存股</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_13"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart5001" model="cncw.account">
+            <field name="code">5001</field>
+            <field name="name">生产成本</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart500101" model="cncw.account">
+            <field name="code">500101</field>
+            <field name="name">基本生产成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart5001"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+         <record id="chart50010101" model="cncw.account">
+            <field name="code">50010101</field>
+            <field name="name">-直接材料</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart500101"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart50010102" model="cncw.account">
+            <field name="code">50010102</field>
+            <field name="name">-直接人工</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart500101"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart50010103" model="cncw.account">
+            <field name="code">50010103</field>
+            <field name="name">-制造费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart500101"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart500102" model="cncw.account">
+            <field name="code">500102</field>
+            <field name="name">辅助生产成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart5001"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart5101" model="cncw.account">
+            <field name="code">5101</field>
+            <field name="name">制造费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart5201" model="cncw.account">
+            <field name="code">5201</field>
+            <field name="name">劳务成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart5301" model="cncw.account">
+            <field name="code">5301</field>
+            <field name="name">研发支出</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart530101" model="cncw.account">
+            <field name="code">530101</field>
+            <field name="name">研发支出</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart5301"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart530102" model="cncw.account">
+            <field name="code">530102</field>
+            <field name="name">资本化支出</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">4</field>
+            <field name="parent_id" ref="chart5301"/>
+            <field name="user_type_id" ref="cncw_account_type_14"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6001" model="cncw.account">
+            <field name="code">6001</field>
+            <field name="name">主营业务收入</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">7</field>
+            <field name="user_type_id" ref="cncw_account_type_15"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6051" model="cncw.account">
+            <field name="code">6051</field>
+            <field name="name">其他业务收入</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">7</field>
+            <field name="user_type_id" ref="cncw_account_type_16"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6101" model="cncw.account">
+            <field name="code">6101</field>
+            <field name="name">公允价值变动损益</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">7</field>
+            <field name="user_type_id" ref="cncw_account_type_16"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6111" model="cncw.account">
+            <field name="code">6111</field>
+            <field name="name">投资收益</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">7</field>
+            <field name="user_type_id" ref="cncw_account_type_16"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6301" model="cncw.account">
+            <field name="code">6301</field>
+            <field name="name">营业外收入</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">C</field>
+            <field name="active">1</field>
+            <field name="account_category">7</field>
+            <field name="user_type_id" ref="cncw_account_type_16"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6401" model="cncw.account">
+            <field name="code">6401</field>
+            <field name="name">主营业务成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_17"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6402" model="cncw.account">
+            <field name="code">6402</field>
+            <field name="name">其他业务成本</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6403" model="cncw.account">
+            <field name="code">6403</field>
+            <field name="name">营业税金及附加</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6601" model="cncw.account">
+            <field name="code">6601</field>
+            <field name="name">销售费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660101" model="cncw.account">
+            <field name="code">660101</field>
+            <field name="name">办公用品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660102" model="cncw.account">
+            <field name="code">660102</field>
+            <field name="name">房租</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660103" model="cncw.account">
+            <field name="code">660103</field>
+            <field name="name">物业管理费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660104" model="cncw.account">
+            <field name="code">660104</field>
+            <field name="name">水电费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660105" model="cncw.account">
+            <field name="code">660105</field>
+            <field name="name">交际应酬费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660106" model="cncw.account">
+            <field name="code">660106</field>
+            <field name="name">市内交通费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660107" model="cncw.account">
+            <field name="code">660107</field>
+            <field name="name">差旅费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660108" model="cncw.account">
+            <field name="code">660108</field>
+            <field name="name">补助</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660109" model="cncw.account">
+            <field name="code">660109</field>
+            <field name="name">通讯费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660110" model="cncw.account">
+            <field name="code">660110</field>
+            <field name="name">工资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660111" model="cncw.account">
+            <field name="code">660111</field>
+            <field name="name">佣金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660112" model="cncw.account">
+            <field name="code">660112</field>
+            <field name="name">保险金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660113" model="cncw.account">
+            <field name="code">660113</field>
+            <field name="name">福利费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660114" model="cncw.account">
+            <field name="code">660114</field>
+            <field name="name">包装费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660115" model="cncw.account">
+            <field name="code">660115</field>
+            <field name="name">展览费费和广告费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660116" model="cncw.account">
+            <field name="code">660116</field>
+            <field name="name">商品维修费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660117" model="cncw.account">
+            <field name="code">660117</field>
+            <field name="name">预计产品质量保证损失</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660118" model="cncw.account">
+            <field name="code">660118</field>
+            <field name="name">运输费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660119" model="cncw.account">
+            <field name="code">660119</field>
+            <field name="name">装卸费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660120" model="cncw.account">
+            <field name="code">660120</field>
+            <field name="name">折旧费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660121" model="cncw.account">
+            <field name="code">660121</field>
+            <field name="name">计提福利</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660122" model="cncw.account">
+            <field name="code">660122</field>
+            <field name="name">计提职工教育经费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660199" model="cncw.account">
+            <field name="code">660199</field>
+            <field name="name">其他</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6601"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6602" model="cncw.account">
+            <field name="code">6602</field>
+            <field name="name">管理费用</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660201" model="cncw.account">
+            <field name="code">660201</field>
+            <field name="name">办公用品</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660202" model="cncw.account">
+            <field name="code">660202</field>
+            <field name="name">房租</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660203" model="cncw.account">
+            <field name="code">660203</field>
+            <field name="name">物业管理费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660204" model="cncw.account">
+            <field name="code">660204</field>
+            <field name="name">水电费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660205" model="cncw.account">
+            <field name="code">660205</field>
+            <field name="name">交际应酬费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660206" model="cncw.account">
+            <field name="code">660206</field>
+            <field name="name">市内交通费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660207" model="cncw.account">
+            <field name="code">660207</field>
+            <field name="name">差旅费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660208" model="cncw.account">
+            <field name="code">660208</field>
+            <field name="name">通讯费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660209" model="cncw.account">
+            <field name="code">660209</field>
+            <field name="name">工资</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660210" model="cncw.account">
+            <field name="code">660210</field>
+            <field name="name">保险金</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660211" model="cncw.account">
+            <field name="code">660211</field>
+            <field name="name">福利费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660212" model="cncw.account">
+            <field name="code">660212</field>
+            <field name="name">工会经费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660213" model="cncw.account">
+            <field name="code">660213</field>
+            <field name="name">董事会费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660214" model="cncw.account">
+            <field name="code">660214</field>
+            <field name="name">聘请中介机构费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660215" model="cncw.account">
+            <field name="code">660215</field>
+            <field name="name">咨询费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660216" model="cncw.account">
+            <field name="code">660216</field>
+            <field name="name">诉讼费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660217" model="cncw.account">
+            <field name="code">660217</field>
+            <field name="name">房产税</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+
+        <record id="chart660218" model="cncw.account">
+            <field name="code">660218</field>
+            <field name="name">车船使用税</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660219" model="cncw.account">
+            <field name="code">660219</field>
+            <field name="name">土地使用税</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660220" model="cncw.account">
+            <field name="code">660220</field>
+            <field name="name">印花税</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660221" model="cncw.account">
+            <field name="code">660221</field>
+            <field name="name">技术转让费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660222" model="cncw.account">
+            <field name="code">660222</field>
+            <field name="name">矿产资源补偿费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660223" model="cncw.account">
+            <field name="code">660223</field>
+            <field name="name">研究费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660224" model="cncw.account">
+            <field name="code">660224</field>
+            <field name="name">排污费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660225" model="cncw.account">
+            <field name="code">660225</field>
+            <field name="name">折旧费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660226" model="cncw.account">
+            <field name="code">660226</field>
+            <field name="name">计提福利</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660227" model="cncw.account">
+            <field name="code">660227</field>
+            <field name="name">计提职工教育经费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660228" model="cncw.account">
+            <field name="code">660228</field>
+            <field name="name">存货盘亏或盘盈</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6602"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6603" model="cncw.account">
+            <field name="code">6603</field>
+            <field name="name">财务费用</field>
+            <field name="sub_account_type">view</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660301" model="cncw.account">
+            <field name="code">660301</field>
+            <field name="name">汇兑损益</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6603"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660302" model="cncw.account">
+            <field name="code">660302</field>
+            <field name="name">利息</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6603"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart660303" model="cncw.account">
+            <field name="code">660303</field>
+            <field name="name">手续费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6603"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart660399" model="cncw.account">
+            <field name="code">660399</field>
+            <field name="name">其他</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6603"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6701" model="cncw.account">
+            <field name="code">6701</field>
+            <field name="name">资产减值损失</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6711" model="cncw.account">
+            <field name="code">6711</field>
+            <field name="name">营业外支出</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+        <record id="chart6801" model="cncw.account">
+            <field name="code">6801</field>
+            <field name="name">所得税费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart680101" model="cncw.account">
+            <field name="code">680101</field>
+            <field name="name">当期所得税费</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6801"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart680102" model="cncw.account">
+            <field name="code">680102</field>
+            <field name="name">递延所得税费用</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="parent_id" ref="chart6801"/>
+            <field name="user_type_id" ref="cncw_account_type_19"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+
+        <record id="chart6901" model="cncw.account">
+            <field name="code">6901</field>
+            <field name="name">以前年度损益调整</field>
+            <field name="sub_account_type">none</field>
+            <field name="dc_type">D</field>
+            <field name="active">1</field>
+            <field name="account_category">6</field>
+            <field name="user_type_id" ref="cncw_account_type_18"/>
+            <field name="reconcile" eval="False"/>
+        </record>
+    </data>
+</odoo>

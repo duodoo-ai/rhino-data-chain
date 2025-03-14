@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sale_rebate_wizard_form">
+            <field name="name">sale_rebate_wizard.form</field>
+            <field name="model">sale.rebate.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="明细">
+                    <group colspan="4" col="4">
+                        <field name="picking_id" invisible="1"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="product_id"  class="oe_inline" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="sale_order_no" class="oe_inline"/>
+                        <field name="product_name"  class="oe_inline"/>
+                    </group>
+                    <button name="action_query" string="查询" type="object" class="oe_highlight"/>
+                    <field name="wizard_ids">
+                        <list>
+                            <field name="is_check"/>
+                            <field name="sale_order_name"/>
+                            <field name="picking_name"/>
+                            <field name="product_id"/>
+                            <field name="price_unit" string="金额"/>
+                            <field name="uom_id"/>
+                            <field name="sale_line_id" invisible="1"/>
+                        </list>
+                    </field>
+                    <button name="action_confirm" string="确认" type="object" class="oe_highlight"/>
+                    or
+                    <button string="_Cancel" class="oe_link" special="cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_open_sale_rebate_wizard">
+            <field name="name">销售折让</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.rebate.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_sale_rebate_wizard_form"/>
+            <field name="target">new</field>
+            <field name="context">{'default_picking_id':active_id}</field>
+        </record>
+    </data>
+</odoo>

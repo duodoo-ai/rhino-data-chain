@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_stock_picking_type_form_inherit_res">
+            <field name="name">view.stock.picking.type.form.inherit</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="warehouse_id" position="after">
+                    <field name="table_name" class="oe_inline"/>
+                    <field name="effect_qty" class="oe_inline"/>
+                    <field name="cost_mode" class="oe_inline"/>
+                    <field name="effect_statement" class="oe_inline"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 采购折让单 -->
+        <record id="view_purchase_storage_return_tree" model="ir.ui.view">
+            <field name="name">purchase.rebate.tree</field>
+            <field name="model">purchase.rebate</field>
+            <field name="arch" type="xml">
+                <list string="采购折让单">
+                    <field name="name" />
+                    <field name="date" />
+                    <field name="user_id" />
+                    <field name="department_id" />
+                    <field name="partner_id" />
+                    <field name="state" />
+                    <field name="done_date" />
+                    <field name="done_user_id" />
+                    <field name="note" string="折让原因"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_purchase_rebate_form" model="ir.ui.view">
+            <field name="name">purchase.rebate.form</field>
+            <field name="model">purchase.rebate</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="采购折让单">
+                    <header>
+                        <button name="action_confirm" invisible="state not in ['in_progress','draft']" icon="fa-check"
+                                string="申请确认" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_confirm" invisible="state != 'done'" icon="fa-close"
+                                string="取消申请" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,cancel"
+                                                   statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="name"  readonly="1"/>
+                                <field name="date"  class="oe_inline" readonly="state != 'draft'"/>
+                                <field name="partner_id"  class="oe_inline"
+                                       string="供应商" options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"
+                                       domain="[('supplier_rank','>',0)]"/>
+                            </group>
+                            <group>
+                                <field name="user_id" string="申请人员" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="department_id" readonly="1"/>
+                                <field name="company_id" string="公司" readonly="1"
+                                       groups="base.group_multi_company"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="total_qty" string="数量" readonly="1" invisible="1"/>
+                                <field name="location_id" readonly="1" invisible="1"/>
+                                <field name="location_dest_id" readonly="1" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="tax_id" invisible="1"/>
+                                <field name="department_id" invisible="1"/>
+                                <field name="picking_type_id" invisible="1" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="line_ids" string="折让明细">
+                                <button name="action_purchase_rebate_add" type="object" string="添加折让明细"
+                                        class="oe_highlight" invisible="state != 'draft'" icon="fa-plus-circle"/>
+                                <field name="line_ids" context="{'default_master_id':active_id}"
+                                       options="{'reload_on_button': true}" readonly="state != 'draft'">
+                                    <list create="false" editable="bottom" >
+                                        <field name="sequence" readonly="1"/>
+                                        <field name="purchase_line_id" options="{'no_create': True, 'no_open': True}"  readonly="1"/>
+                                        <field name="rebate_move_id" options="{'no_create': True, 'no_open': True}"  readonly="1"/>
+                                        <field name="product_id" string="货品编码" options="{'no_create': True, 'no_open': True}"  readonly="1"/>
+                                        <field name="product_name" invisible="1"/>
+                                        <field name="product_uom" options="{'no_create': True, 'no_open': True}"  readonly="1"/>
+                                        <field name="product_uom_qty" string="数量" readonly="1" sum="total"/>
+                                        <field name="price_unit" string="折让金额" required="1" readonly="state != 'draft'"/>
+                                        <field name="amount" string="金额" invisible="1" sum="total"/>
+                                        <field name="location_id" invisible="1"/>
+                                        <field name="location_dest_id" invisible="1"/>
+                                        <field name="state" readonly="1"/>
+                                        <field name="statement_state" readonly="1"/>
+                                    </list>
+                                    <form name="line_ids" string="折让明细">
+                                        <group>
+                                            <field name="sequence" readonly="1"/>
+                                            <field name="purchase_line_id" readonly="1"/>
+                                            <field name="rebate_move_id" readonly="1"/>
+                                            <field name="product_id" readonly="1"/>
+                                            <field name="product_name" readonly="1" invisible="1"/>
+                                            <field name="product_uom" readonly="1"/>
+                                            <field name="price_unit" string="折让金额" readonly="state != 'draft'"/>
+                                            <field name="product_uom_qty" string="退货数量" invisible="1"/>
+                                            <field name="location_id" readonly="0" invisible="1"/>
+                                            <field name="location_dest_id" readonly="0" invisible="1"/>
+                                            <field name="product_qty" string="库存单位数量" invisible="1"/>
+                                            <field name="state" readonly="1"/>
+                                            <field name="picking_type_id" invisible="1" readonly="0"/>
+                                            <field name="date" invisible="1" readonly="0"/>
+                                            <field name="name" invisible="1" readonly="0"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="op_ids" string="库存明细" invisible="1">
+                                <field name="op_ids" context="{'default_master_id':active_id}"
+                                       options="{'reload_on_button': true}"
+                                       readonly="state in ['done','confirmed']">
+                                    <list create="false" edit="false">
+                                        <field name="voucher_line_id" readonly="0" />
+                                        <field name="product_id" readonly="0" />
+                                        <field name="product_uom" readonly="0" />
+                                        <field name="product_qty" readonly="0" />
+                                        <field name="lot_id" readonly="0" />
+                                        <field name="package_id" readonly="1" />
+                                        <field name="result_package_id" readonly="0" />
+                                        <field name="owner_id" readonly="0" />
+                                    </list>
+                                </field>
+                            </page>
+                            <page name="note" string="折让原因">
+                                <field name="note" string="折让原因" required="1"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <group>
+                                        <field name="confirm_user_id"/>
+                                        <field name="confirm_date"/>
+                                        <field name="done_user_id"/>
+                                        <field name="done_date" readonly="state in ['done','cancel']"/>
+                                    </group>
+                                    <group>
+                                        <field name="create_uid" readonly="1" string="建立人"/>
+                                        <field name="create_date" readonly="1" string="建立日"/>
+                                        <field name="write_uid" readonly="1" string="修改人"/>
+                                        <field name="write_date" readonly="1" string="修改日"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_purchase_rebate_search" model="ir.ui.view">
+            <field name="name">purchase.rebate.search</field>
+            <field name="model">purchase.rebate</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="单据编号"/>
+                    <field name="date" widget="date"/>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="department_id"/>
+                    <field name="origin" string="来源单号"/>
+                    <field name="state"/>
+                    <field name="create_uid"/>
+                    <separator/>
+                    <filter name="completed" string="已完成" domain="[('state','=','done')]"/>
+                    <filter name="not_done" string="未完成" domain="[('state','not in',('done','cancel'))]"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day-1)), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(datetime.date(context_today().year,12,1), datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-personal" string="上月数据" name="last_month"
+                            domain="[('create_date', '&lt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day)),datetime.time(23,59,59))),('create_date', '&gt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day))-datetime.timedelta((context_today() - datetime.timedelta(context_today().day)).day),datetime.time(23,59,59)))]"/>
+                    <filter string="本周单据" name="current_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="上周单据" name="first_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+1)),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(7+context_today().weekday())),datetime.time(0,0,0)))]"/>
+                    <filter string="两周内单据" name="two_week"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(6-context_today().weekday())),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().weekday()+7)),datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="去年数据" name="old_year"
+                            domain="[('create_date','&lt;=',datetime.datetime.combine(datetime.datetime(context_today().year-1,12,31),datetime.time(23,59,59))),('create_date','&gt;=',datetime.datetime.combine(datetime.datetime(context_today().year-1,1,1),datetime.time(0,0,0)))]"/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="状态" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_purchase_rebate">
+            <field name="name">采购折让单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.rebate</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_purchase_rebate_search" />
+            <field name="context" eval="{'search_default_not_done':1}"/>
+        </record>
+
+        <menuitem id="menu_purchase_rebate" name="采购折让单"
+                  sequence="10"
+                  groups="base_cw.account_group_account_invoice"
+                  parent="cncw_account_menu_ap"
+                  action="action_purchase_rebate"/>
+    </data>
+</odoo>

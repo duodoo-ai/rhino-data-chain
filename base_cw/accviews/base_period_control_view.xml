@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="base_period_control_view" model="ir.ui.view">
+            <field name="name">base.period.control.form</field>
+            <field name="model">base.period.control</field>
+            <field name="arch" type="xml">
+                <form string="Data Recording">
+                    <header>
+                        <button name="create_ir_rule" type="object" string="创建规则"
+                                class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <notebook>
+                            <page string="控制表">
+                                <button name="add_line" string="批量添加模型" type="object" class="oe_highlight"/>
+                                <field name="line_ids">
+                                    <list editable="bottom">
+                                        <field name="ir_model_id"/>
+                                        <field name="field_name" required="1"
+                                               domain="[('ttype','in',['date','datetime']), ('model_id','=',ir_model_id)]"/>
+                                        <field name="model_name" readonly="1"/>
+                                        <field name="model_state" readonly="1"/>
+                                        <field name="model_transient" readonly="1"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="规则明细">
+                                <field name="ir_rule_ids" colspan="4"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_base_period_control_objects" model="ir.actions.act_window">
+            <field name="name">期间控制表</field>
+            <field name="res_model">base.period.control</field>
+            <field name="view_mode">form</field>
+            <field name="res_id" ref="base_period_control_01"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="base_period_control_view"/>
+        </record>
+    </data>
+</odoo>

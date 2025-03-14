@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 销售团队 -->
+        <record id="view_crm_team_tree" model="ir.ui.view">
+            <field name="name">crm.team.tree</field>
+            <field name="model">crm.team</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <list string="销售团队">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_crm_team_form" model="ir.ui.view">
+            <field name="name">crm.team.form</field>
+            <field name="model">crm.team</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="销售团队">
+                    <header>
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="name" class="oe_inline"/>
+                                <field name="code" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="bank_ids_page" string="银行帐号">
+                                <field name="bank_ids" />
+                            </page>
+                            <page name="note" string="备注">
+                                <field name="note" />
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <field name="active" string="启用" />
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_crm_team_search" model="ir.ui.view">
+            <field name="name">crm.team.search</field>
+            <field name="model">crm.team</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+
+                    <group expand="0" string="Group By...">
+                        <filter string="名称" domain="[]" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_crm_team">
+            <field name="name">销售团队</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">crm.team</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_crm_team_search"/>
+            <field name="context">{'default_active':True}</field>
+        </record>
+
+        <record model="ir.ui.view" id="view_res_users_crm_team_form_inherit">
+            <field name="name">view.res.users.form.crm.team.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="team_id" string="隶属销售团队"
+                           class="oe_inline" options="{'no_create': True, 'no_open': True}"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

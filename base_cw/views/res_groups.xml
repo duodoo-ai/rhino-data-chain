@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_res_groups_form_inherit">
+            <field name="name">view.res.groups.form.inherit</field>
+            <field name="model">res.groups</field>
+            <field name="inherit_id" ref="base.view_groups_form"/>
+            <field name="arch" type="xml">
+                <field name="share" position="before">
+                    <field name="is_custom" string="用户自定义"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_res_groups_tree">
+            <field name="name">res.groups.tree</field>
+            <field name="model">res.groups</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="res_groups" default_order="category_id">
+                    <field name="category_id" string="类别"/>
+                    <field name="name"/>
+                    <field name="full_name"/>
+                    <field name="share"/>
+                    <field name="is_custom"/>
+                    <field name="comment"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_groups_search_inherit" model="ir.ui.view">
+            <field name="name">Group Search</field>
+            <field name="model">res.groups</field>
+            <field name="inherit_id" ref="base.view_groups_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="名称"/>
+                    <field name="category_id" string="类别"/>
+                    <filter name="is_custom" string="用户自定义" domain="[('is_custom','!=',False)]"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="类别" name="group_category_id" domain="[]" context="{'group_by':'category_id'}"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+
+        <record id="base.action_res_groups" model="ir.actions.act_window">
+            <field name="view_id" ref="view_res_groups_tree"/>
+            <field name="context">{'search_default_is_custom':1}</field>
+        </record>
+    </data>
+</odoo>

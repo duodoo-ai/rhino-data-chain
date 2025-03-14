@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 收款单 -->
+        <record id="view_account_receive_tree" model="ir.ui.view">
+            <field name="name">account.receive.tree</field>
+            <field name="model">account.receive</field>
+            <field name="arch" type="xml">
+                <list string="收款单">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="receive_type"/>
+                    <field name="partner_id"/>
+                    <field name="currency_id"/>
+                    <field name="advance_receive_apply_id"/>
+                    <field name="receive_amount" sum="total"/>
+                    <field name="local_receive_amount" sum="total"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_receive_form" model="ir.ui.view">
+            <field name="name">account.receive.form</field>
+            <field name="model">account.receive</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="收款单">
+                    <header>
+                        <button name="action_confirm" invisible="state != 'draft'"
+                                string="申请确认" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_confirm" invisible="state != 'confirmed'"
+                                string="取消确认" type="object" class="oe_highlight"/>
+                        <button name="action_done" invisible="state != 'confirmed'"
+                                string="收款确认" type="object" class="oe_highlight"/>
+                        <button name="action_cancel_done" invisible="state != 'done'"
+                                string="取消付款确认" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,cancel"
+                               statusbar_colors='{"cancel":"red"}'/>
+                    </header>
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="name" readonly="1"/>
+                                <field name="date" readonly="state != 'draft'" class="oe_inline"/>
+                                <field name="receive_type" readonly="state != 'draft'" class="oe_inline" required="1"/>
+                                <field name="partner_id" class="oe_inline" required="True"
+                                       domain="[('customer_rank','>',0),('is_company','=',True)]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="currency_id" class="oe_inline" required="True"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="exchange_rate" required="True" class="oe_inline" readonly="state != 'draft'"/>
+                            </group>
+                            <group name="amount">
+                                <field name="tax_id" class="oe_inline" invisible="1"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="team_id" class="oe_inline" required="True"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="receive_amount"/>
+                                <field name="local_receive_amount"/>
+                                <field name="receive_amount_chinese"/>
+                                <field name="advance_amount"/>
+                                <field name="lock_amount_receive"/>
+                                <field name="advance_receive_apply_id"/>
+                            </group>
+                            <group>
+                                <field name="offset_amount"/>
+                                <field name="local_offset_amount"/>
+                                <field name="diff_amount"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="offset_line_ids_page" string="收款明细">
+                                <label for="line_ids" string="收款明细"/>
+                                <button name="action_open_account_receive_advance_select_wizard" type="object"
+                                        string="收款使用" class="oe_highlight"
+                                        invisible="state != 'draft' or receive_type != 'A'"
+                                        icon="fa-plus-circle"/>
+                                <field name="line_ids" options="{'reload_on_button': true}"
+                                       readonly="state != 'draft'" context="{'default_dc_type':'D'}">
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="receive_category_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="dc_type"/>
+                                        <field name="amount" sum="total"/>
+                                        <field name="local_amount" sum="total"/>
+                                        <field name="receive_bank_id" options="{'no_create': True, 'no_open': True}" invisible="1"
+                                               domain="[('id','in',(receive_bank_ids and receive_bank_ids[0]) and receive_bank_ids[0][2] or [])]"/>
+                                        <field name="notice_bank_id" options="{'no_create': True, 'no_open': True}" invisible="1"
+                                               domain="[('id','in',(notice_bank_ids and notice_bank_ids[0]) and notice_bank_ids[0][2] or [])]"/>
+                                        <field name="receive_bank_ids" invisible="1"/>
+                                        <field name="notice_bank_ids" invisible="1"/>
+                                        <field name="bill_number" invisible="1"/>
+                                        <field name="bill_date" invisible="1"/>
+                                        <field name="bill_due_date" invisible="1"/>
+                                        <field name="overdue_days" invisible="1"/>
+                                        <field name="advance_id" readonly="1"/>
+                                        <field name="advance_amount" sum="total"/>
+                                        <field name="note"/>
+                                    </list>
+                                    <form>
+                                        <group col="2">
+                                            <group>
+                                                <field name="sequence"/>
+                                                <field name="receive_category_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="dc_type"/>
+                                                <field name="amount"/>
+                                                <field name="local_amount"/>
+                                                <field name="advance_id"/>
+                                                <field name="advance_amount"/>
+                                            </group>
+                                            <group>
+                                                <field name="receive_bank_id"
+                                                       options="{'no_create': True, 'no_open': True}"
+                                                       domain="[('id','in',(receive_bank_ids and receive_bank_ids[0]) and receive_bank_ids[0][2] or [])]"/>
+                                                <field name="notice_bank_id"
+                                                       options="{'no_create': True, 'no_open': True}"
+                                                       domain="[('id','in',(notice_bank_ids and notice_bank_ids[0]) and notice_bank_ids[0][2] or [])]"/>
+                                                <field name="receive_bank_ids" invisible="1"/>
+                                                <field name="notice_bank_ids" invisible="1"/>
+                                                <field name="bill_number"/>
+                                                <field name="bill_date"/>
+                                                <field name="bill_due_date"/>
+                                                <field name="overdue_days"/>
+                                                <field name="note"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                                <label for="offset_line_ids" string="冲销明细" invisible="receive_type == 'B'"/>
+                                <button name="action_open_account_receive_add_invoice_wizard" type="object"
+                                        string="选择发票"
+                                        invisible="receive_type != 'A' and state != 'draft'"
+                                        class="oe_highlight" icon="fa-plus-circle"/>
+                                <button name="action_auto_offset" type="object" string="自动冲销发票"
+                                        invisible="receive_type != 'A' and state != 'draft'"
+                                        style="margin-left: 20px;"
+                                        class="oe_highlight" icon="fa-plus-circle"/>
+                                <button name="action_open_account_receive_offset_pay_add_invoice_wizard" type="object"
+                                        string="应付冲应收"
+                                        invisible="receive_type != 'A' and state != 'draft'"
+                                        style="margin-left: 20px;"
+                                        class="oe_highlight" icon="fa-plus-circle"/>
+                                <field name="offset_line_ids" options="{'reload_on_button': true}"
+                                       readonly="state != 'draft'"
+                                       invisible="receive_type == 'B'"
+                                       context="{'default_dc_type':'C'}">
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="expense_category_id"
+                                               invisible="1"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="invoice_id"
+                                               domain="[('partner_id','=',parent.partner_id),('move_type','in',('out_invoice','out_refund')),('state','=','open')]"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="invoice_no" invisible="1"/>
+                                        <field name="date_invoice"/>
+                                        <field name="date_due"/>
+                                        <field name="overdue_days"/>
+                                        <field name="invoice_amount"/>
+                                        <field name="invoice_remaining_amount"/>
+                                        <field name="amount" string="本次冲帐金额"/>
+                                        <field name="remaining_amount"/>
+                                        <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="dc_type"/>
+                                        <field name="local_amount"/>
+                                        <field name="total_offset_amount"/>
+                                        <field name="offset_state"/>
+                                        <field name="note"/>
+                                    </list>
+                                    <form>
+                                        <group>
+                                            <group>
+                                                <field name="sequence"/>
+                                                <field name="invoice_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="invoice_no" invisible="1"/>
+                                                <field name="date_invoice"/>
+                                                <field name="date_due"/>
+                                                <field name="overdue_days"/>
+                                                <field name="invoice_amount"/>
+                                                <field name="amount" string="本次冲帐金额"/>
+                                                <field name="remaining_amount"/>
+                                            </group>
+                                            <group>
+                                                <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="dc_type"/>
+                                                <field name="local_amount"/>
+                                                <field name="total_offset_amount"/>
+                                                <field name="offset_state"/>
+                                                <field name="note"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="note" string="备注">
+                                <field name="note" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <group>
+                                        <field name="create_uid" readonly="1" string="建立人"/>
+                                        <field name="create_date" readonly="1" string="建立日"/>
+                                        <field name="write_uid" readonly="1" string="修改人"/>
+                                        <field name="write_date" readonly="1" string="修改日"/>
+                                    </group>
+                                    <group>
+                                        <field name="confirm_user_id" readonly="1"/>
+                                        <field name="confirm_date" readonly="1"/>
+                                        <field name="done_user_id" readonly="1"/>
+                                        <field name="done_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_receive_search" model="ir.ui.view">
+            <field name="name">account.receive.search</field>
+            <field name="model">account.receive</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="收款单号" filter_domain="[('name','ilike',self)]"/>
+                    <field name="partner_id" string="客户编号" filter_domain="[('partner_id.name','ilike',self)]"/>
+                    <field name="line_ids" string="预收款使用单" filter_domain="[('line_ids.advance_id.name','ilike',self)]"/>
+                    <field name="offset_line_ids" string="发票单号"
+                           filter_domain="[('offset_line_ids.invoice_id.invoice_no','ilike',self)]"/>
+                    <field name="date" string="收款日期" widget="date"/>
+                    <separator/>
+                    <filter string="已完成" name="done" domain="[('state','=','done')]" help="显示已经完成的资料"/>
+                    <filter string="未完成" name="no_done" domain="[('state','not in',('cancel','done'))]"
+                            help="显示未完成的资料"/>
+                    <separator/>
+                    <filter string="本年单据" name="current_year"
+                            domain="[('create_date','&lt;=',time.strftime('%Y-12-31 23:59:59')),('create_date','&gt;=',time.strftime('%Y-01-01 00:00:00'))]"
+                            help="Orders created current year"/>
+                    <filter name="last_month" string="上月单据"
+                            domain="[('create_date','&lt;',time.strftime('%Y/%m/1')),('create_date','&gt;=',((context_today() -relativedelta(months=1)).strftime('%Y/%m/1')))]"
+                            help="Orders created last month"/>
+                    <filter string="本月单据" name="current_month"
+                            domain="[('create_date','&lt;=',time.strftime('%Y-%m-%d 23:59:59')),('create_date','&gt;=',time.strftime('%Y-%m-01 00:00:00'))]"
+                            help="Orders created current month"/>
+                    <filter string="今天单据" name="today"
+                            domain="[('create_date','&lt;=',time.strftime('%Y-%m-%d 23:59:59')),('create_date','&gt;=',time.strftime('%Y-%m-%d 00:00:00'))]"
+                            help="Orders created Today"/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_partner_id" string="客户编码" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_receive_type" string="收款性质" domain="[]"
+                                context="{'group_by':'receive_type'}"/>
+                        <filter name="group_currency_id" string="币别" domain="[]" context="{'group_by':'currency_id'}"/>
+                        <filter name="group_state" string="单据状态" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_receive">
+            <field name="name">收款单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.receive</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_receive_search"/>
+            <field name="context" eval="{'search_default_no_done':1}"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_receive_form">
+            <field name="name">收款单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.receive</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="view_account_receive_line_form2" model="ir.ui.view">
+            <field name="name">account.receive.line.form2</field>
+            <field name="model">account.receive.line</field>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+                <form string="收款明细" create="0">
+                    <sheet>
+                        <field name="sub_account_lines" string="辅助核算" mode="kanban"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_receive_offset_line_form2" model="ir.ui.view">
+            <field name="name">account.receive.offset.line.form2</field>
+            <field name="model">account.receive.offset.line</field>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+                <form string="收款冲销明细" create="0">
+                    <sheet>
+                        <field name="sub_account_lines" string="辅助核算" mode="kanban"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <menuitem id="menu_account_receive" name="收款单"
+                  sequence="80"
+                  parent="cncw_account_menu_ar"
+                  action="action_account_receive"/>
+    </data>
+</odoo>

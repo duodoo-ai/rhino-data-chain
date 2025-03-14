@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_tree_account_purchase_invoice_delivery_report" model="ir.ui.view">
+            <field name="name">account.purchase.invoice.delivery.report.tree</field>
+            <field name="model">account.purchase.invoice.delivery.report</field>
+            <field name="arch" type="xml">
+                <list delete="0" edit="0" create="0">
+                    <field name="partner_id" optional="show"/>
+                    <field name="purchase_line_id" options="{'no_create': True, 'no_open': True}"
+                           readonly="1" optional="show"/>
+                    <field name="origin" readonly="1" optional="show"/>
+                    <field name="name" readonly="1" optional="show"/>
+                    <field name="date" readonly="1" widget="date" optional="show"/>
+                    <field name="product_id" options="{'no_create': True, 'no_open': True}"
+                           readonly="1" optional="show"/>
+                    <field name="product_code" optional="show"/>
+                    <field name="product_qty" readonly="1" sum="total" optional="show"/>
+                    <field name="unchecked_qty" readonly="1" sum="total" optional="show"/>
+                    <field name="product_uos" options="{'no_create': True, 'no_open': True}"
+                           readonly="1" optional="show"/>
+                    <field name="price_unit_uos" readonly="1" optional="show"/>
+                    <field name="unchecked_amount" readonly="1" optional="show"/>
+                    <field name="picking_type_id" options="{'no_create': True, 'no_open': True}"
+                           readonly="1" optional="show"/>
+                    <field name="invoice_no" optional="show"/>
+                    <field name="invoiced_qty" optional="show" sum="total"/>
+                    <field name="invoiced_amount" optional="show" sum="total"/>
+                    <field name="last_invoice_date" optional="show"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_account_purchase_invoice_delivery_report_search" model="ir.ui.view">
+            <field name="name">account.purchase.invoice.delivery.report.search</field>
+            <field name="model">account.purchase.invoice.delivery.report</field>
+            <field name="arch" type="xml">
+                <search string="采购明细开票查询">
+                    <field name="partner_id"/>
+                    <field name="category_id"/>
+                    <field name="date"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('date','&lt;=',context_today().strftime('%Y-%m-%d')),('date','&gt;=',context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('date','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(32-context_today().day)),datetime.time(23,59,59)).strftime('%Y-%m-01')),('date','&gt;=',time.strftime('%Y-%m-01'))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('date','&lt;=',time.strftime('%Y-12-31')),('date','&gt;=',time.strftime('%Y-01-01'))]"/>
+                    <filter icon="terp-personal" name="last_month" string="上月数据"
+                            domain="[('date', '&gt;=', (context_today() - datetime.timedelta(context_today().day)).strftime('%Y-%m-01')), ('date', '&lt;', context_today().strftime('%Y-%m-1'))]"/>
+                    <filter icon="terp-go-today" string="去年数据" name="old_year"
+                            domain="[('date','&lt;=',datetime.datetime(context_today().year-1,12,31).strftime('%Y-12-31')),('date','&gt;=',datetime.datetime(context_today().year-1,1,1).strftime('%Y-01-01'))]"/>
+                    <separator/>
+                    <filter name="not_invoice" domain="[('invoice_no','=',False)]" string="未开票"/>
+                    <filter name="has_invoice" domain="[('invoice_no','!=',False)]" string="已开票"/>
+                    <group expand="1" string="Group By">
+                        <filter string="供应商" name="Partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="货品分类" name="group_category_id" context="{'group_by':'category_id'}"/>
+                        <filter string="采购单" name="group_purchase_order_id" context="{'group_by':'purchase_order_id'}"/>
+
+                    </group>
+                    <searchpanel>
+                        <field name="category_id" select="multi" string="产品分类" icon="fa-cutlery"/>
+                        <field name="picking_type_id" select="multi" string="作业类型" icon="fa-truck"/>
+                    </searchpanel>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_purchase_invoice_delivery_report" model="ir.actions.act_window">
+            <field name="name">采购开票查询</field>
+            <field name="res_model">account.purchase.invoice.delivery.report</field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_tree_account_purchase_invoice_delivery_report"/>
+            <field name="context">
+                {'search_default_currency_month':1,
+                'search_default_group_purchase_order_id':1,
+                'search_default_not_invoice':1
+                }
+            </field>
+        </record>
+
+        <menuitem id="menu_account_purchase_invoice_delivery_report"
+                  name="采购开票查询"
+                  sequence="65"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_purchase_invoice_delivery_report"/>
+    </data>
+</odoo>

@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 客户红字发票 -->
+        <record id="view_account_invoice_sale_out_refund_tree1" model="ir.ui.view">
+            <field name="name">account.move.sale.out.refund.tree</field>
+            <field name="model">cncw.invoice.move</field>
+            <field name="arch" type="xml">
+                <list string="客户红字发票" >
+                    <field name="partner_id" string="客户"/>
+                    <field name="origin_invoice_id" string="原发票号码"/>
+                    <field name="name" string="单据编号"/>
+                    <field name="date_invoice"/>
+                    <field name="user_id"/>
+                    <field name="invoice_date_due" string="付款日期"/>
+                    <field name="currency_id"/>
+                    <field name="amount_untaxed" string="不含税金额"/>
+                    <field name="amount_tax"/>
+                    <field name="amount_total" string="含税总金额"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_sale_out_refund_form" model="ir.ui.view">
+            <field name="name">account.move.sale.out.refund.form</field>
+            <field name="model">cncw.invoice.move</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="客户发票">
+                    <header>
+                        <button name="action_invalid_invoice_confirm" invisible="state != 'draft'"
+                                string="申请确认" type="object" class="oe_highlight"/>
+                        <button name="action_invalid_invoice_cancel_confirm" invisible="state != 'paid'" string="取消确认" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_invalid_invoice_draft_to_cancel" invisible="state != 'draft'" string="取消发票" type="object"
+                                class="oe_highlight"/>
+                        <button name="clear_in_out_refund_invoice" string="清空票据" type="object"
+                            class="oe_highlight"
+                            invisible="not origin_invoice_id"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,paid,cancel"/>
+                    </header>
+                    <sheet>
+                        <group col="3">
+                            <group>
+                                <field name="name" string="单据编号" readonly="state != 'draft'" invisible="origin_invoice_id"/>
+                                <field name="company_id" class="oe_inline" string="公司"/>
+                                <field name="partner_id" class="oe_inline" string="客户" required="1"
+                                       domain="[('customer_rank','>',0)]"
+                                       readonly="state != 'draft' or account_statement_id"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="origin_invoice_id" string="原发票号码"
+                                       domain="[('state','=','open'),('move_type','=','out_invoice'),('partner_id','=',partner_id)]"
+                                       options="{'no_create': True, 'no_open': True}" class="oe_inline"
+                                       readonly="state not in ['draft','cancel'] or is_red_invoice"
+                                       required="is_red_invoice"
+                                       />
+                                <field name="currency_id" class="oe_inline" required="1"
+                                       readonly="state != 'draft' or account_statement_id"
+                                       options="{'no_create': True, 'no_open': True}"/>
+
+                                <field name="tax_rate" class="oe_inline" invisible="1"/>
+                                <field name="account_statement_id" class="oe_inline" invisible="1"/>
+                                <field name="date" class="oe_inline" invisible="1"/>
+                                <field name="is_red_invoice" class="oe_inline" invisible="1"/>
+                                <field name="categ_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
+                            </group>
+                            <group>
+                                <field name="tax_id" class="oe_inline" required="1"
+                                       domain="[('type_tax_use','!=','purchase')]"
+                                       readonly="state != 'draft'"
+                                       options="{'no_create': True, 'no_open': True}"/>
+                                <field name="payment_term_id" required="1"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       class="oe_inline"/>
+                                <field name="date_invoice" class="oe_inline" required="1"/>
+                                <field name="invoice_date_due" string="付款日期" required="1" class="oe_inline"/>
+                                <field name="ref" class="oe_inline" invisible="1"/>
+                                <field name="exchange_rate" class="oe_inline" required="1" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="amount_untaxed" class="oe_inline" string="不含税金额"/>
+                                <field name="amount_tax" class="oe_inline" string="税额"/>
+                                <field name="amount_total" class="oe_inline" string="含税金额"/>
+                                <field name="total_invoice_amount" class="oe_inline" string="发票总额"/>
+                                <field name="purchase_vendor_bill_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="invoice_line_ids_page" string="发票明细">
+                                <field name="invoice_line_ids" readonly="state != 'draft'" options="{'reload_on_button': true}" force_save="1">
+                                    <list editable="bottom" create="0">
+                                        <field name="sequence" readonly="1" force_save="1"/>
+                                        <field name="company_id" invisible="1" force_save="1"/>
+                                        <field name="sale_line_ids" string="订单编号" force_save="1" widget="many2many_tags" optional="show"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="product_id" options="{'no_create': True, 'no_open': True}" optional="show" force_save="1"/>
+                                        <field name="product_uom_category_id" invisible="1" force_save="1"/>
+                                        <field name="product_uom_id" options="{'no_create': True, 'no_open': True}" optional="show" force_save="1"/>
+                                        <field name="account_statement_line_id" options="{'no_create': True, 'no_open': True}" force_save="1" optional="show"/>
+                                        <field name="freight_amount"  sum="total" optional="show" force_save="1" readonly="0"/>
+                                        <field name="statement_amount"  sum="total" optional="show" force_save="1" readonly="0"/>
+                                        <field name="quantity"  sum="total" string="开票数量" optional="show" force_save="1"/>
+                                        <field name="price_unit" string="开票单价" optional="show" force_save="1"/>
+                                        <field name="price_subtotal"  sum="total" string="开票金额" optional="show"  force_save="1" readonly="0"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="is_auto" invisible="1"/>
+                                        <field name="tax_amount" string="税额" invisible="1" readonly="0" force_save="1"/>
+                                        <field name="total_amount" invisible="1" readonly="0" force_save="1"/>
+                                        <field name="picking_type_id" options="{'no_create': True, 'no_open': True}" force_save="1" optional="show"/>
+                                        <field name="statement_source" optional="show" force_save="1"/>
+                                        <field name="amount_discount" optional="show" readonly="0" force_save="1"/>
+                                        <field name="account_id" invisible="1" force_save="1"/>
+                                        <field name="name" invisible="1" force_save="1"/>
+                                        <field name="origin_invoice_line_id" invisible="1" force_save="1"/>
+                                        <field name="tax_ids" widget="many2many_tags" optional="hide"/>
+                                    </list>
+                                    <form>
+                                        <group col="2">
+                                            <group>
+                                                <field name="sequence" readonly="1"/>
+                                                <field name="sale_line_ids" string="订单编号" widget="many2many_tags" readonly="1"
+                                                       options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="product_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="product_uom_category_id" invisible="1"/>
+                                                <field name="product_uom_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="account_statement_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                                <field name="freight_amount" readonly="1"/>
+                                                <field name="statement_amount" readonly="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="remaining_invoiced_qty" readonly="1"/>
+                                                <field name="remaining_invoiced_amount" readonly="1"/>
+                                                <field name="quantity" string="开票数量" readonly="state != 'draft' or is_auto"/>
+                                                <field name="price_unit" string="开票单价" readonly="state != 'draft' or is_auto"/>
+                                                <field name="price_subtotal" string="开票金额" readonly="1"/>
+                                                <field name="state" invisible="1"/>
+                                                <field name="is_auto" invisible="1"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="tax_line_ids" string="税额明细">
+                                <field name="invoice_line_ids2"
+                                       readonly="state != 'draft'"
+                                       options="{'reload_on_button': true}" force_save="1">
+                                    <list editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="name"/>
+                                        <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="tax_amount" sum="total" />
+                                    </list>
+                                </field>
+                            </page>
+                            <page name="receive_page" string="收款信息">
+                                <group col="2">
+                                    <group>
+                                        <field name="invoice_partner_bank_id"
+                                               class="oe_inline" options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="user_id" class="oe_inline"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="payment_mode_id" class="oe_inline"
+                                               readonly="state != 'draft'"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="payment_amount" class="oe_inline"/>
+                                        <field name="company_id" class="oe_inline"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="account_id" class="oe_inline"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                        <field name="account1_id" class="oe_inline"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="附件" name="attachment_ids">
+                                <field name="attachment_ids" widget="many2many_binary" class="oe_inline" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="comment" string="备注">
+                                <field name="comment" readonly="state != 'draft'"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_invoice_sale_refund_search" model="ir.ui.view">
+            <field name="name">account_invoce.sale.search</field>
+            <field name="model">cncw.invoice.move</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="origin_invoice_id" filter_domain="[('origin_invoice_id','ilike',self)]"/>
+                    <field name="partner_id" string="客户"/>
+                    <field name="user_id" string="销售员"/>
+                    <field name="name" string="单据编号" filter_domain="[('name','ilike',self)]"/>
+                    <field name="date" string="单据日期开始于" filter_domain="[('date','&gt;=',self)]"/>
+                    <field name="date" string="单据日期结束于" filter_domain="[('date','&lt;=',self)]"/>
+                    <field name="date_invoice" string="开票日期开始于" filter_domain="[('date_invoice','&gt;=',self)]"/>
+                    <field name="date_invoice" string="开票日期结束于" filter_domain="[('date_invoice','&lt;=',self)]"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('date','&lt;=',context_today().strftime('%Y-%m-%d')),('date','&gt;=',context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('date','&lt;=',context_today().strftime('%Y-%m-%d')),('date','&gt;=',time.strftime('%Y-%m-01'))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('date','&lt;=',time.strftime('%Y-12-31')),('date','&gt;=',time.strftime('%Y-01-01'))]"/>
+                    <filter icon="terp-personal" name="last_month" string="上月数据"
+                            domain="[('date', '&gt;=', (context_today() - datetime.timedelta(context_today().day)).strftime('%Y-%m-01')),
+                                     ('date', '&lt;', context_today().strftime('%Y-%m-1'))]"/>
+                    <filter name="not_done" string="未完成" domain="[('state','not in',('paid','cancel'))]"/>
+                    <filter name="completed" string="已完成" domain="[('state','in',('paid'))]"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_date" string="单据日期" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_user_id" string="申请人" domain="[]" context="{'group_by':'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_account_invoice_sale_out_refund">
+            <field name="name">客户红字发票</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cncw.invoice.move</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_invoice_sale_refund_search"/>
+            <field name="domain">[('move_type','in',('out_refund',))]</field>
+            <field name="context">{
+                'default_move_type':'out_refund',
+                'move_type': 'out_refund',
+                'journal_type': 'sale',
+                'search_default_not_done':1,
+                'check_move_validity': False
+                }
+            </field>
+        </record>
+
+        <record id="action_view_account_invoice_sale_tree_out_refund" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_invoice_sale_out_refund_tree1"/>
+            <field name="act_window_id" ref="action_account_invoice_sale_out_refund"/>
+        </record>
+
+        <record id="action_view_account_invoice_sale_form_out_refund" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_invoice_sale_out_refund_form"/>
+            <field name="act_window_id" ref="action_account_invoice_sale_out_refund"/>
+        </record>
+
+        <menuitem id="menu_account_invoice_sale_out_refund"
+                  name="客户红字发票" sequence="45"
+                  groups="base_cw.account_group_account_invoice"
+                  parent="cncw_account_menu_ar"
+                  action="action_account_invoice_sale_out_refund"/>
+
+    </data>
+</odoo>

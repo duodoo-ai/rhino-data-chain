@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_change,purchase.change,model_purchase_change,purchase.group_purchase_user,1,1,1,1
+access_purchase_change_line,purchase.change.line,model_purchase_change_line,purchase.group_purchase_user,1,1,1,1
+access_purchase_change_download,purchase.change.download,model_purchase_change_download,purchase.group_purchase_user,1,1,1,1
+access_purchase_change_report,purchase.change.report,model_purchase_change_report,purchase.group_purchase_user,1,1,1,1

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="cncw.account.type" id="cncw_account_type_1">
+            <field name="name">现金</field>
+            <field name="type">liquidity</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+        <record model="cncw.account.type" id="cncw_account_type_2">
+            <field name="name">银行存款</field>
+            <field name="type">liquidity</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+        <record model="cncw.account.type" id="cncw_account_type_3">
+            <field name="name">流动资产</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_4">
+            <field name="name">坏账准备</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_5">
+            <field name="name">存货</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_6">
+            <field name="name">非流动资产</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+        <record model="cncw.account.type" id="cncw_account_type_7">
+            <field name="name">固定资产</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+        <record model="cncw.account.type" id="cncw_account_type_8">
+            <field name="name">累计折旧</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_9">
+            <field name="name">流动负债</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_10">
+            <field name="name">非流动负债</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+        <record model="cncw.account.type" id="cncw_account_type_11">
+            <field name="name">共同</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_12">
+            <field name="name">资本</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="True"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_13">
+            <field name="name">累计盈余</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_14">
+            <field name="name">生产成本</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_15">
+            <field name="name">收入</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+            <field name="internal_group">asset</field>
+        </record>
+
+         <record model="cncw.account.type" id="cncw_account_type_16">
+            <field name="name">其他收入</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+             <field name="internal_group">asset</field>
+        </record>
+         <record model="cncw.account.type" id="cncw_account_type_17">
+            <field name="name">销售成本</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+             <field name="internal_group">asset</field>
+        </record>
+         <record model="cncw.account.type" id="cncw_account_type_18">
+            <field name="name">其他费用</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+             <field name="internal_group">asset</field>
+        </record>
+
+        <record model="cncw.account.type" id="cncw_account_type_19">
+            <field name="name">费用</field>
+            <field name="type">other</field>
+            <field name="include_initial_balance" eval="False"/>
+            <field name="internal_group">asset</field>
+        </record>
+    </data>
+</odoo>

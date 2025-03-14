@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_account_sale_invoice_delivery_report_tree">
+            <field name="name">account.sale.invoice.delivery.tree</field>
+            <field name="model">account.sale.invoice.delivery</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="销售开票出货查询" create="false" delete="false" >
+                    <field name="partner_id" optional="show"/>
+                    <field name="partner_name"  optional="show"/>
+                    <field name="date_invoice" string="开票日期" optional="show"/>
+                    <field name="price_subtotal" string="开票金额" sum="price_subtotal" optional="show"/>
+                    <field name="total_amount_signed" sum="total_amount_signed" optional="show"/>
+                    <field name="delivery_date" string="出货日期" optional="show"/>
+                    <field name="delivery_amount" string="出货金额" sum="delivery_amount" optional="show"/>
+                    <field name="order_id" string="订单编号" optional="show"/>
+                    <field name="product_id" optional="show"/>
+                    <field name="product_name" invisible="1"/>
+                    <field name="shipment_no" string="出货单号" optional="show"/>
+                    <field name="shipment_date" string="备货日期" optional="show"/>
+                    <field name="state" invisible="1" optional="show"/>
+                    <field name="delivery_price" string="出货单价" optional="show"/>
+                    <field name="price_unit" string="开票单价" optional="show"/>
+                    <field name="qty" string="开票数量" sum="qty" optional="show"/>
+                    <field name="adjust_amount" string="调整金额" sum="adjust_amount" optional="show"/>
+                    <field name="currency_id" optional="show"/>
+                    <field name="invoice_no" optional="show"/>
+                    <field name="note" optional="show"/>
+                    <field name="invoice_weight" invisible="1"/>
+                    <field name="amount_invoice" invisible="1"/>
+                    <field name="partner_code" invisible="1"/>
+                    <field name="net_weight" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_sale_invoice_delivery_graph" model="ir.ui.view">
+            <field name="name">account.sale.invoice.delivery.graph</field>
+            <field name="model">account.sale.invoice.delivery</field>
+            <field name="arch" type="xml">
+                <graph string="销售开票出货查询" type="bar" stacked="True">
+                    <field name="qty" string="开票数量" type="measure"/>
+                    <field name="price_unit" string="开票单价" type="measure"/>
+                    <field name="price_subtotal" string="开票金额" type="measure"/>
+                    <field name="delivery_price" string="出货单价" type="measure"/>
+                    <field name="delivery_amount" string="出货金额" type="measure"/>
+                    <field name="adjust_amount" string="调整金额" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_account_sale_invoice_delivery_pivot" model="ir.ui.view">
+            <field name="name">account.sale.invoice.delivery.pivot</field>
+            <field name="model">account.sale.invoice.delivery</field>
+            <field name="arch" type="xml">
+                <pivot string="销售开票出货查询" sample="1" stacked="True">
+                    <field name="qty" string="开票数量" type="measure"/>
+                    <field name="price_unit" string="开票单价" type="measure"/>
+                    <field name="price_subtotal" string="开票金额" type="measure"/>
+                    <field name="delivery_amount" string="出货金额" type="measure"/>
+                    <field name="adjust_amount" string="调整金额" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_account_sale_invoice_delivery_search" model="ir.ui.view">
+            <field name="name">account.sale.invoice.delivery.search</field>
+            <field name="model">account.sale.invoice.delivery</field>
+            <field name="arch" type="xml">
+                <search string="销售开票出货查询">
+                    <field name="partner_id"/>
+                    <field name="date_invoice" string="开票开始日期" widget="date"
+                           filter_domain="[('date_invoice','&gt;=',self)]"/>
+                    <field name="date_invoice" string="开票结束日期" widget="date"
+                           filter_domain="[('date_invoice','&lt;=',self)]"/>
+                    <field name="date_invoice"/>
+                    <field name="order_id"/>
+                    <field name="product_id"/>
+                    <field name="invoice_no"/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('date_invoice','&lt;=',context_today().strftime('%Y-%m-%d')),('date_invoice','&gt;=',context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('date_invoice','&lt;=',datetime.datetime.combine((context_today() + datetime.timedelta(32-context_today().day)),datetime.time(23,59,59)).strftime('%Y-%m-01')),('date_invoice','&gt;=',time.strftime('%Y-%m-01'))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('date_invoice','&lt;=',time.strftime('%Y-12-31')),('date_invoice','&gt;=',time.strftime('%Y-01-01'))]"/>
+                    <filter icon="terp-personal" name="last_month" string="上月数据"
+                            domain="[('date_invoice', '&gt;=', (context_today() - datetime.timedelta(context_today().day)).strftime('%Y-%m-01')), ('date_invoice', '&lt;', context_today().strftime('%Y-%m-1'))]"/>
+                    <filter icon="terp-go-today" string="去年数据" name="old_year"
+                            domain="[('date_invoice','&lt;=',datetime.datetime(context_today().year-1,12,31).strftime('%Y-12-31')),('date_invoice','&gt;=',datetime.datetime(context_today().year-1,1,1).strftime('%Y-01-01'))]"/>
+
+                    <group expand="1" string="Group By">
+                        <filter string="订单编号" name="Order_id" context="{'group_by':'order_id'}"/>
+                        <separator/>
+                        <filter string="客户编码" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
+                        <separator/>
+                        <filter string="出货日期" name="Delivery_date" context="{'group_by':'delivery_date'}"/>
+                        <filter string="应开票日期" name="Date_invoice" context="{'group_by':'date_invoice'}"/>
+                        <filter string="出货单价" name="Delivery_price" context="{'group_by':'delivery_price'}"/>
+                        <filter string="开票单价" name="Price_unit" context="{'group_by':'price_unit'}"/>
+                        <filter string="开票币别" name="Currency_id" context="{'group_by':'currency_id'}"/>
+                        <separator/>
+
+                        <filter string="产品" name="Product" context="{'group_by':'product_id'}"/>
+                        <separator/>
+                        <filter string="单位" name="Product_uom" context="{'group_by':'product_uom'}"/>
+                        <filter string="付款方式" name="Payment_mode_id" context="{'group_by':'payment_mode_id'}"/>
+                        <separator/>
+                        <filter string="备货单号" name="Shipment_no" context="{'group_by':'shipment_no'}"/>
+                        <filter string="备货日期" name="Shipment_date" context="{'group_by':'shipment_date'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_account_sale_invoice_delivery" model="ir.actions.act_window">
+            <field name="name">销售开票出货查询</field>
+            <field name="res_model">account.sale.invoice.delivery</field>
+            <field name="view_mode">pivot,list,graph</field>
+            <field name="search_view_id" ref="view_account_sale_invoice_delivery_search"/>
+            <field name="view_id" ref="view_account_sale_invoice_delivery_graph"/>
+            <field name="context">{
+                'search_default_currency_month':1,
+                'search_default_group_by_partner_id':1
+                }
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_account_sale_invoice_delivery_report_tree">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="view_account_sale_invoice_delivery_report_tree"/>
+            <field name="act_window_id" ref="action_account_sale_invoice_delivery"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_account_sale_invoice_delivery_pivot">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_account_sale_invoice_delivery_pivot"/>
+            <field name="act_window_id" ref="action_account_sale_invoice_delivery"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_account_sale_invoice_delivery_graph">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_account_sale_invoice_delivery_graph"/>
+            <field name="act_window_id" ref="action_account_sale_invoice_delivery"/>
+        </record>
+
+         <menuitem id="menu_account_sale_invoice_delivery2"
+                  name="销售开票出货查询"
+                  sequence="65"
+                  groups="base_cw.account_group_account_invoice_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_sale_invoice_delivery"/>
+    </data>
+</odoo>

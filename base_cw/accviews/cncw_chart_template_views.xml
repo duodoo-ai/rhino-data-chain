@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Chart of Accounts Templates -->
+
+        <record id="view_cacw_account_chart_template_form" model="ir.ui.view">
+            <field name="name">cncw.chart.template.form</field>
+            <field name="model">cncw.chart.template</field>
+            <field name="arch" type="xml">
+                <form string="中国会计科目模板">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="parent_id" />
+                        <field name="bank_account_code_prefix"/>
+                        <field name="cash_account_code_prefix"/>
+                        <field name="transfer_account_code_prefix"/>
+                        <field name="code_digits" />
+                        <field name="visible" />
+                        <field name="complete_tax_set" />
+                    </group>
+                    <separator string="Default Taxes" colspan="4"/>
+<!--                    <field name="tax_template_ids" colspan="4"  nolabel="1"/>-->
+                    <separator string="Properties" colspan="4"/>
+                    <group col="4">
+                        <field name="property_account_receivable_id"/>
+                        <field name="property_account_payable_id"/>
+                        <field name="property_account_expense_categ_id"/>
+                        <field name="property_account_income_categ_id"/>
+                        <field name="property_account_expense_id"/>
+                        <field name="property_account_income_id"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cacw_account_chart_template_seacrh" model="ir.ui.view">
+            <field name="name">cncw.chart.template.search</field>
+            <field name="model">cncw.chart.template</field>
+            <field name="arch" type="xml">
+                <search string="Search Chart of Account Templates">
+                    <field name="name" string="Account Template"/>
+                    <field name="bank_account_code_prefix"/>
+                    <field name="cash_account_code_prefix"/>
+                    <field name="transfer_account_code_prefix"/>
+                    <group expand="0" string="Group By">
+                        <filter string="应收款科目" name="receivalbeacc" domain="[]" context="{'group_by':'property_account_receivable_id'}"/>
+                        <filter string="应付款科目" name="payableacc" domain="[]" context="{'group_by':'property_account_payable_id'}"/>
+                        <filter string="进货科目" name="incomeacc" domain="[]" context="{'group_by':'property_account_income_categ_id'}"/>
+                        <filter string="费用科目" name="expenseacc" domain="[]" context="{'group_by':'property_account_expense_categ_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_cacw_account_chart_template_tree" model="ir.ui.view">
+            <field name="name">cncw.chart.template.tree</field>
+            <field name="model">cncw.chart.template</field>
+            <field name="arch" type="xml">
+                <list string="中国会计科目模板">
+                    <field name="name"/>
+                    <field name="property_account_receivable_id" invisible="1"/>
+                    <field name="property_account_payable_id" invisible="1"/>
+                    <field name="property_account_expense_categ_id" invisible="1"/>
+                    <field name="property_account_income_categ_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+        <record id="action_account_chart_template_form" model="ir.actions.act_window">
+            <field name="name">中国会计科目模板</field>
+            <field name="res_model">cncw.chart.template</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+        <!-- Account Templates -->
+
+        <record id="view_cacw_account_template_form" model="ir.ui.view">
+            <field name="name">cncw.account.template.form</field>
+            <field name="model">cncw.account.template</field>
+            <field name="arch" type="xml">
+                <form string="会计科目模板">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="code"/>
+                        <newline/>
+                        <field name="user_type_id" widget="account_hierarchy_selection"/>
+                        <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
+                        <field name="glob_tag"  widget="many2many_tags"/>
+                        <field name="reconcile"/>
+<!--                        <field name="chart_template_id"/>-->
+                    </group>
+                    <separator string="默认税率"/>
+                    <field name="tax_ids"/>
+                    <separator string="Notes"/>
+                    <field name="note" placeholder="Internal notes..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cacw_account_template_tree" model="ir.ui.view">
+            <field name="name">cncw.account.template.tree</field>
+            <field name="model">cncw.account.template</field>
+            <field name="arch" type="xml">
+                <list string="Account Template">
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="user_type_id" widget="account_hierarchy_selection" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_cacw_account_template_search" model="ir.ui.view">
+            <field name="name">cncw.account.template.search</field>
+            <field name="model">cncw.account.template</field>
+            <field name="arch" type="xml">
+                <search string="Search Account Templates">
+                    <field name="name" filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]" string="科目模板"/>
+                    <field name="user_type_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="科目类型" name="accounttype" domain="[]" context="{'group_by':'user_type_id'}"/>
+                   </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

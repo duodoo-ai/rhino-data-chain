@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_form_view_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.extend</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//header" position="inside">
+                    <button type="action"
+                            name="%(cncw_statement.action_advance_payment_apply_form)d"
+                            class="btn-primary"
+                            string="预付申请"
+                            invisible="state != 'done' or wait_apply_amount_total == 0"
+                            context="{'default_purchase_order_ids': [id], 'default_amount': amount_total,'default_partner_id': partner_id,'default_order_type':'B'}"
+                    />
+                    <button type="action"
+                            name="%(cncw_statement.action_advance_payment_apply_form)d"
+                            class="btn-primary"
+                            string="付款申请"
+                            invisible="state != 'done' or wait_apply_amount_total == 0"
+                            context="{'default_purchase_order_ids': [id], 'default_amount': amount_total, 'default_partner_id': partner_id,'default_order_type':'A','default_account_move_purchase_ids':cncw_invoice_ids}"
+                    />
+                    <button name="update_wait_apply_amount_total" string="更新剩余可用金额" type="object"
+                            invisible="wait_apply_amount_total &gt; 0"/>
+                </xpath>
+                <xpath expr="//button[@name='action_view_invoice']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="cncw_invoice_count" string="发票数量"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="amount_total" invisible="1"/>
+                    <field name="apply_amount_total"/>
+                    <field name="wait_apply_amount_total"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/list/field[@name='taxes_id']" position="replace">
+                    <field name="taxes_id" widget="many2many_tags"
+                           domain="[('type_tax_use','in',['purchase','all']), ('company_id', '=', parent.company_id)]"
+                           context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'cncw.account_tax_view_search'}"
+                           options="{'no_create': True}" optional="show"/>
+                </xpath>
+                <xpath expr="//page" position="after">
+                    <page string="发票信息">
+                        <field name="cncw_invoice_ids">
+                            <list>
+                                <field name="partner_id" string="客户"/>
+                                <field name="invoice_no" string="发票号码"/>
+                                <field name="name" string="单据编号"/>
+                                <field name="date_invoice"/>
+                                <field name="user_id"/>
+                                <field name="invoice_date_due" string="付款日期"/>
+                                <field name="currency_id"/>
+                                <field name="amount_untaxed" string="不含税金额"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total" string="含税总金额"/>
+                                <field name="payment_amount"/>
+                                <field name="remaining_amount" string="剩余金额"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="预付款/付款申请单">
+                        <field name="advance_payment_apply_ids" readonly="1">
+                            <list>
+                                <field name="name"/>
+                                <field name="department_id"/>
+                                <field name="company_id"/>
+                                <field name="employee_id"/>
+                                <field name="department_manager_user_id"/>
+                                <field name="partner_id"/>
+                                <field name="amount" sum="apply_amount_total"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="订单锁定金额">
+                        <field name="advance_payment_apply_lines" readonly="1">
+                            <list>
+                                <field name="payment_apply_id"/>
+                                <field name="lock_amount"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </data>
+        </field>
+    </record>
+    <record model="ir.actions.server" id="action_update_wait_apply_amount_total">
+        <field name="name">批量更新更新剩余可用金额</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="binding_model_id" ref="model_purchase_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.update_wait_apply_amount_total()
+        </field>
+    </record>
+</odoo>

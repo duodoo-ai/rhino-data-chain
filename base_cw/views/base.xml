@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="cncw menu assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/base_cw/static/src/css/menu.css"/>
+                <link rel="stylesheet" href="/base_cw/static/src/css/base.css"/>
+                <link rel="stylesheet" href="/base_cw/static/src/css/cncw_searchpanel.scss"/>
+                <script type="text/javascript"
+                        src="/base_cw/static/src/js/account.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

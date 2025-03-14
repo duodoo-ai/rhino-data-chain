@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+		  <record id="sale_change_view_tree" model="ir.ui.view">
+            <field name="name">sale.change.change.view.tree</field>
+            <field name="model">sale.change</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name" string="编号"/>
+                    <field name="old_order_id" string="源订单"/>
+                    <field name="date_order"/>
+                    <field name="partner_id" groups="base.group_multi_company"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" optional="show"/>
+                    <field name="commitment_date"/>
+                    <field name="change_commitment_date"/>
+                    <field name="user_id" optional="show"/>
+                    <field name="change_user_id" optional="show"/>
+                    <field name="amount_untaxed" sum="不含税金额合计" string="不含税" widget="monetary" optional="hide"/>
+                    <field name="amount_total" sum="合计金额" widget="合计" optional="show"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+		<record id="view_sale_change_form" model="ir.ui.view">
+            <field name="name">sale.change.form</field>
+            <field name="model">sale.change</field>
+            <field name="arch" type="xml">
+              <form string="Sales Change Order" class="o_sale_order">
+                <header>
+                    <button name="button_change_draft" string="草稿" type="object" invisible="state in ['draft']"/>
+                    <button name="button_submit" string="提交" type="object" invisible="state in ['submit','done']" groups="base.group_multi_company"/>
+                    <button name="button_change_done" string="确认" type="object" invisible="state in ['draft','done']"  groups="sales_team.group_sale_manager"/>
+     		        <field name="state" widget="statusbar" statusbar_visible="draft,submit,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label" >销售变更单</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+	            			<field name="old_order_id" required="1" groups="base.group_multi_company"  readonly="state == 'done'"/>
+                            <field name="partner_id" groups="base.group_multi_company" widget="res_partner_many2one"
+                                   context="{'res_partner_search_mode': 'customer', 'show_address': True, 'show_vat': True}" options="{'always_reload': True}"
+                                   readonly="1" force_save="1"/>
+                            <field name="partner_invoice_id"
+                                   context="{'default_type':'invoice'}"  readonly="1" force_save="1"/>
+                            <field name="partner_shipping_id"
+                                   context="{'default_type':'delivery'}" readonly="1" force_save="1"/>
+							<field name="user_id" readonly="1" force_save="1" groups="base.group_multi_company"/>
+							<field name="team_id" readonly="1" force_save="1" groups="base.group_multi_company"/>
+							<field name="change_user_id" groups="base.group_multi_company" required="1" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="date_order" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1" groups="base.group_multi_company"/>
+                            <field name="payment_term_id" groups="base.group_multi_company"
+                                   options="{'no_open':True,'no_create': True}" readonly="1" force_save="1"/>
+                            <field name="change_payment_term_id" groups="base.group_multi_company"
+                                   readonly="state=='done'" options="{'no_open':True,'no_create': True}"/>
+                        	<field name="commitment_date" readonly="1" force_save="1"/>
+                        	<field name="change_commitment_date" readonly="state == 'done'"/>
+                        	<field name="currency_rate" invisible="1"/>
+                        	<field name="note"  readonly="state=='done'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="变更明细">
+                            <field name="order_line">
+                                <list editable="bottom">
+                                	<field name="old_line_id"/>
+                                    <field name="sequence" widget="handle" />
+                                    <field name="product_id" options="{'no_open': True}" readonly="1" force_save="1" />
+                                    <field name="product_template_id" invisible="1"/>
+                                    <field name="name" optional="show" readonly="1" force_save="1"/>
+                                    <field name="product_uom_qty" readonly="1" force_save="1"/>
+                                    <field name="change_product_uom_qty" readonly="parent.state=='done'"/>
+                                    <field name="qty_delivered" readonly="1" force_save="1"/>
+                                    <field name="qty_invoiced" readonly="1" force_save="1"/>
+                                    <field name="product_uom" readonly="1" force_save="1"/>
+                                    <field name="price_unit" readonly="1" force_save="1" />
+                                    <field name="change_price_unit" readonly="parent.state=='done'"/>
+                                    <field name="tax_id" widget="many2many_tags" readonly="1" force_save="1"/>
+                                    <field name="change_tax_id" widget="many2many_tags" readonly="parent.state=='done'"/>
+                                    <field name="discount" string="折扣" groups="product.group_discount_per_so_line"
+                                           optional="show"  readonly="1" force_save="1"/>
+                                    <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                    <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_included"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1" groups="base.group_multi_company"/>
+                                </list>
+                            </field>
+                            <group name="note_group" col="6">
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                    <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="amount_total" />
+                                    </div>
+                                    <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator"
+                                           widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+              </form>
+            </field>
+        </record>
+        <record id="sale_change_form_action" model="ir.actions.act_window">
+            <field name="name">销售变更单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.change</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                创建一个采购变更单
+              </p>
+            </field>
+        </record>
+        
+        <menuitem 
+        	name="销售变更单"
+        	action="sale_change_form_action" 
+        	id="menu_sale_change_form_action" 
+        	parent="sale.sale_order_menu" 
+        	sequence="40"/>
+    </data>
+</odoo>

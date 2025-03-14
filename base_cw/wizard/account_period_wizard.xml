@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_account_financial_period_wizard_form" model="ir.ui.view">
+            <field name="name">account.financial.period.wizard.form</field>
+            <field name="model">account.financial.period.wizard</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="">
+                    <field name="period_id" class="oe_inline"/>
+                    <footer>
+                        <button string="确认" name="cost_compute" type="object" class="oe_highlight"/>
+                        or
+                        <button string="取消" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="open_view_account_financial_period_wizard">
+            <field name="name">总帐月结</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.financial.period.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_account_general_ledger"
+              parent="base_cw.menu_finance_recurrent_entries"
+              sequence="100"
+              name="总帐月结"
+              action="open_view_account_financial_period_wizard"/>
+    </data>
+</odoo>

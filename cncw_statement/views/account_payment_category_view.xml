@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 付款类别设定 -->
+        <record id="view_account_payment_category_tree" model="ir.ui.view">
+            <field name="name">account.payment.category.tree</field>
+            <field name="model">account.payment.category</field>
+            <field name="arch" type="xml">
+                <list string="付款类别设定">
+                    <field name="name"/>
+                    <field name="account_setup"/>
+                    <field name="account_id"/>
+                    <field name="dc_type"/>
+                    <field name="note"/>
+                    <field name="is_payment"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_payment_category_form" model="ir.ui.view">
+            <field name="name">account.payment.category.form</field>
+            <field name="model">account.payment.category</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="付款类别设定">
+                    <header>
+
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <field name="name" class="oe_inline"/>
+                            <field name="account_setup" class="oe_inline"/>
+                            <field name="account_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"
+                                   invisible="account_setup == 'B'" required="account_setup == 'A'"
+                            />
+                            <field name="sub_account_type"/>
+                            <field name="can_sub_account_ids" invisible="1"/>
+                            <field name="sub_account_ids" domain="[('id','in',can_sub_account_ids)]"
+                                   invisible="sub_account_type != 'has'" widget="many2many_tags"/>
+                            <field name="dc_type" class="oe_inline"/>
+                            <field name="is_payment"/>
+                        </group>
+                        <notebook>
+                            <page name="note" string="备注">
+                                <field name="note"/>
+                            </page>
+                            <page name="system" string="系统信息">
+                                <group col="2">
+                                    <field name="active" string="启用"/>
+                                    <field name="create_uid" readonly="1" string="建立人"/>
+                                    <field name="create_date" readonly="1" string="建立日"/>
+                                    <field name="write_uid" readonly="1" string="修改人"/>
+                                    <field name="write_date" readonly="1" string="修改日"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_payment_category_search" model="ir.ui.view">
+            <field name="name">account.payment.category.search</field>
+            <field name="model">account.payment.category</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/>
+                    <separator/>
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_name" string="名称" domain="[]" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_payment_category">
+            <field name="name">付款类别设定</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.payment.category</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_account_payment_category_search"/>
+            <field name="context" eval="{'search_default_active':1}"/>
+        </record>
+        <menuitem id="menu_account_payment_category"
+                  name="付款类别设定"
+                  groups="base_cw.base_group_account_base,base_cw.account_group_account_invoice_query"
+                  parent="base_cw.base_cw_menu_account_settings"
+                  sequence="30"
+                  action="action_account_payment_category"/>
+    </data>
+</odoo>

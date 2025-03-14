@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!--预付款 选择向导-->
+        <record id="form_account_receive_advance_select_wizard" model="ir.ui.view">
+            <field name="name">account.receive.advance.select.wizard.form</field>
+            <field name="model">account.receive.advance.select.wizard</field>
+            <field name="arch" type="xml">
+                <form string="" version="7.0">
+                    <group col="2">
+                        <field name="name" class="oe_inline" readonly="1"/>
+                        <field name="is_all_check" class="oe_inline"/>
+                    </group>
+                    <div>
+                        <button name="action_query" string="查询" type="object" class="oe_highlight"
+                                icon="fa-search-plus"/>
+                        <button name="action_confirm" style="margin-left: 20px;"
+                                string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                    </div>
+                    <field name="wizard_ids">
+                        <list name="wizard_ids_tree" editable="bottom" delete="0" create="0">
+                            <field name="is_check"/>
+                            <field name="receive_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="advance_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="amount"/>
+                            <field name="lc_amount" string="本币金额"/>
+                            <field name="received_amount"/>
+                            <field name="remaining_amount"/>
+                            <field name="lc_remaining_amount"/>
+                            <field name="offset_state"/>
+                            <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="dc_type"/>
+                        </list>
+                        <form>
+                            <field name="receive_line_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="advance_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="amount"/>
+                            <field name="lc_amount"/>
+                            <field name="received_amount"/>
+                            <field name="remaining_amount"/>
+                            <field name="lc_remaining_amount"/>
+                            <field name="offset_state"/>
+                            <field name="account_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="sub_account_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="dc_type"/>
+                        </form>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" string="确认" type="object" class="oe_highlight" icon="fa-check"/>
+                        <button string="取消" style="margin-left: 20px;" class="oe_highlight" icon="fa-close"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

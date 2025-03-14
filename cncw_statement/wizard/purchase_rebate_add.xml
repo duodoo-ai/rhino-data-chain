@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 采购折让向导 -->
+        <record model="ir.ui.view" id="view_purchase_rebate_add_form">
+            <field name="name">purchase.rebate.add.form</field>
+            <field name="model">purchase.rebate.add</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="采购折让向导">
+                    <group col="2">
+                        <group>
+                            <field name="purchase_order" class="oe_inline"/>
+                            <field name="is_all_check"/>
+                        </group>
+                        <group>
+                            <field name="product_id"
+                                   class="oe_inline"
+                                   domain="[('state','=','confirmed')]"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="product_name" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <div>
+                        <button icon="fa-search-plus" string="查询" name="action_purchase_rebate_query" type="object"
+                                class="oe_highlight"/>
+                        <button icon="fa-plus-circle" string="确认" name="do_purchase_rebate_line" type="object"  title="确认"
+                                class="oe_highlight" style="margin-left: 20px;"/>
+                    </div>
+                    <field name="wizard_ids">
+                        <list create="false" delete="false" editable="none" edit="true">
+                            <field name="is_check"/>
+                            <field name="product_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="product_name" invisible="1"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="purchase_order" readonly="1"/>
+                            <field name="purchase_storage"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button name="do_purchase_rebate_line" string="确认" type="object"
+                                class="oe_highlight" icon="fa-check"/>
+                        <button string="取消" style="margin-left: 20px;" class="oe_highlight" icon="fa-close"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_open_purchase_rebate_add">
+            <field name="name">采购折让向导</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.rebate.add</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_purchase_rebate_add_form"/>
+            <field name="target">new</field>
+            <field name="context">{'default_purchase_rebate_id':active_id}</field>
+        </record>
+    </data>
+</odoo>

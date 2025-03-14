@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_return_select_form" model="ir.ui.view">
+         <field name="name">return.select.form</field>
+         <field name="model">return.select</field>
+         <field name="arch" type="xml">
+             <form string="采购退货查询">
+               	<group>
+                   <group>
+                   		<field name="purchase_id" readonly="1"/>
+                   </group>
+                   <group>  
+                   		<field name="partner_id" readonly="1"/>
+                   </group>
+                 </group>
+                  <notebook>
+                     <page string="采购明细">
+                         <field name="purchase_lines" widget="many2many" options="{'not_delete': True}" context="{'search_default_order_id': purchase_id}">
+                         	<list>
+								<field name="sequence" widget="handle"/>
+                                <field name="product_id"/>
+                                <field name="name"/>
+                                <field name="qty_received"/>
+                                <field name="product_uom" groups="uom.group_uom"/>
+                                <field name="price_unit"/>
+                                <field name="taxes_id"  widget="many2many_tags"  context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}"/>
+                                <field name="price_subtotal" widget="monetary"/>
+	                        </list>
+                         </field>
+                     </page>
+                  </notebook>
+             	<footer>
+                    <button string="确定" name="action_confirm" type="object" class="btn-primary"/>
+                    <button string="取消" class="oe_link" special="cancel"/>
+                </footer>
+             </form>
+         </field>
+     </record>
+</odoo>

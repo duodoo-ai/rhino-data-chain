@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 到款查询 -->
+        <record id="view_account_received_report_tree" model="ir.ui.view">
+            <field name="name">account.received.report.tree</field>
+            <field name="model">account.received.report</field>
+            <field name="arch" type="xml">
+                <list string="到款查询" create="false" edit="false" delete="false">
+                    <field name="date" optional="show"/>
+                    <field name="done_date" optional="show"/>
+                    <field name="partner_code" optional="show"/>
+                    <field name="partner_name" optional="show"/>
+                    <field name="account_team_id" optional="show"/>
+                    <field name="receive_type" optional="show"/>
+                    <field name="receive_category_id" optional="show"/>
+                    <field name="exchange_rate" optional="show"/>
+                    <field name="currency_id" optional="show"/>
+                    <field name="amount" sum="amount" optional="show"/>
+                    <field name="local_amount" sum="local_amount" optional="show"/>
+                    <field name="receive_bank_id" optional="show"/>
+                    <field name="notice_bank_id" optional="show"/>
+                    <field name="note"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_received_report_search" model="ir.ui.view">
+            <field name="name">account.received.report.search</field>
+            <field name="model">account.received.report</field>
+            <field name="arch" type="xml">
+                <search string="Sales Analysis">
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="done_date" string="到款开始日期" widget="date" filter_domain="[('date','&gt;=',self)]"/>
+                    <field name="done_date" string="到款结束日期" widget="date" filter_domain="[('date','&lt;=',self)]"/>
+                    <separator/>
+                    <separator/>
+                    <filter icon="terp-go-today" string="今天" name='today'
+                            domain="[('date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('date','&gt;=',datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本月数据" name="currency_month"
+                            domain="[('date','&lt;=',datetime.datetime.combine(context_today(), datetime.time(23,59,59))),('date','&gt;=',datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day-1)), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-go-today" string="本年数据" name="currency_year"
+                            domain="[('date','&lt;=',datetime.datetime.combine(datetime.date(context_today().year,12,1), datetime.time(23,59,59))),('date','&gt;=',datetime.datetime.combine(datetime.date(context_today().year,1,1), datetime.time(0,0,0)))]"/>
+                    <filter icon="terp-personal" string="上月数据" name="last_month"
+                            domain="[('date', '&lt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day)),datetime.time(23,59,59))),('date', '&gt;=', datetime.datetime.combine((context_today() - datetime.timedelta(context_today().day))-datetime.timedelta((context_today() - datetime.timedelta(context_today().day)).day),datetime.time(23,59,59)))]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="客户编码" name="group_by_partner_id" context="{'group_by':'partner_id'}"/>
+                        <separator/>
+                        <filter string="收款类别" name="receive_type" context="{'group_by':'receive_category_id'}"/>
+                        <filter string="款项性质" name="receive_type" context="{'group_by':'receive_type'}"/>
+                        <filter string="收款币别" name="currency_id" context="{'group_by':'currency_id'}"/>
+                        <filter string="汇率" name="exchange_rate" context="{'group_by':'exchange_rate'}"/>
+                        <separator/>
+                        <filter string="到款银行" name="receive_bank_id" context="{'group_by':'receive_bank_id'}"/>
+                        <filter string="通知银行" name="notice_bank_id" context="{'group_by':'notice_bank_id'}"/>
+                        <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_account_received_graph" model="ir.ui.view">
+            <field name="name">account.received.report.graph</field>
+            <field name="model">account.received.report</field>
+            <field name="arch" type="xml">
+                <graph string="到款查询" type="bar" stacked="True">
+                    <field name="amount" type="measure"/>
+                    <field name="local_amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_account_received_pivot" model="ir.ui.view">
+            <field name="name">account.received.report.pivot</field>
+            <field name="model">account.received.report</field>
+            <field name="arch" type="xml">
+                <pivot string="到款查询" sample="1" stacked="True">
+                     <field name="partner_name" type="row"/>
+                    <field name="amount" type="measure"/>
+                    <field name="local_amount" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_received_report">
+            <field name="name">到款查询</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.received.report</field>
+            <field name="view_mode">pivot,list,graph</field>
+            <field name="search_view_id" ref="view_account_received_report_search"/>
+            <field name="view_id" ref="view_account_received_report_tree"/>
+            <field name="context">{
+                'search_default_currency_month':1,
+                'search_default_group_by_partner_id':1
+                }
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_account_received_pivot">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_account_received_pivot"/>
+            <field name="act_window_id" ref="action_account_received_report"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_account_received_graph">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_account_received_graph"/>
+            <field name="act_window_id" ref="action_account_received_report"/>
+        </record>
+
+        <menuitem id="menu_account_received_report22"
+                  name="到款查询"
+                  sequence="160"
+                  groups="base_cw.account_group_account_user_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_received_report"/>
+    </data>
+</odoo>

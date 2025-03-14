@@ -1,0 +1,49 @@
+/*主菜单的颜色控制*/
+.navbar-inverse {
+    background-color: rgb(41, 93, 140);
+}
+.navbar-inverse .navbar-nav > li > a {
+  color: #ffffff;
+}
+/*选择菜单的外观控制*/
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #10ffb1;
+    background-color: rgb(41, 93, 140);
+}
+
+/*放大主菜单的字体*/
+/*#oe_main_menu_navbar li a, #oe_main_menu_navbar li button {*/
+    /*padding: 4px 8px 4px 8px;*/
+    /*margin-top: 2px;*/
+    /*font-size: 14px;*/
+    /*font-weight: 600;*/
+    /*color: #101010;*/
+    /*background-color: rgb(41, 93, 140);*/
+/*}*/
+
+/*control form width*/
+/*.openerp .oe_form_sheet_width {*/
+  /*min-width: 650px;*/
+  /*max-width: 95%;*/
+  /*margin: 0 auto;*/
+    /*!*background-color: rgb(100, 106, 156)*!*/
+/*}*/
+
+.openerp .oe_list_content th.oe_sortable, .openerp .oe_list_content th.oe_sortable div {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/*control caption width*/
+.openerp .oe_form td.oe_form_group_cell_label label {
+    line-height: 18px;
+    display: block;
+    min-width: 60px; /* Remove this line */
+}
+
+/*!*locked tree view field*!*/
+/*.openerp .oe_list_content > tbody > tr > td.oe_list_field_cell {*/
+  /*padding: 3px 6px;*/
+  /*white-space: nowrap;*/
+/*}*/

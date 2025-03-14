@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_sale_return_report_pivot" model="ir.ui.view">
+        <field name="name">sale.return.report.pivot</field>
+        <field name="model">sale.return.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales Return Pivot" disable_linking="True" display_quantity="true">
+                <field name="categ_id" type="row"/>
+                <field name="order_id" type="measure"/>
+                <field name="price_subtotal" type="measure"/>
+                <field name="price_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_sale_return_report_graph" model="ir.ui.view">
+         <field name="name">sale.return.report.graph</field>
+         <field name="model">sale.return.report</field>
+         <field name="arch" type="xml">
+             <graph string="Sales Return Graph" type="line">
+                 <field name="date" type="row" interval="day"/>
+                 <field name="price_subtotal" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+    <record id="view_sale_return_report_search" model="ir.ui.view">
+        <field name="name">sale.return.report.search</field>
+        <field name="model">sale.return.report</field>
+        <field name="arch" type="xml">
+            <search string="Sales Return">
+                <field name="date"/>
+                <filter string="Date" name="年" invisible="1" date="date" default_period="year"/>
+                <filter name="returns" string="完成" domain="[('state','=','pass')]"/>
+                <separator/>
+                <field name="user_id"/>
+                <field name="product_id"/>
+                <field name="categ_id"/>
+                <field name="partner_id"/>
+                <field name="country_id"/>
+                <group expand="0" string="Extended Filters">
+                    <field name="categ_id" filter_domain="[('categ_id', 'child_of', self)]"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <group expand="1" string="Group By">
+                    <filter string="人员" name="User" context="{'group_by':'user_id'}"/>
+                    <filter string="客户" name="Customer" context="{'group_by':'partner_id'}"/>
+                    <filter string="客户国家" name="country_id" context="{'group_by':'country_id'}"/>
+                    <filter string="产品" name="Product" context="{'group_by':'product_id'}"/>
+                    <filter string="产品类别" name="Category" context="{'group_by':'categ_id'}"/>
+                    <filter name="status" string="状态" context="{'group_by':'state'}"/>
+                    <filter string="公司" name="company" groups="base.group_multi_company" context="{'group_by':'company_id'}"/>
+                    <separator/>
+                    <filter string="退货日期" name="date" context="{'group_by':'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+<!--    <record id="sale_return_report_view_dashboard" model="ir.ui.view">-->
+<!--        <field name="name">sale.return.report.view.dashboard</field>-->
+<!--        <field name="model">sale.return.report</field>-->
+<!--        <field name="mode">primary</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <dashboard>-->
+<!--                <view type="graph" ref="sale_return.view_sale_return_report_graph"/>-->
+<!--                <group>-->
+<!--                    <group>-->
+<!--                        <aggregate name="price_subtotal_confirmed_orders" string="总计" field="price_total" widget="monetary"/>-->
+<!--                        <aggregate name="price_subtotal_all_orders" string="不含税总计" field="price_subtotal" widget="monetary"/>-->
+<!--                        <aggregate name="order_id_confirmed_orders" field="order_id" string="销售退货单"/>-->
+<!--                        <formula name="total" string="平均订单" value="record.price_subtotal_confirmed_orders / record.order_id_confirmed_orders" widget="monetary"/>-->
+<!--                        <aggregate name="customers" string="# 客户" field="partner_id"/>-->
+<!--                        <aggregate name="lines" string="# 明细" field="nbr"/>-->
+<!--                    </group>-->
+<!--                </group>-->
+<!--                <view type="pivot" ref="sale_return.view_sale_return_report_pivot"/>-->
+<!--            </dashboard>-->
+<!--        </field>-->
+<!--    </record>-->
+        
+    <record id="sale_return_report_action_dashboard" model="ir.actions.act_window">
+         <field name="name">销售退货报表</field>
+         <field name="res_model">sale.return.report</field>
+         <field name="view_mode">pivot,graph</field>
+         <field name="context" eval="{'search_default_returns': 1}"/>
+     </record>
+     
+     <menuitem id="menu_sale_return_report_action_dashboard"
+            name="销售退货"
+            action="sale_return_report_action_dashboard"
+            parent="sale.menu_sale_report"
+            sequence="32"/>
+</odoo>

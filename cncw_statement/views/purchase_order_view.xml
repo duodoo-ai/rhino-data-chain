@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_purchase_order_tree_inherit_statement">
+            <field name="name">purchase.order.tree.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="type">list</field>
+            <field name="inherit_id" ref="purchase_ex.view_purchase_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="statement_state"/>
+                    <field name="invoice_state"/>
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_purchase_order_form_inherit_statement">
+            <field name="name">view..form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase_ex.view_purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="update_statement_invoice_state" string="更新开票状态"
+                            groups="base.group_no_one"
+                            type="object" class="oe_highlight" icon="fa-check"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

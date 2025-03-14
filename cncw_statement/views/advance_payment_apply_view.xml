@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="view_advance_payment_apply_tree" model="ir.ui.view">
+            <field name="name">advance.payment.apply.tree</field>
+            <field name="model">advance.payment.apply</field>
+            <field name="arch" type="xml">
+                <list string="付款申请单"
+                      default_order="create_date DESC,name DESC"
+                      decoration-success="(wait_amount_payment > 0) or (lock_amount_payment > 0)">
+                    <field name="name" readonly="1"/>
+                    <field name="department_id"/>
+                    <field name="company_id"/>
+                    <field name="employee_id"/>
+                    <field name="department_manager_user_id"/>
+                    <field name="partner_id"/>
+                    <field name="amount"/>
+                    <field name="amount_payment"/>
+                    <field name="wait_amount_payment"/>
+                    <field name="lock_amount_payment"/>
+                    <field name="account_payment_ids" widget="many2many_tags"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+        <record id="view_advance_payment_apply_form" model="ir.ui.view">
+            <field name="name">advance.payment.apply.form</field>
+            <field name="model">advance.payment.apply</field>
+            <field name="arch" type="xml">
+                <form string="付款申请单">
+                    <header>
+                        <!-- 申请人 -->
+                        <button name="action_confirm_emp" invisible="state != 'draft'" string="提交申请" type="object" class="oe_highlight"/>
+                        <button name="action_confirm_emp_cancel" invisible="state != 'draft'" string="取消申请" type="object"/>
+                        <!-- 部门主管 -->
+                        <button name="action_confirm_dep" invisible="state != 'confirmed' or not is_manager_user"
+                                string="部门主管确认" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_confirm_dep_cancel" invisible="state != 'confirmed' or not is_manager_user"
+                                string="部门主管驳回" type="object"/>
+                        <!-- 财务 -->
+                        <button name="action_confirm_fin" invisible="state != 'manager'" string="财务确认" type="object"
+                                class="oe_highlight" groups="account.group_account_manager,base_cw.account_group_account_user,base.group_erp_manager"/>
+                        <button name="action_confirm_fin_cancel" invisible="state != 'manager'" string="财务驳回" type="object"
+                                groups="account.group_account_manager,base_cw.account_group_account_user,base.group_erp_manager"/>
+                        <button type="action"
+                                name="%(cncw_statement.action_account_payment_form)d"
+                                class="btn-primary"
+                                string="创建付款单"
+                                groups="base_cw.account_group_account_user"
+                                invisible="state != 'end' or not wait_amount_payment"
+                                context="{
+                                'default_payment_type': order_type,
+                                'default_department_id': department_id,
+                                'default_partner_id': partner_id,
+                                'default_advance_amount':wait_amount_payment,
+                                'account_move_purchase_ids':account_move_purchase_ids
+                                }"
+                        />
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,confirmed,manager,account,cancel,end"
+                               statusbar_colors="{&quot;cancel&quot;:&quot;red&quot;}"/>
+                    </header>
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="is_exchange" invisible="1" force_save="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="is_manager_user" invisible="1"/>
+                                <field name="company_id" options="{'no_create_edit':1,'no_create':1,'no_open':1}" readonly="state != 'draft'"/>
+                                <field name="partner_id" options="{'no_create_edit':1,'no_create':1,'no_open':1}" readonly="state != 'draft'"/>
+                                <field name="currency_id" readonly="state != 'draft'" force_save="1"/>
+                                <field name="order_type" readonly="state != 'draft'"/>
+                                <field name="amount_payment"/>
+                                <field name="lc_amount_payment"  readonly="1" invisible="not is_exchange"/>
+                                <field name="wait_amount_payment"/>
+                                <field name="lc_wait_amount_payment" readonly="1" invisible="not is_exchange"/>
+                                <field name="lock_amount_payment"/>
+                            </group>
+                            <group>
+                                <field name="department_id" options="{'no_create_edit':1,'no_create':1,'no_open':1}"
+                                       readonly="state != 'draft'"/>
+                                <field name="employee_id" options="{'no_create_edit':1,'no_create':1,'no_open':1}"
+                                       readonly="state != 'draft'"/>
+                                <field name="department_manager_user_id"
+                                       options="{'no_create_edit':1,'no_create':1,'no_open':1}"
+                                       readonly="state != 'draft'"/>
+                                <field name="amount" readonly="state != 'draft'"/>
+                                <field name="exchange_rate"
+                                       readonly="state != 'draft'"
+                                       invisible="is_exchange != True"/>
+                                <field name="lc_amount" readonly="1" invisible="is_exchange != True"/>
+                                <field name="wait_amount" readonly="1" class="badge badge-info"/>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="采购订单" invisible="0">
+                                <field name="purchase_order_ids"
+                                       options="{'no_create_edit':1,'no_create':1,'no_open':1}"
+                                       readonly="state != 'draft'"/>
+                            </page>
+                            <page string="付款单">
+                                <field name="account_payment_ids"/>
+                            </page>
+                            <page string="采购发票" invisible="order_type not in ['A']">
+                                <field name="account_move_purchase_ids"
+                                       options="{'no_create_edit':1,'no_create':1,'no_open':1}" readonly="state != 'draft'">
+                                    <list>
+                                        <field name="partner_id" string="客户"/>
+                                        <field name="invoice_no" string="发票号码"/>
+                                        <field name="name" string="单据编号"/>
+                                        <field name="date_invoice"/>
+                                        <field name="user_id"/>
+                                        <field name="invoice_date_due" string="付款日期"/>
+                                        <field name="currency_id"/>
+                                        <field name="amount_untaxed" string="不含税金额"/>
+                                        <field name="amount_tax"/>
+                                        <field name="amount_total" string="含税总金额"/>
+                                        <field name="payment_amount"/>
+                                        <field name="remaining_amount" string="剩余金额"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="审批时间">
+                                <group>
+                                    <group>
+                                        <field name="check_date" readonly="1"/>
+                                        <field name="manager_date" readonly="1"/>
+                                        <field name="account_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="commit_user" readonly="1"/>
+                                        <field name="manager_user" readonly="1"/>
+                                        <field name="account_user" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="订单锁定金额" readonly="1">
+                                <field name="advance_payment_apply_lines" class="badge-info">
+                                    <list>
+                                        <field name="payment_apply_id"/>
+                                        <field name="purchase_order_id"/>
+                                        <field name="lock_amount"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_advance_payment_apply">
+            <field name="name">付款申请单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">advance.payment.apply</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_advance_payment_apply_form">
+            <field name="name">付款申请单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">advance.payment.apply</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem id="menu_advance_payment_apply" name="付款申请单"
+                  sequence="59"
+                  parent="cncw_account_menu_ap"
+                  action="action_advance_payment_apply"
+        />
+        <menuitem id="menu_advance_payment_apply_purchase_to_purchase_manager"
+                  name="付款申请单"
+                  sequence="989"
+                  parent="purchase.menu_purchase_root"
+                  action="action_advance_payment_apply"/>
+    </data>
+</odoo>

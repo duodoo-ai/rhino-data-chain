@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- 预收款查询 -->
+        <record id="view_account_advance_tree" model="ir.ui.view">
+            <field name="name">account.advance.tree</field>
+            <field name="model">account.advance</field>
+            <field name="arch" type="xml">
+                <list string="预收款查询" create="0" edit="0" delete="0" default_order="date desc">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="currency_id"/>
+                    <field name="exchange_rate"/>
+                    <field name="amount" string="收款金额" sum="amount"/>
+                    <field name="received_amount" string="累计冲销金额" sum="received_amount"/>
+                    <field name="remaining_amount" string="未冲销金额" sum="remaining_amount"/>
+                    <field name="lc_amount" invisible="1"/>
+                    <field name="lc_received_amount" invisible="1"/>
+                    <field name="lc_remaining_amount" invisible="1"/>
+                    <field name="res_id"/>
+                    <field name="offset_state"/>
+                    <field name="account_id" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_account_advance_form" model="ir.ui.view">
+            <field name="name">account.advance.form</field>
+            <field name="model">account.advance</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="预收款查询" create="0" delete="0" edit="0">
+                    <sheet>
+                        <group col="2">
+                            <group>
+                                <field name="name"/>
+                                <field name="date"/>
+                                <field name="partner_id"/>
+                                <field name="currency_id"/>
+                                <field name="exchange_rate"/>
+                                <field name="account_id"/>
+                                <field name="sub_account_id"/>
+                                <field name="dc_type"/>
+                            </group>
+                            <group>
+                                <field name="amount"/>
+                                <field name="received_amount"/>
+                                <field name="remaining_amount"/>
+                                <field name="lc_amount"/>
+                                <field name="lc_received_amount"/>
+                                <field name="lc_remaining_amount"/>
+                                <field name="res_id"/>
+                                <field name="offset_state"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_advance_search" model="ir.ui.view">
+            <field name="name">account.advance.search</field>
+            <field name="model">account.advance</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" filter_domain="[('name','ilike',self)]"/>
+                    <field name="date" filter_domain="[('date','ilike',self)]"/>
+                    <field name="partner_id" filter_domain="[('partner_id','ilike',self)]"/>
+                    <field name="currency_id" filter_domain="[('currency_id','ilike',self)]"/>
+                    <field name="offset_state" filter_domain="[('offset_state','ilike',self)]"/>
+                    <separator/>
+                    <filter name="offset_state_n" string="未冲销" domain="[('offset_state','=','N')]" />
+                    <filter name="offset_state_p" string="部分冲销" domain="[('offset_state','=','P')]" />
+                    <filter name="offset_state_a" string="已全部冲销" domain="[('offset_state','=','A')]" />
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter name="group_partner_id" string="客户编号" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter name="group_date" string="预收日期" domain="[]" context="{'group_by':'date'}"/>
+                        <filter name="group_currency_id" string="币别" domain="[]" context="{'group_by':'currency_id'}"/>
+                        <filter name="group_offset_state" string="冲销状态" domain="[]" context="{'group_by':'offset_state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_account_advance">
+            <field name="name">预收款查询</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.advance</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_account_advance_search"/>
+            <!-- <field name="domain">[('field_name','condition',criteria)]</field> -->
+            <field name="context">{'search_default_offset_state_n':1}</field>
+        </record>
+
+        <menuitem id="menu_account_advance2"
+                  name="预收款查询"
+                  sequence="145"
+                  groups="base_cw.account_group_account_user_query"
+                  parent="base_cw.menu_account_query"
+                  action="action_account_advance"/>
+
+    </data>
+</odoo>

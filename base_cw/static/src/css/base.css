@@ -1,0 +1,54 @@
+@charset "utf-8";
+
+.openerp .oe_form_sheet_width {
+  min-width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.o_form_view .o_form_sheet_bg .o_form_sheet
+{
+  min-width: 96%;
+  max-width: 96%;
+  margin: 0 auto;
+}
+
+/*
+表头不换行显示的CSS。加了[white-space: nowrap;]
+*/
+
+.openerp .oe_list_content th.oe_sortable, .openerp .oe_list_content th.oe_sortable div {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+
+@media (min-width: 800px) {
+  .modal-lg {
+    width: 1100px;
+  }
+}
+
+.openerp .oe_form_editable .oe_form .oe_form_field_date input {
+  width: 130px;
+}
+
+/*oe_inline的最小宽度放大*/
+
+/*.openerp .oe_inline {*/
+  /*width: auto !important;*/
+  /*width: 400px;*/
+  /*min-width: 250px*/
+/*}*/
+
+/*.openerp .oe_list_field_cell {*/
+  /*padding: 3px 6px;*/
+  /*white-space: nowrap;*/
+  /*max-width: 100px;*/
+  /*!*overflow: scroll;*!*/
+  /*text-overflow: ellipsis;*/
+/*}*/
+
+.openerp .oe_form .oe-view-manager-content {
+  overflow: auto;
+}

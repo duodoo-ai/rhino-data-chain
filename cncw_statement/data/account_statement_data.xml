@@ -1,0 +1,237 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <!--销售折让单 序列号-->
+        <record id="seq_sale_rebate" model="ir.sequence">
+            <field name="name">销售折让单</field>
+            <field name="code">sale.rebate</field>
+            <field name="prefix">SDR%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+
+        <!--采购折让单 序列号-->
+        <record id="seq_purchase_rebate" model="ir.sequence">
+            <field name="name">采购折让单</field>
+            <field name="code">purchase.rebate</field>
+            <field name="prefix">PRT%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+
+        <!--采购对帐单 序列号-->
+        <record id="seq_purchase_account_statement" model="ir.sequence">
+            <field name="name">采购对帐单</field>
+            <field name="code">purchase.account.statement</field>
+            <field name="prefix">PAS%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+
+        <!--销售对帐单 序列号-->
+        <record id="seq_sale_account_statement" model="ir.sequence">
+            <field name="name">销售对帐单</field>
+            <field name="code">sale.account.statement</field>
+            <field name="prefix">SAS%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+
+        <!-- Sequences for Sale invoice No -->
+        <record id="seq_sale_invoice_no" model="ir.sequence">
+            <field name="name">SALE Invoice No</field>
+            <field name="code">sale.invoice.no</field>
+            <field name="prefix">S%(year)s%(month)s</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_purchase_invoice_no" model="ir.sequence">
+            <field name="name">Purchase Invoice No</field>
+            <field name="code">purchase.invoice.no</field>
+            <field name="prefix">P%(year)s%(month)s-</field>
+            <field name="padding">3</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_account_pay" model="ir.sequence">
+            <field name="name">account.pay</field>
+            <field name="code">account.pay</field>
+            <field name="prefix">AP%(year)s%(month)s</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_account_receive" model="ir.sequence">
+            <field name="name">account.receive</field>
+            <field name="code">account.receive</field>
+            <field name="prefix">AR%(year)s%(month)s</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!--付款确认单 序列号-->
+        <record id="seq_account_payment_confirm" model="ir.sequence">
+            <field name="name">付款确认单</field>
+            <field name="code">account.payment.confirm</field>
+            <field name="prefix">APC%(year)s%(month)s%(day)s-</field>
+            <field name="padding">3</field>
+            <field name="is_renumber">True</field>
+        </record>
+
+        <!--预付款单-->
+        <record id="seq_account_prepaid" model="ir.sequence">
+            <field name="name">account.prepaid</field>
+            <field name="code">account.prepaid</field>
+            <field name="prefix">APP%(year)s%(month)s</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <!--预收款单-->
+        <record id="seq_account_advance" model="ir.sequence">
+            <field name="name">account.advance</field>
+            <field name="code">account.advance</field>
+            <field name="prefix">AA%(year)s%(month)s</field>
+            <field name="padding">4</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="account_receive_category_bank" model="account.receive.category">
+            <field name="name">银行汇款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+
+
+        <record id="account_receive_category_bill_of_exchange" model="account.receive.category">
+            <field name="name">汇票</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_receive_category_bill_of_exchange_transfer" model="account.receive.category">
+            <field name="name">转让汇票</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+
+        <record id="account_receive_category_balance" model="account.receive.category">
+            <field name="name">退入余款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+
+        <record id="account_receive_category_crash" model="account.receive.category">
+            <field name="name">现金</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_receive_category_bill" model="account.receive.category">
+            <field name="name">支票</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_receive_category_advance" model="account.receive.category">
+            <field name="name">预收帐款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_receive_category_advance_use" model="account.receive.category">
+            <field name="name">预收使用</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+        <record id="account_receive_category_other" model="account.receive.category">
+            <field name="name">其它收款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+
+        <record id="account_voucher_template_01" model="account.voucher.template">
+            <field name="name">预设会计科目</field>
+            <field name="code">01</field>
+            <field name="is_system_created">True</field>
+            <field name="is_default">True</field>
+            <field name="receivable_account_id" ref="base_cw.chart1121"/>
+            <field name="sale_tax_account_id" ref="base_cw.chart1123"/>
+            <field name="purchase_tax_account_id" ref="base_cw.chart1123"/>
+        </record>
+
+        <!--付款类别-->
+        <record id="account_payment_category_bank" model="account.payment.category">
+            <field name="name">银行汇款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+
+        <record id="account_payment_category_bill_of_exchange" model="account.payment.category">
+            <field name="name">票据</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+
+        <record id="account_payment_category_crash" model="account.payment.category">
+            <field name="name">现金</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+
+        <record id="account_payment_category_prepaid" model="account.payment.category">
+            <field name="name">预付帐款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_payment_category_prepaid_use" model="account.payment.category">
+            <field name="name">预付使用</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+
+        <record id="account_payment_category_other" model="account.payment.category">
+            <field name="name">其它付款</field>
+            <field name="active">True</field>
+            <field name="account_setup">B</field>
+            <field name="dc_type">C</field>
+        </record>
+
+        <!--费用类别-->
+        <record id="account_expense_category_A" model="account.expense.category">
+            <field name="name">租房电费</field>
+            <field name="full_name">租房电费</field>
+            <field name="code">01</field>
+            <field name="active">True</field>
+            <field name="dc_type">D</field>
+        </record>
+        <record id="account_expense_category_B" model="account.expense.category">
+            <field name="name">快递费</field>
+            <field name="full_name">快递费</field>
+            <field name="code">02</field>
+            <field name="active">True</field>
+            <field name="dc_type">D</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+       <!-- 业务对帐模式 -->
+       <record id="view_account_reconciliation_mode_tree" model="ir.ui.view">
+           <field name="name">account.reconciliation.mode.tree</field>
+           <field name="model">account.reconciliation.mode</field>
+           <field name="arch" type="xml">
+               <list string="业务对帐模式">
+                   <field name="name" />
+                   <field name="code" />
+               </list>
+           </field>
+       </record>
+
+       <record id="view_account_reconciliation_mode_form" model="ir.ui.view">
+           <field name="name">account.reconciliation.mode.form</field>
+           <field name="model">account.reconciliation.mode</field>
+           <field name="priority" eval="8" />
+           <field name="arch" type="xml">
+               <form string="业务对帐模式">
+                   <sheet>
+                      <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" groups="base.group_no_one"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                      </div>
+                       <group colspan="2" col="2">
+                           <field name="name" class="oe_inline"/>
+                           <field name="code" class="oe_inline"/>
+                       </group>
+                       <notebook>
+                           <page string="备注">
+                               <field name="note"/>
+                           </page>
+                           <page string="系统信息">
+                               <group colspan="4">
+                                   <field name="active" string="启用" readonly="1"/>
+                                   <field name="create_uid" readonly="1" string="建立人"/>
+                                   <field name="create_date" readonly="1" string="建立日"/>
+                                   <field name="write_uid" readonly="1" string="修改人"/>
+                                   <field name="write_date" readonly="1" string="修改日"/>
+                               </group>
+                           </page>
+                       </notebook>
+                   </sheet>
+               </form>
+           </field>
+       </record>
+
+       <record id="view_account_reconciliation_mode_search" model="ir.ui.view">
+           <field name="name">account.reconciliation.mode.search</field>
+           <field name="model">account.reconciliation.mode</field>
+           <field name="arch" type="xml">
+               <search string="Search">
+                   <field name="code" string="编号" filter_domain="[('code','ilike',self)]" />
+                   <field name="name" string="名称" filter_domain="[('name','ilike',self)]" />
+                   <separator />
+                   <filter string="已启用" name="active" domain="[('active','=',True)]" help="显示已经启用的资料" />
+                   <filter string="未启用" name="inactive" domain="[('active','=',False)]" help="显示未启用的资料" />
+                   <separator/>
+                   <group expand="0" string="Group By...">
+                         <filter string="生效" domain="[]" context="{'group_by':'active'}" />
+                   </group>
+               </search>
+           </field>
+       </record>
+
+       <record model="ir.actions.act_window" id="action_account_reconciliation_mode">
+           <field name="name">业务对帐模式</field>
+           <field name="type">ir.actions.act_window</field>
+           <field name="res_model">account.reconciliation.mode</field>
+           <field name="view_type">form</field>
+           <field name="view_mode">list,form</field>
+           <field name="search_view_id" ref="view_account_reconciliation_mode_search" />
+           <field name="context">{}</field>
+       </record>
+
+       <menuitem id="menu_account_reconciliation_mode" name="业务对帐模式"
+                 parent="menu_basic_config"
+                 sequence="95"
+                 action="action_account_reconciliation_mode"/>
+    </data>
+</odoo>

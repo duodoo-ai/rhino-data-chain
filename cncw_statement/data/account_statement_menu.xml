@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <menuitem id="cncw_account_menu_ar" name="应收" sequence="10" parent="base_cw.account_menu_finance_main"/>
+        <menuitem id="cncw_account_menu_ap" name="应付" sequence="20" parent="base_cw.account_menu_finance_main"/>.
+    </data>
+</odoo>

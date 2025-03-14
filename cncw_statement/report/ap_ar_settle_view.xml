@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <!-- 供应商客户帐款月结处理 -->
+        <record id="view_ap_ar_settle_form" model="ir.ui.view">
+            <field name="name">ap.ar.settle.form</field>
+            <field name="model">ap.ar.settle</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="帐款月结处理">
+                    <group colspan="2" col="2">
+                        <field name="period_id" class="oe_inline"
+                               domain="[('state','=','open')]"
+                               options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <footer>
+                        <button string="确认" name="action_confirm" type="object" class="oe_highlight"/>
+                        or
+                        <button string="取消" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_ap_ar_settle">
+            <field name="name">帐款月结处理</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ap.ar.settle</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_ap_ar_settle"
+                  name="帐款月结处理"
+                  parent="base_cw.menu_account_query"
+                  sequence="300"
+                  groups="base_cw.account_group_account_user"
+                  action="action_ap_ar_settle"/>
+    </data>
+</odoo>

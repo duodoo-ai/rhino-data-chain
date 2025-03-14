@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_hr_employee_tree_inherit">
+            <field name="name">hr.employee.tree.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">list</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="code"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_employee_form_inherit">
+            <field name="name">view.hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="code" class="oe_inline" placeholder="员工工号" required="1"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_department_form_inherit">
+            <field name="name">view.hr.department.form.inherit</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="code" class="oe_inline" placeholder="部门代码" required="0"/>
+                </field>
+            </field>
+        </record>
+
+<!--        <record model="ir.ui.view" id="view_hr_department_tree_inherit">-->
+<!--            <field name="name">hr.department.tree.inherit</field>-->
+<!--            <field name="model">hr.department</field>-->
+<!--            <field name="type">list</field>-->
+<!--            <field name="inherit_id" ref="hr.view_department_tree"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <field name="display_name" position="before">-->
+<!--                    <field name="code"/>-->
+<!--                </field>-->
+<!--            </field>-->
+<!--        </record>-->
+    </data>
+</odoo>

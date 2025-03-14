@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_res_partner_form_inherit_res">
+            <field name="name">view.res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority" eval="3"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="code" placeholder="编码"/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//page[@name='sales_purchases']" position="after">
+                    <page string="中国会计" name="cncw">
+                        <group>
+                            <field name="is_customer"/>
+                            <field name="is_supplier"/>
+                            <field name="account_tax_id" required="1"/>
+                            <field name="account_tax_amount"/>
+                            <field name="subaccount_category_id"/>
+                            <field name="partner_currency_id" />
+                            <field name="payment_term_id" class="oe_inline" required="1"/>
+                            <field name="payment_mode_id" class="oe_inline"/>
+                            <field name="property_cncw_account_payable_id"/>
+                            <field name="property_cncw_account_receivable_id"/>
+                            <field name="out_stock_amount" readonly="1"/>
+                            <field name="return_amount" readonly="1"/>
+                            <field name="rebate_amount" readonly="1"/>
+                            <field name="fandian_amount" readonly="1"/>
+                            <field name="policy_amount" readonly="1"/>
+                            <field name="checked_amount" readonly="1"/>
+                            <field name="invoiced_amount" readonly="1"/>
+                            <field name="received_amount" readonly="1"/>
+                            <field name="advance_amount" readonly="1"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_res_partner_filter_inherit_code">
+            <field name="name">res.partner.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="code" string="供应商编号"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

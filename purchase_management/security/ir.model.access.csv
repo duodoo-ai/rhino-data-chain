@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_requisition_line_wizard,requisition.line.wizard,model_requisition_line_wizard,base.group_user,1,1,1,1
+access_requisition_line_audit_wizard,requisition.line.audit.wizard,model_requisition_line_audit_wizard,base.group_user,1,1,1,1
+access_purchase_requisition_all_user,purchase.requisition,model_purchase_requisition,base.group_user,1,1,1,1
+access_purchase_requisition_line_all_user,purchase.requisition.line,model_purchase_requisition_line,base.group_user,1,1,1,1
+access_purchase_requisition_type_all_user,purchase.requisition.type,model_purchase_requisition_type,base.group_user,1,0,0,0
+access_purchase_order_all_user,purchase.order,model_purchase_order,base.group_user,1,0,0,0
+access_purchase_download_select,purchase.download.select,model_purchase_download_select,base.group_user,1,1,1,1
+access_purchase_print_note,purchase.print.note,model_purchase_print_note,base.group_user,1,1,1,1
