@@ -1,25 +1,45 @@
-# 犀数RhinoDataChain
+### 写在前面：用户指引
 
-#### 介绍
-数犀智链（供应链业财一体化）；
-
-#### 软件架构
-软件架构说明
+Gitee 用户使用指引入口 (https://gitee.com/duodoo-ai/duodoo-user-manual)
+    
+Github 用户使用指引入口 (https://github.com/duodoo-ai/duodoo-user-manual)
 
 
-#### 安装教程
+### 第一部分：项目说明
+    
+1. 面向年营业额在3千万到3亿元的增长型企业
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+2. 需要按需定制的信息化系统支撑业务稳步增长
 
-#### 使用说明
+3.  具备
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+    - ERP模组（财务、报表、资产、人事、项目、CRM、采购、销售、库存、成本）
+   
+    - MES模组（计划、制造、工单、作业单、质量、看板、安灯、数采/数控）
 
-#### 参与贡献
+    - 客户供应商平台
+
+    - 移动端集成 等4大核心功能
+
+4. 不同于现有市场的套装软件或云软件，多度软件 数据永久可用、多语言支持、支持云部署或本地服务器私有部署
+
+5. 多度软件 不限用户数，模块化二次开发，源码和数据自主掌控，是开源专业化IT服务的载体。
+
+    基于 Odoo18 框架的 多度ERP、多度MES、多度IOT 将于2025年2月8日发布，敬请期待！
+
+
+### 第二部分：整体介绍：
+
+##### ERP模块：总账、财务报表、应收应付、固定资产、项目管理、CRM客户关系管理、合同管理、销售管理、采购管理、库存管理、委外管理、制造管理、成本核算
+
+##### MES模块：生产计划、制造订单、工单、作业单、质量管理、生产大屏、安灯系统、计件工资、数采模块
+
+##### 客户供应商平台：订单确认、发货、标签打印、财务对账、开票、应收明细、应付明细
+
+##### 移动集成：企业微信、钉钉、飞书（线上下单，供应链互通）
+
+
+### 第三部分：参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
@@ -27,11 +47,5 @@
 4.  新建 Pull Request
 
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### 联系作者： 微信号 odoo025   手机 18951631470  邮件 zou.jason@qq.com
+#### 微信群：『DuodooTEKr』开源社区
